@@ -48,8 +48,8 @@ chatbot = ChatBot(
 # trainer = ListTrainer(chatbot)
 # trainer.train(conversation)
 
-training_data_quesans = open('training_data/ques_ans.txt').read().splitlines()
-training_data_personal = open('training_data/personal_ques.txt').read().splitlines()
+training_data_quesans = open('iMedbot/training_data/ques_ans.txt').read().splitlines()
+training_data_personal = open('iMedbot/training_data/personal_ques.txt').read().splitlines()
 
 training_data = training_data_quesans + training_data_personal
 
