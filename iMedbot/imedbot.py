@@ -13,7 +13,7 @@ intents = json.loads(open('coversationPattern.json').read())
 
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
-model = load_model('chatbot_model.h5')
+model = load_model('imedbot_model.h5')
 
 
 def clean_up_sentence(sentence):#I am going to say hello

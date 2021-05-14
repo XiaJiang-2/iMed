@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+{#{% extends "base.html" %}#}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Breast Cancer iMedBot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/iMedbot.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+{#    <div class="row">#}
+{#        <div class="col-sm-10 col-sm-offset-1 col-xs-12">#}
+{#            <img src="/assets/NHS.jpg" alt="NHS logo" class="img-responsive pull-right" style="width: 85px; margin-top: 30px; margin-bottom: 38px;">#}
+{#            <img src="/assets/logo-pos-al.png" alt="Predict breast cancer logo" class="img-responsive" style="width: 180px; margin-top: 13px; margin-bottom: 6px;">#}
+{#        </div>#}
+{#        <div class="col-xs-12">#}
+{#            <div class="row screen-only">#}
+{#                <div class="col-sm-11 col-xs-12 skip">#}
+{#                    <a tabindex="-1" class="pull-right" style="cursor: pointer;">Skip to main content</a>#}
+{#                </div>#}
+{#            </div>#}
+{#            <nav class="">#}
+{#                <nav class="navbar navbar-inverse">#}
+{#                    <div class="container">#}
+{#                        <div class="navbar-header">#}
+{#                            <button type="button" data-toggle="collapse" data-target="#navbar" aria-label="menu" class="navbar-toggle">#}
+{#                                <span class="icon-bar"></span>#}
+{#                                <span class="icon-bar"></span>#}
+{#                                <span class="icon-bar"></span>#}
+{#                            </button>#}
+{#                        </div>#}
+{#                        <div id="navbar" class="collapse navbar-collapse">#}
+{#                            <ul class="nav navbar-nav sm-collapsible" data-smartmenus-id="16203414228204065">#}
+{#                                <li tabindex="0" class="active" style="cursor: pointer;">#}
+{#                                    <a data-toggle="collapse" data-target=".navbar-collapse.in">#}
+{#                                        <span>Home</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li tabindex="0" class="dropdown" style="cursor: pointer;">#}
+{#                                    <a class="dropdown-toggle has-submenu" id="sm-16203414228204065-1" aria-haspopup="true" aria-controls="sm-16203414228204065-2" aria-expanded="false">#}
+{#                                        <span>About Predict</span>#}
+{#                                        <span class="caret navbar-toggle sub-arrow"></span>#}
+{#                                    </a>#}
+{#                                    <ul class="dropdown-menu" id="sm-16203414228204065-2" role="group" aria-hidden="true" aria-labelledby="sm-16203414228204065-1" aria-expanded="false">#}
+{#                                    <li tabindex="0" style="cursor: pointer;">#}
+{#                                        <a data-toggle="collapse" data-target=".navbar-collapse.in">#}
+{#                                            <span>Overview</span>#}
+{#                                        </a>#}
+{#                                    </li>#}
+{#                                        <li tabindex="0" style="cursor: pointer;">#}
+{#                                            <a data-toggle="collapse" data-target=".navbar-collapse.in">#}
+{#                                                <span>– Who is it for?</span>#}
+{#                                            </a>#}
+{#                                        </li>#}
+{#                                        <li tabindex="0" style="cursor: pointer;">#}
+{#                                            <a data-toggle="collapse" data-target=".navbar-collapse.in">#}
+{#                                                <span>– How Predict works</span>#}
+{#                                            </a>#}
+{#                                        </li>#}
+{#                                    </ul>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </nav>#}
+{#            </nav>#}
+{#        </div>#}
+{#    </div>#}
+  <!-- partial:index.partial.html -->
+  <section class="msger">
+    <header class="msger-header">
+      <div class="msger-header-title">
+        <i class="fas fa-bug"></i>  Breast Cancer iMedbot <i class="fas fa-bug"></i>
+      </div>
+    </header>
+
+    <main class="msger-chat"></main>
+
+    <form class="msger-inputarea">
+        <input type="text" class="msger-input" id="textInput" placeholder="Enter your message...">
+{#        <button class="record-send-btn"#}
+{#                style="background-image: url(../static/img/microphone.svg);#}
+{#                background-repeat:no-repeat;#}
+{#                height:80px">#}
+{##}
+{#        </button>#}
+{#        <button><i class="fas fa-thumbs-up fa-xs"></i> </button>#}
+        <button class="record-send-btn" id = "record">Start</button>
+        <button type="submit" class="msger-send-btn">Send</button>
+
+    </form>
+  </section>
+  <!-- partial -->
+  <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+  <script type="text/javascript" src="static/js/iMedbot.js"></script>
+
+
+</body>
+{% endblock %}
+
+</html>
