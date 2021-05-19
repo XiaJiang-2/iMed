@@ -1,6 +1,7 @@
 
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "static/img/robot.svg";
+const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
@@ -10,9 +11,6 @@ const PERSON_NAME = "You";
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
-
-const record = document.getElementById("record");
-record.onclick = transfervoice;
 
 
 msgerForm.addEventListener("submit", event => {
@@ -55,7 +53,7 @@ function botResponse(rawText) {
     console.log(rawText);
     console.log(data);
     const msgText = data;
-    appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
+    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText);
   });
 }
 
@@ -64,106 +62,77 @@ function get(selector, root = document) {
   return root.querySelector(selector);
 }
 
-// var create_email = false;
-// var final_transcript = '';
-// var recognizing = false;
-// var ignore_onend;
 
-// if (!('webkitSpeechRecognition' in window)) {
-//   upgrade();
-// } else {
-//   start_button.style.display = 'inline-block';
+
+// function transfervoice(){
+//   const start_img = document.getElementById("start_img");
 //   var recognition = new webkitSpeechRecognition();
-//   recognition.continuous = true;
-//   recognition.interimResults = true;
-//
-// function startButton(event) {
 //   if (recognizing) {
+//     console.log("recog")
 //     recognition.stop();
-//     return;
 //   }
-//   final_transcript = '';
-//   recognition.lang = 'en-US';
+//   var recognizing = false;
+//   var ignore_onend = false;
+//   var lang = 'en-US'
+//   var final_transcript = '';
+//
+//   recognition.lang = lang;
+//   recognition.continuous = true;//if allowed continue listen
+//   recognition.interimResults = true;
 //   recognition.start();
-//   ignore_onend = false;
-//   final_span.innerHTML = '';
-//   interim_span.innerHTML = '';
-//   start_img.src = 'mic-slash.gif';
-//   showInfo('info_allow');
-//   showButtons('none');
-//   start_timestamp = event.timeStamp;
+//
+//   recognition.onstart = function() {
+//     recognizing = true;
+//     start_img.src = 'static/img/mic-animate.gif';
+//   };
+//     recognition.onerror = function(event) {
+//       if (event.error == 'no-speech') {
+//         alert("No speech was detected. You may need to adjust your microphone settings")
+//         ignore_onend = true;
+//       }
+//       if (event.error == 'audio-capture') {
+//         alert("audio-capture")
+//         ignore_onend = true;
+//       }
+//       if (event.error == 'not-allowed') {
+//         alert("Permission to use microphone was denied.");
+//         ignore_onend = true;
+//       }
+//     };
+//     recognition.onend = function() {
+//       recognizing = false;
+//       if (ignore_onend) {
+//         return;
+//       }
+//       start_img.src = 'static/img/mic.gif';
+//     };
+//
+//     recognition.onresult = function(event) {
+//     var interim_transcript = '';
+//     for (var i = event.resultIndex; i < event.results.length; ++i) {
+//       if (event.results[i].isFinal) {
+//         final_transcript += event.results[i][0].transcript;
+//       } else {
+//         interim_transcript += event.results[i][0].transcript;
+//       }
+//     }
+//     console.log(final_transcript)
+//     final_transcript = capitalize(final_transcript);
+//     msgerInput.value =linebreak(final_transcript);
+//   };
+//
+//
 // }
 //
-// function upgrade() {
-//   record.innerText = "Start"
-//
+//   var two_line = /\n\n/g;
+//   var one_line = /\n/g;
+//   function linebreak(s) {
+//   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 // }
-
-
-function transfervoice(){
-  if (recognizing) {
-    recognition.stop();
-    return;
-  }
-  // record.innerText = "Start"
-  var recognizing = false;
-  var ignore_onend = false;
-  var lang = 'en-US'
-  var final_transcript = '';
-  var recognition = new webkitSpeechRecognition();
-  recognition.lang = lang;
-  recognition.continuous = true;//if allowed continue listen
-  recognition.interimResults = true;
-  recognition.start();
-
-  recognition.onstart = function() {
-    recognizing = true;
-    record.innerText = "Recording"
-
-    // start_img.src = 'mic-animate.gif';
-  };
-    recognition.onerror = function(event) {
-      if (event.error == 'no-speech') {
-        alert("No speech was detected. You may need to adjust your microphone settings")
-        ignore_onend = true;
-      }
-      if (event.error == 'audio-capture') {
-        alert("audio-capture")
-        ignore_onend = true;
-      }
-      if (event.error == 'not-allowed') {
-        alert("Permission to use microphone was denied.");
-        ignore_onend = true;
-      }
-    };
-
-    recognition.onend = function() {
-      recognizing = false;
-      record.innerText = "Start"
-      if (ignore_onend) {
-        return;
-      }
-
-    };
-
-    recognition.onresult = function(event) {
-    var interim_transcript = '';
-    for (var i = event.resultIndex; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
-      } else {
-        interim_transcript += event.results[i][0].transcript;
-      }
-    }
-    console.log(final_transcript)
-    msgerInput.value = final_transcript;
-    // recognition.stop()
-    // #interim_span.innerHTML = linebreak(interim_transcript);
-
-  };
-
-
-}
+//   var first_char = /\S/;
+//   function capitalize(s) {
+//   return s.replace(first_char, function(m) { return m.toUpperCase(); });
+// }
 
 function formatDate(date) {
   const h = "0" + date.getHours();
@@ -172,5 +141,114 @@ function formatDate(date) {
 }
 firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
 
-window.οnlοad = appendMessage(BOT_NAME, BOT_IMG, "left", firstMsg);
+window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg);
+
+
+
+// ****************************************************************************
+const start_button = document.getElementById("start_button");
+start_button.onclick = startButton;
+
+const start_img = document.getElementById("start_img");
+
+
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+var start_timestamp;
+if (!('webkitSpeechRecognition' in window)) {
+  upgrade();
+} else {
+  start_button.style.display = 'inline-block';
+  var recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = function() {
+    recognizing = true;
+    // alert('info_speak_now');
+    start_img.src = 'static/img/mic-animate.gif';
+  };
+
+  recognition.onerror = function(event) {
+    if (event.error == 'no-speech') {
+      start_img.src = 'static/img/mic.gif';
+      alert('info_no_speech');
+      ignore_onend = true;
+    }
+    if (event.error == 'audio-capture') {
+      start_img.src = 'static/img/mic.gif';
+      alert('info_no_microphone');
+      ignore_onend = true;
+    }
+    if (event.error == 'not-allowed') {
+      if (event.timeStamp - start_timestamp < 100) {
+        alert('info_blocked');
+      } else {
+        alert('info_denied');
+      }
+      ignore_onend = true;
+    }
+  };
+
+  recognition.onend = function() {
+    recognizing = false;
+    if (ignore_onend) {
+      return;
+    }
+    start_img.src = 'static/img/mic.gif';
+    if (!final_transcript) {
+      // alert('info_start');
+      return;
+    }
+  };
+
+  recognition.onresult = function(event) {
+    var interim_transcript = '';
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+    final_transcript = capitalize(final_transcript);
+    msgerInput.value =linebreak(final_transcript);
+
+  };
+}
+
+function upgrade() {
+  start_button.style.visibility = 'hidden';
+  alert('info_upgrade');
+}
+
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+
+var first_char = /\S/;
+function capitalize(s) {
+  return s.replace(first_char, function(m) { return m.toUpperCase(); });
+}
+
+
+function startButton(event) {
+  if (recognizing) {
+    recognition.stop();
+    return;
+  }
+  final_transcript = '';
+  recognition.lang = 'en-US';
+  recognition.start();
+  ignore_onend = false;
+  start_img.src = 'static/img/mic-slash.gif';
+  start_timestamp = event.timeStamp;
+}
+
+
+
+
 

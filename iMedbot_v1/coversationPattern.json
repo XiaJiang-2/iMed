@@ -1,0 +1,17 @@
+{"intents": [
+  {"tag": "greetings",
+  "patterns": ["hello", "hey", "hi", "what's up", "how is it going?"],
+  "responses": ["Hello", "Hey!", "what can I do for you?"]},
+  {"tag": "goodbye",
+  "patterns": ["cya", "see you later", "Goodbye", "Have a good day", "bye", "see ya"],
+  "responses": ["Talk to you later", "Goodbye"]},
+  {"tag": "treatment year",
+  "patterns": ["I want to know my risk of metastatic cancer","breast cancer information"],
+  "responses": ["I would love to help you, Can you tell me your treatment time"]},
+   {"tag": "function",
+  "patterns": ["What you can do?"],
+  "responses": ["I can predict the recurrence probability of breast cancer", "I can answer your question about breast cancer"]},
+  {"tag": "confuse",
+  "patterns": [" "],
+  "responses": ["Sorry, I can't understand you"]}
+]}

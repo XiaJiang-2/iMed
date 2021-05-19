@@ -3,10 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="ce7c7f44-148c-4a2e-b2e4-a4fe5fba219c" name="Default Changelist" comment="Training data path modified">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/iMedbot_package_install_instruction.docx" beforeDir="false" afterPath="$PROJECT_DIR$/docs/iMedbot_package_install_instruction.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/classes.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/classes.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/coversationPattern.json" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/coversationPattern.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/iMedbot/database.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/database.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/database.sqlite3-shm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/database.sqlite3-wal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/imedbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/imedbot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/imedbotTraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/imedbotTraining.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/imedbot_model.h5" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/imedbot_model.h5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/css/iMedbot.css" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/css/iMedbot.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/words.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot_v1/words.pkl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +45,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\iMedbot_v1" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -52,6 +64,7 @@
       <workItem from="1621285155019" duration="7000" />
       <workItem from="1621285201324" duration="52000" />
       <workItem from="1621302857434" duration="3008000" />
+      <workItem from="1621344361348" duration="18082000" />
     </task>
     <task id="LOCAL-00001" summary="Training data path modified">
       <created>1621306050990</created>
@@ -76,6 +89,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Training data path modified" />

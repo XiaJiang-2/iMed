@@ -6,8 +6,7 @@ import pyttsx3 as tts
 app = Flask(__name__)
 app.static_folder = 'static'
 bootstrap = Bootstrap(app)
-# speaker = tts.init()
-# speaker.setProperty('rate', 150)
+
 
 @app.route("/")
 def index():
@@ -18,7 +17,6 @@ def get_bot_response():
     userText = request.args.get('msg')
     response = str(chatbot.get_response(userText))
     speak(response)
-    print("hello")
     return response
 
 def speak(response):
@@ -34,7 +32,7 @@ def speak(response):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 
 
