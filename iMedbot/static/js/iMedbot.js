@@ -6,6 +6,7 @@ const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
 
+
 // get the element for html
 
 const msgerForm = get(".msger-inputarea");
@@ -17,7 +18,7 @@ msgerForm.addEventListener("submit", event => {
   event.preventDefault();
   const msgText = msgerInput.value;
   if (!msgText) return;
-  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,[]);
   msgerInput.value = "";
   botResponse(msgText);
 });
@@ -28,23 +29,54 @@ msgerForm.addEventListener("submit", event => {
  * @param {string} side location of dialogue right or left
  * @param {string} text the value of input
  */
-function appendMessage(name, img, side, text) {
+
+
+function appendMessage(name, img, side, text, btnGroup) {
   //Simple solution for small apps
-  const msgHTML = `
-        <div class="msg ${side}-msg">
+    let buttonHtml = generateBtnGroup(btnGroup)
+    console.log(buttonHtml)
+
+    const msgHTML =
+        ` <div class="msg ${side}-msg">
           <div class="msg-img" style="background-image: url(${img})"></div>
           <div class="msg-bubble">
             <div class="msg-info">
               <div class="msg-info-name">${name}</div>
               <div class="msg-info-time">${formatDate(new Date())}</div>
             </div>
-            <div class="msg-text">${text}</div>
-          </div>
-        </div>`;
+            <div class="msg-text">${text}</div>`+ buttonHtml+ `</div></div>`;
+    // }
   //'beforeend': Just inside the element, after its last child.
   msgerChat.insertAdjacentHTML("beforeend", msgHTML);
   msgerChat.scrollTop += 500;
 }
+
+function generateBtnGroup(btn_group){
+  let buttonHtml = ""
+  let btn_array = Object.values(btn_group)
+  // console.log( btn_array )
+  if (btn_array.length != 0){
+      buttonHtml = btn_array.map(function(btn){
+        const element = `<button type="button" class="btn btn-success">${btn}</button>`
+    return element
+  })
+    let front = '<div class="btn-group" role="group" aria-label="Basic example">'
+    let end = '</div>'
+    buttonHtml = front+buttonHtml.join("")+end
+  }else {
+        buttonHtml=" "
+  }
+  // console.log(buttonHtml)
+  return buttonHtml
+}
+function RecordInformation(){
+  alert("hello")
+}
+// const info_button = document.getElementsByClassName("btn btn-success");
+// console.log(info_button)
+// console.log(info_button[0])
+// info_button[0].onclick = RecordInformation;
+
 
 
 function botResponse(rawText) {
@@ -52,8 +84,11 @@ function botResponse(rawText) {
   $.get("/get", { msg: rawText }).done(function (data) {
     console.log(rawText);
     console.log(data);
-    const msgText = data;
-    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText);
+    const msgText = data["response"];
+    const btnGroup = data["button_group"]
+    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,btnGroup);
+
+
   });
 }
 
@@ -140,8 +175,8 @@ function formatDate(date) {
   return `${h.slice(-2)}:${m.slice(-2)}`;
 }
 firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
-
-window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg);
+btnGroup = []
+window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg, btnGroup);
 
 
 

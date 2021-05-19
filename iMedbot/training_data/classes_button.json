@@ -1,0 +1,11 @@
+{"classes_button": [
+  {"tag": "treatment_year",
+    "patterns": ["5 year", "10 year", "15 year"],
+    "responses": ["I can predict the recurrence probability of breast cancer, please tell me which year you want to predict",
+                  "I can answer your question about breast cancer"]
+  },
+  {"tag": "race",
+  "patterns": ["Asian", "American Indian","Hispanic or Latino","White" ],
+  "responses": ["What is your race?"]}
+
+]}
