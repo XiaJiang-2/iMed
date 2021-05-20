@@ -32,7 +32,7 @@ def get_bot_response():
 def speak(response):
     speaker = tts.init()
     speaker.setProperty('rate', 150)
-    speaker.say(response)
+    speaker.say("what are you doing")
     #speaker.startLoop(False)
     speaker.runAndWait()
     if speaker._inLoop:
