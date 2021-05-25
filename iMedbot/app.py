@@ -3,11 +3,12 @@ from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 import pyttsx3 as tts
 import json
+import datetime
 
 app = Flask(__name__)
 app.static_folder = 'static'
 bootstrap = Bootstrap(app)
-class_button_json = json.loads(open('training_data/classes_button.json').read())
+class_button_json = json.loads(open('static/assets/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
 @app.route("/")
 def index():
@@ -18,7 +19,9 @@ def get_bot_response():
     result = {}
     button_group = ""
     userText = request.args.get('msg')
+    print(datetime.datetime.now())
     response = str(chatbot.get_response(userText))
+    print(datetime.datetime.now())
     result["response"] = response
     speak(response)
 
@@ -32,7 +35,7 @@ def get_bot_response():
 def speak(response):
     speaker = tts.init()
     speaker.setProperty('rate', 150)
-    speaker.say("what are you doing")
+    speaker.say(response)
     #speaker.startLoop(False)
     speaker.runAndWait()
     if speaker._inLoop:
