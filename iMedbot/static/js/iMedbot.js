@@ -1,17 +1,18 @@
-
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "static/img/robot.svg";
 const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
-
-
+var input_question = JSON.parse(input_question)
+var input = []
 // get the element for html
 
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
+
+
 
 
 msgerForm.addEventListener("submit", event => {
@@ -23,24 +24,27 @@ msgerForm.addEventListener("submit", event => {
   botResponse(msgText);
 });
 
-function readTextFile(file, callback) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            callback(rawFile.responseText);
-        }
-    }
-    rawFile.send(null);
-}
-
-
-//usage:
-readTextFile("static/assets/classes_button.json", function(text){
-    cb_json = JSON.parse(text);
-    console.log(cb_json)
-});
+// function readTextFile(file, callback) {
+//     var cb_json
+//     var rawFile = new XMLHttpRequest();
+//     rawFile.overrideMimeType("application/json");
+//     rawFile.open("GET", file, true);
+//     rawFile.onreadystatechange = function() {
+//         if (rawFile.readyState === 4 && rawFile.status == "200") {
+//             cb_json = callback(rawFile.responseText);
+//         }
+//     }
+//     rawFile.send(null);
+//     return cb_json
+// }
+//
+// //usage:
+// const cb_json = readTextFile("static/assets/classes_button.json", function(text){
+//     var cb_json = JSON.parse(text);
+//     return cb_json
+// });
+//
+// console.log(cb_json)
 
 
 // function GetButtonjson() {
@@ -52,14 +56,19 @@ readTextFile("static/assets/classes_button.json", function(text){
 //   request.onload = function () {/*XHR对象获取到返回信息后执行*/
 //     if (request.status == 200) {/*返回状态为200，即为数据获取成功*/
 //       cb_json = JSON.parse(request.responseText);
-//       getCb_json(cb_json)
-//       // console.log(cb_json)
+//       happy(cb_json)
 //     }
-//
 //   }
 //
 // }
 // const class_button_json = GetButtonjson()
+// var cd_Json
+// function happy(cd_json){
+//   //console.log(cd_json)
+//   cd_Json =  cd_json
+// }
+// console.log(cd_Json)
+
 
 
 /**
@@ -97,12 +106,47 @@ function appendMessage(name, img, side, text, btnGroup) {
   }
 }
 function showNext(e){
-  alert(e.target.innerHTML)
-  console.log(class_button_json)
-  msgText = "What is your race?"
-  btnGroup = []
-  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,[]);
+  var msgText = " "
+  var btnGroup = []
+  var nextques = ""
+  var pattern = e.target.innerHTML
+  console.log(pattern)
+  input.push(pattern)
+  console.log(input_question.length)
+  for (var i = 0 ; i < input_question.length; i++) {
+      console.log(input_question[i].patterns)
+    if(input_question[i].patterns.indexOf(pattern) != -1){
+      nextques = input_question[i].nextques
+      console.log(nextques)
+       }
+  }
+  if(nextques == "none"){
+    var input_cpoy = input
+    input = []
+    getinput(input_cpoy)
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence",btnGroup);
+    return
+  }
+  for (var i = 0 ; i < input_question.length; i++) {
+    if (input_question[i].tag == nextques) {
+      let index = Math.floor((Math.random()*input_question[i].responses.length))
+      msgText = input_question[i].responses[index]
+      btnGroup = input_question[i].patterns
+      console.log("hello")
+      console.log(msgText)
+      console.log(btnGroup)
+    }
+  }
+  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,btnGroup);
+
 }
+
+function getinput(input_copy){
+  $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
+  console.log(data)
+})
+}
+
 
 
 
@@ -127,11 +171,6 @@ function generateBtnGroup(btn_group){
 function RecordInformation(){
   alert("hello")
 }
-// const info_button = document.getElementsByClassName("btn btn-success");
-// console.log(info_button)
-// console.log(info_button[0])
-// info_button[0].onclick = RecordInformation;
-
 
 
 function botResponse(rawText) {
@@ -142,8 +181,6 @@ function botResponse(rawText) {
     const msgText = data["response"];
     const btnGroup = data["button_group"]
     appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,btnGroup);
-
-
   });
 }
 
