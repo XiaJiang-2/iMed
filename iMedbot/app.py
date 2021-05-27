@@ -1,15 +1,18 @@
+import numpy as np
 from chatbot import chatbot
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 import pyttsx3 as tts
 import json
 import datetime
+from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 app.static_folder = 'static'
 bootstrap = Bootstrap(app)
 class_button_json = json.loads(open('training_data/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
+model_15 = load_model('imedbot_model_five_input_15.h5')
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -42,12 +45,23 @@ def speak(response):
     if speaker._inLoop:
         speaker.endLoop()
     print("speak")
-
+# feature_array = ["DCIS_level", "size", "grade","PR_percent","invasive_tumor_Location","distant_recurrence\r"]
 @app.route("/getInput")
 def get_model_inputdata():
     input = request.args.get('msg')
-    print("hello")
+    input = input.lstrip("[")
     print(input)
+    input = input.lstrip("]")
+    print(input)
+    input = input.split(',')
+    input = list(map(int, input))
+    print(input)
+    if input[0] == 15:
+        print("hello")
+        print(input[1:])
+        print(np.array(input[1:]))
+        res = model_15.predict(np.array(input[1:]))
+        print(res)
     data = 'happy'
     return data
 

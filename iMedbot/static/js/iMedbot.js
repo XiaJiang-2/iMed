@@ -111,11 +111,12 @@ function showNext(e){
   var nextques = ""
   var pattern = e.target.innerHTML
   console.log(pattern)
-  input.push(pattern)
+
   console.log(input_question.length)
   for (var i = 0 ; i < input_question.length; i++) {
-      console.log(input_question[i].patterns)
-    if(input_question[i].patterns.indexOf(pattern) != -1){
+      console.log(Object.keys(input_question[i].patterns))
+    if(Object.keys(input_question[i].patterns).indexOf(pattern) != -1){
+      input.push(input_question[i].patterns[pattern])
       nextques = input_question[i].nextques
       console.log(nextques)
        }
@@ -131,7 +132,7 @@ function showNext(e){
     if (input_question[i].tag == nextques) {
       let index = Math.floor((Math.random()*input_question[i].responses.length))
       msgText = input_question[i].responses[index]
-      btnGroup = input_question[i].patterns
+      btnGroup = Object.keys(input_question[i].patterns)
       console.log("hello")
       console.log(msgText)
       console.log(btnGroup)
