@@ -60,7 +60,8 @@ predict the tag of input sentence
     # print("bow")
     # print(bow)
     res = model.predict(np.array([bow]))[0]#[2.1516404e-05 9.9997103e-01 5.7227639e-06 1.7859028e-06]
-    # print(np.array([bow]))#[[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1]]
+    print("hello")
+    print(np.array([bow]))#[[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1]]
     # print(model.predict(np.array([bow])))#[[2.1516404e-05 9.9997103e-01 5.7227639e-06 1.7859028e-06]]
     ERROR_THRESHOLD = 0.5
     results = [[i,r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]

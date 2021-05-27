@@ -22,13 +22,13 @@ chatbot = ChatBot(
     # the chatbot will calculate the confidence level, and the response with the highest calculated confidence will be returned as output.
     # Here we have used two logical adapters: BestMatch and TimeLogicAdapter
     logic_adapters=[
-        #'chatterbot.logic.MathematicalEvaluation',#the robot can answer 4+6 ?
-        #'chatterbot.logic.TimeLogicAdapter',#the robot can answer current time
+        'chatterbot.logic.MathematicalEvaluation',#the robot can answer 4+6 ?
+        # 'chatterbot.logic.TimeLogicAdapter',#the robot can answer current time
         'chatterbot.logic.BestMatch',
         {
             'import_path': 'chatterbot.logic.BestMatch',
             'default_response': 'I am sorry, but I do not understand. I am still learning.',
-            'maximum_similarity_threshold': 0.8
+            'maximum_similarity_threshold': 0.96
         }
     ],
     database_uri='sqlite:///database.sqlite3'
@@ -52,8 +52,8 @@ chatbot = ChatBot(
 # trainer = ListTrainer(chatbot)
 # trainer.train(conversation)
 
-training_data_quesans = open('training_data/ques_ans.txt').read().splitlines()
-training_data_personal = open('training_data/personal_ques.txt').read().splitlines()
+training_data_quesans = open('iMedbot/training_data/ques_ans.txt').read().splitlines()
+training_data_personal = open('iMedbot/training_data/personal_ques.txt').read().splitlines()
 
 training_data = training_data_quesans + training_data_personal
 

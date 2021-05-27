@@ -12,6 +12,12 @@ const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
 
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }
+});
 
 
 
@@ -144,7 +150,10 @@ function showNext(e){
 
 function getinput(input_copy){
   $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
-  console.log(data)
+
+    console.log(data)
+    res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
+    appendMessage(BOT_NAME, NURSE_IMG, "left", res,[])
 })
 }
 
@@ -210,7 +219,7 @@ const start_img = document.getElementById("start_img");
 
 var final_transcript = '';
 var recognizing = false;
-var ignore_onend;
+var if_error;
 var start_timestamp;
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
@@ -224,37 +233,31 @@ if (!('webkitSpeechRecognition' in window)) {
     recognizing = true;
     // alert('info_speak_now');
     start_img.src = 'static/img/mic-animate.gif';
+
   };
 
   recognition.onerror = function(event) {
     if (event.error == 'no-speech') {
       start_img.src = 'static/img/mic.gif';
       alert('info_no_speech');
-      ignore_onend = true;
+      if_error = true;
     }
     if (event.error == 'audio-capture') {
       start_img.src = 'static/img/mic.gif';
       alert('info_no_microphone');
-      ignore_onend = true;
+      if_error = true;
     }
-    if (event.error == 'not-allowed') {
-      if (event.timeStamp - start_timestamp < 100) {
-        alert('info_blocked');
-      } else {
-        alert('info_denied');
-      }
-      ignore_onend = true;
+
     }
   };
 
   recognition.onend = function() {
     recognizing = false;
-    if (ignore_onend) {
+    if (if_error) {
       return;
     }
     start_img.src = 'static/img/mic.gif';
     if (!final_transcript) {
-      // alert('info_start');
       return;
     }
   };
@@ -272,7 +275,7 @@ if (!('webkitSpeechRecognition' in window)) {
     msgerInput.value =linebreak(final_transcript);
 
   };
-}
+
 
 function upgrade() {
   start_button.style.visibility = 'hidden';
@@ -296,10 +299,12 @@ function startButton(event) {
     recognition.stop();
     return;
   }
+
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
-  ignore_onend = false;
+
+  if_error = false;
   start_img.src = 'static/img/mic-slash.gif';
   start_timestamp = event.timeStamp;
 }

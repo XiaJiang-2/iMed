@@ -10,9 +10,9 @@ from tensorflow.keras.models import load_model
 app = Flask(__name__)
 app.static_folder = 'static'
 bootstrap = Bootstrap(app)
-class_button_json = json.loads(open('training_data/classes_button.json').read())
+class_button_json = json.loads(open('iMedbot/training_data/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
-model_15 = load_model('imedbot_model_five_input_15.h5')
+model_15 = load_model('iMedbot/imedbot_model_five_input_15.h5')
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -60,10 +60,9 @@ def get_model_inputdata():
         print("hello")
         print(input[1:])
         print(np.array(input[1:]))
-        res = model_15.predict(np.array(input[1:]))
+        res = model_15.predict(np.array([input[1:]]))
         print(res)
-    data = 'happy'
-    return data
+    return str(res)
 
 
 if __name__ == "__main__":
