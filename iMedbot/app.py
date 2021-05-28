@@ -30,7 +30,9 @@ def get_bot_response():
     speak(response)
 
     print(list_of_classes)
+    print(response)
     for item in list_of_classes:
+        print(item['responses'])
         if response in item["responses"]:
             button_group = item["patterns"]
     result["button_group"] = button_group
