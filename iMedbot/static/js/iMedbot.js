@@ -30,51 +30,6 @@ msgerForm.addEventListener("submit", event => {
   botResponse(msgText);
 });
 
-// function readTextFile(file, callback) {
-//     var cb_json
-//     var rawFile = new XMLHttpRequest();
-//     rawFile.overrideMimeType("application/json");
-//     rawFile.open("GET", file, true);
-//     rawFile.onreadystatechange = function() {
-//         if (rawFile.readyState === 4 && rawFile.status == "200") {
-//             cb_json = callback(rawFile.responseText);
-//         }
-//     }
-//     rawFile.send(null);
-//     return cb_json
-// }
-//
-// //usage:
-// const cb_json = readTextFile("static/assets/classes_button.json", function(text){
-//     var cb_json = JSON.parse(text);
-//     return cb_json
-// });
-//
-// console.log(cb_json)
-
-
-// function GetButtonjson() {
-//   var cb_json
-//   const url = "static/assets/classes_button.json";/*json文件url，本地的就写本地的位置，如果是服务器的就写服务器的路径*/
-//   const request = new XMLHttpRequest();
-//   request.open("get", url);/*设置请求方法与路径*/
-//   request.send(null);/*不发送数据到服务器*/
-//   request.onload = function () {/*XHR对象获取到返回信息后执行*/
-//     if (request.status == 200) {/*返回状态为200，即为数据获取成功*/
-//       cb_json = JSON.parse(request.responseText);
-//       happy(cb_json)
-//     }
-//   }
-//
-// }
-// const class_button_json = GetButtonjson()
-// var cd_Json
-// function happy(cd_json){
-//   //console.log(cd_json)
-//   cd_Json =  cd_json
-// }
-// console.log(cd_Json)
-
 
 
 /**
@@ -213,6 +168,7 @@ window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg, btnGroup)
 
 // ****************************************************************************
 const start_button = document.getElementById("start_button");
+const hint = document.getElementById("hint");
 start_button.onclick = startButton;
 const start_img = document.getElementById("start_img");
 
@@ -225,6 +181,7 @@ if (!('webkitSpeechRecognition' in window)) {
   upgrade();
 } else {
   start_button.style.display = 'inline-block';
+
   var recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = true;
@@ -295,8 +252,15 @@ function capitalize(s) {
 
 
 function startButton(event) {
+  start_button.title = '&nbsp&nbsp Stop recording when you click'
+  hint.innerHTML = '&nbsp&nbsp Stop recording when you click microphone'
+  hint.style.color = "red"
   if (recognizing) {
+
     recognition.stop();
+    start_button.title = '&nbsp&nbsp Start recording when you click'
+    hint.innerHTML = '&nbsp&nbsp Start recording when you click microphone'
+    hint.style.color = "green"
     return;
   }
 

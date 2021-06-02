@@ -6,9 +6,8 @@
       <change beforePath="$PROJECT_DIR$/database.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.sqlite3-shm" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3-shm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.sqlite3-wal" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3-wal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/static/assets/input_question.js" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/assets/input_question.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/classes_button.json" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/training_data/classes_button.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/iMedbot/training_data/ques_ans.txt" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/training_data/ques_ans.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,6 +90,8 @@
       <workItem from="1622118831417" duration="9289000" />
       <workItem from="1622175211874" duration="93000" />
       <workItem from="1622207803676" duration="3737000" />
+      <workItem from="1622219941315" duration="2233000" />
+      <workItem from="1622591663604" duration="2321000" />
     </task>
     <task id="LOCAL-00001" summary="Training data path modified">
       <created>1621306050990</created>

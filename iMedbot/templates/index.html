@@ -34,11 +34,13 @@
     </header>
 
     <main class="msger-chat"></main>
-
+    <p id ="hint" style="color:green;font-size:10px;">&nbsp&nbsp Start recording when you click microphone</p>
     <form class="msger-inputarea">
+
         <input type="text" class="msger-input" id="textInput" placeholder="Enter your message...">
-        <button  type = "button" class="record-send-btn" id = "start_button" >
+        <button  title = "start recording when you click" type = "button" class="record-send-btn" id = "start_button" >
             <img id="start_img" src="static/img/mic.gif" alt="Start">
+
         </button>
         <button type="submit" class="msger-send-btn">Send</button>
     </form>
