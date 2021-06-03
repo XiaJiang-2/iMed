@@ -25,7 +25,7 @@ msgerForm.addEventListener("submit", event => {
   event.preventDefault();
   const msgText = msgerInput.value;
   if (!msgText) return;
-  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,[]);
+  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,"no information",[]);
   msgerInput.value = "";
   botResponse(msgText);
 });
@@ -40,10 +40,9 @@ msgerForm.addEventListener("submit", event => {
  */
 
 
-function appendMessage(name, img, side, text, btnGroup) {
+function appendMessage(name, img, side, text, instruction,btnGroup) {
   //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
-    console.log(buttonHtml)
 
     const msgHTML =
         ` <div class="msg ${side}-msg">
@@ -51,7 +50,9 @@ function appendMessage(name, img, side, text, btnGroup) {
           <div class="msg-bubble">
             <div class="msg-info">
               <div class="msg-info-name">${name}</div>
-              <div class="msg-info-time">${formatDate(new Date())}</div>
+              <div class="msg-info-time">${formatDate(new Date())}
+                    <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
+              </div>
             </div>
             <div class="msg-text">${text}</div>`+ buttonHtml+ `</div></div>`;
 
@@ -86,7 +87,7 @@ function showNext(e){
     var input_cpoy = input
     input = []
     getinput(input_cpoy)
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence",btnGroup);
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence","no information",btnGroup);
     return
   }
   for (var i = 0 ; i < input_question.length; i++) {
@@ -94,12 +95,15 @@ function showNext(e){
       let index = Math.floor((Math.random()*input_question[i].responses.length))
       msgText = input_question[i].responses[index]
       btnGroup = Object.keys(input_question[i].patterns)
+      instruction = input_question[i].instruction
       console.log("hello")
       console.log(msgText)
       console.log(btnGroup)
+      console.log(input_question[i])
+      console.log(instruction)
     }
   }
-  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,btnGroup);
+  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,instruction,btnGroup);
 
 }
 
@@ -108,7 +112,7 @@ function getinput(input_copy){
 
     console.log(data)
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
-    appendMessage(BOT_NAME, NURSE_IMG, "left", res,[])
+    appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
 })
 }
 
@@ -145,7 +149,8 @@ function botResponse(rawText) {
     console.log(data);
     const msgText = data["response"];
     const btnGroup = data["button_group"]
-    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,btnGroup);
+    const instruction = data["instruction"]
+    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,instruction,btnGroup);
   });
 }
 
@@ -162,7 +167,7 @@ function formatDate(date) {
 }
 firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
 btnGroup = []
-window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg, btnGroup);
+window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
 
 
 

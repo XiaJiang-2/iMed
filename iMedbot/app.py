@@ -21,6 +21,7 @@ def index():
 def get_bot_response():
     result = {}
     button_group = ""
+    instruction = ""
     userText = request.args.get('msg')
     print(userText)
     print(datetime.datetime.now())
@@ -35,7 +36,9 @@ def get_bot_response():
         print(item['responses'])
         if response in item["responses"]:
             button_group = item["patterns"]
+            instruction = item["instruction"]
     result["button_group"] = button_group
+    result["instruction"] = instruction
     return result
 
 def speak(response):
