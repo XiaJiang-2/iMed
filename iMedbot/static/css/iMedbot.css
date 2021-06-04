@@ -130,6 +130,8 @@ body {
   border-radius: 3px;
   font-size: 1em;
 }
+
+
 .msger-input {
   flex: 1;
   background: #ddd;
@@ -215,4 +217,39 @@ body.loading .modal {
   to {
     width: 20px;
   }
+}
+
+.autocomplete {
+  display: flex;
+  padding: 10px;
+  position: relative;
+
+}
+.autocomplete-items {
+  position: absolute;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #cceeff;
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
 }
