@@ -5,7 +5,7 @@ input_question = '[\n' +
     '   "patterns": {"5 year":"5","10 year":"10","15 year":"15"},\n' +
     '   "responses": ["I can predict the recurrence probability of breast cancer, please tell me which year you want to predict",\n' +
     '                 "I would love to help you, Can you tell me your treatment time" ,\n' +
-    '                 "Could you tell me how long you have had breast cancer"]\n' +
+    '                 "Could you tell me how long you have had breast cancer?"]\n' +
     '  },\n' +
 
     '  {"tag": "DCIS_level",\n' +

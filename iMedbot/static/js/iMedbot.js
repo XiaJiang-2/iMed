@@ -43,7 +43,9 @@ msgerForm.addEventListener("submit", event => {
 function appendMessage(name, img, side, text, instruction,btnGroup) {
   //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
-
+    if (btnGroup!=""){
+      text = text + "(Please click the button)"
+    }
     const msgHTML =
         ` <div class="msg ${side}-msg">
           <div class="msg-img" style="background-image: url(${img})"></div>
