@@ -8,7 +8,6 @@ what else can you do?
 I can talk with you about your breast cancer
 Could you help me predict my breast cancer recurrence probability?
 Sure I need you to tell me some basic information, Could you tell me how long you have had breast cancer
-I can answer your questions about breast cancer
 I was diagnosed with breast cancer when I was 30 years old.
 Sorry to hear that, could you tell me more about that?
 Who treats breast cancer?
@@ -30,17 +29,18 @@ ER-positive: Breast cancers that have estrogen receptors are called ER-positive 
 What is the HER2 status of my cancer? What does this mean?
 HER2 is a growth-promoting protein on the outside of all breast cells. Breast cancer cells with higher than normal levels of HER2 are called HER2-positive. These cancers tend to grow and spread faster than other breast cancers, but are much more likely to respond to treatment with drugs that target the HER2 protein.
 How do these factors affect my treatment options and long-term outlook (prognosis)?
-You can ask your doctor for more details about these question
+Sorry I am just a robot, you can ask your doctor for more details about this question
 What are my chances of survival, based on my cancer as you see it?
 Sure I need you to tell me some basic information, Could you tell me how long you have had breast cancer
 Should I think about genetic testing? What are my testing options? Should I take a home-based genetic test? What would be the reasons for and against testing?
-You can ask your doctor for more details about these question
+Sorry I am just a robot, you can ask your doctor for more details about this question
 How do I get a copy of my pathology report?
 I will send it to you
 If I’m concerned about the costs and insurance coverage for my diagnosis and treatment, who can help me?
 You can ask insurance department, they will answer you.
-It is my pleasure to help you, do you have any other questions?
-No
-BYE, Have a nice day!
+I do not have other problems
+BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?
+I do not have other questions
+BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?
 
 

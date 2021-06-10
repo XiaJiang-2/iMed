@@ -14,6 +14,8 @@ chatbot = ChatBot(
     #Conceptually, the wal-index file is a shared memory to store log as the backup of real database,it will not cause
     # any problems with sqlite database
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    input_adapter="chatterbot.input.VariableInputTypeAdapter",
+    output_adapter="chatterbot.output.OutputAdapter",
     #storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
     #You can also position the logical adapter with a chatbot object.
     # As the name implies, Logical Adapter regulates the logic behind the chatterbot, i.e.,
@@ -27,8 +29,9 @@ chatbot = ChatBot(
         'chatterbot.logic.BestMatch',
         {
             'import_path': 'chatterbot.logic.BestMatch',
+            'threshold': 0.97,
             'default_response': 'I am sorry, but I do not understand. I am still learning.',
-            'maximum_similarity_threshold': 0.7
+            'maximum_similarity_threshold': 0.97
         }
     ],
     database_uri='sqlite:///database.sqlite3'

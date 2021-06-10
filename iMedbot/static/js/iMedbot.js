@@ -6,6 +6,7 @@ const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
 var input = []
+const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 // get the element for html
 
 const msgerForm = get(".msger-inputarea");
@@ -39,15 +40,42 @@ msgerForm.addEventListener("submit", event => {
  * @param {string} text the value of input
  */
 
-
+function getValue(event){
+    // method 1
+  console.log(event)
+	var radio = document.getElementById("stars");
+    // console.log(radio.length())
+	for (i=0; i<radio.length(); i++) {
+		if (radio[i].checked==true) {
+			alert(radio[i].id)
+		}
+	}
+}
 function appendMessage(name, img, side, text, instruction,btnGroup) {
+   var starHTML =``
   //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
     if (btnGroup!=""){
       text = text + "(Please click the button)"
     }
-    const msgHTML =
-        ` <div class="msg ${side}-msg">
+    if (text == SURVEY){
+       starHTML =`<div class="stars" id="stars"><form  onsubmit="getValue();return false">
+        <input class="star star-5" id="star-5" type="radio" name="star" value ="5"/>
+        <label class="star star-5" for="star-5"></label>
+        <input class="star star-4" id="star-4" type="radio" name="star" value ="4"/>
+        <label class="star star-4" for="star-4"></label>
+        <input class="star star-3" id="star-3" type="radio" name="star" value ="3"/>
+        <label class="star star-3" for="star-3"></label>
+        <input class="star star-2" id="star-2" type="radio" name="star" value ="2"/>
+        <label class="star star-2" for="star-2"></label>
+        <input class="star star-1" id="star-1" type="radio" name="star" value ="1"/>
+        <label class="star star-1" for="star-1"></label>
+        <input type="submit" value="Submit" class ="msger-send-btn">
+      </form>
+    </div>`
+    }
+      var msgHTML =
+          ` <div class="msg ${side}-msg">
           <div class="msg-img" style="background-image: url(${img})"></div>
           <div class="msg-bubble">
             <div class="msg-info">
@@ -56,7 +84,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
                     <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
               </div>
             </div>
-            <div class="msg-text">${text}</div>`+ buttonHtml+ `</div></div>`;
+            <div class="msg-text">${text}</div>` + buttonHtml + starHTML+`</div></div>`;
+
 
   //'beforeend': Just inside the element, after its last child.
   msgerChat.insertAdjacentHTML("beforeend", msgHTML);
@@ -68,6 +97,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
        btn_group[i].addEventListener('click',showNext,false)
     }
   }
+
+
 }
 function showNext(e){
   var msgText = " "
@@ -114,7 +145,9 @@ function getinput(input_copy){
 
     console.log(data)
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
+    more_que = "Do you have any other questions?"
     appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
+    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
 })
 }
 
@@ -380,11 +413,12 @@ function autocomplete(inp, arr) {
 }
 
 /*An array containing all the country names in the world:*/
-var possiblequestions = [ "Hello", "What can you do?",
+var possiblequestions = [ "Hello", "What can you do?", "I do not have other problems",
                   "What is a breast cancer?",
                   "Could you help me predict my breast cancer recurrence probability?",
                   "Could you tell me your name?",
-                  "I want to know my risk of metastatic cancer"
+                  "I want to know my risk of metastatic cancer",
+
 ];
 
 autocomplete(document.getElementById("textInput"), possiblequestions);
