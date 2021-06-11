@@ -1,0 +1,46 @@
+What is a breast cancer?
+Breast cancer can occur in women and rarely in men.Symptoms of breast cancer include a lump in the breast, bloody discharge from the nipple, and changes in the shape or texture of the nipple or breast.
+I want to know my risk of metastatic cancer
+I would love to help you, Can you tell me your treatment time
+What can you do?
+I can predict the recurrence probability of breast cancer, please tell me which year you want to predict
+what else can you do?
+I can talk with you about your breast cancer
+Could you help me predict my breast cancer recurrence probability?
+Sure I need you to tell me some basic information, Could you tell me how long you have had breast cancer
+I was diagnosed with breast cancer when I was 30 years old.
+Sorry to hear that, could you tell me more about that?
+Who treats breast cancer?
+Based on your treatment options, you might have different types of doctors on your treatment team.A breast surgeon or surgical oncologist: a doctor who uses surgery to treat breast cancer;A radiation oncologist: a doctor who uses radiation to treat cancer;A medical oncologist: a doctor who uses chemotherapy and other medicines to treat cancer;A plastic surgeon: a doctor who specializes in reconstructing or repairing parts of the body
+Exactly what type of breast cancer do I have?
+invasive breast cancers
+How big is the cancer? Where exactly is it?
+medium
+Has the cancer spread to my lymph nodes or other organs?
+No
+What’s the stage of the cancer? What does that mean?
+Two, you have a high probability of being cured
+Will I need any other tests before we can decide on treatment?
+Yes
+Do I need to see any other doctors or health professionals?
+It depends on you
+What is the hormone receptor status of my cancer? What does this mean?
+ER-positive: Breast cancers that have estrogen receptors are called ER-positive (or ER+) cancers.
+What is the HER2 status of my cancer? What does this mean?
+HER2 is a growth-promoting protein on the outside of all breast cells. Breast cancer cells with higher than normal levels of HER2 are called HER2-positive. These cancers tend to grow and spread faster than other breast cancers, but are much more likely to respond to treatment with drugs that target the HER2 protein.
+How do these factors affect my treatment options and long-term outlook (prognosis)?
+Sorry I am just a robot, you can ask your doctor for more details about this question
+What are my chances of survival, based on my cancer as you see it?
+Sure I need you to tell me some basic information, Could you tell me how long you have had breast cancer
+Should I think about genetic testing? What are my testing options? Should I take a home-based genetic test? What would be the reasons for and against testing?
+Sorry I am just a robot, you can ask your doctor for more details about this question
+How do I get a copy of my pathology report?
+I will send it to you
+If I’m concerned about the costs and insurance coverage for my diagnosis and treatment, who can help me?
+You can ask insurance department, they will answer you.
+I do not have other problems
+BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?
+I do not have other questions
+BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?
+
+

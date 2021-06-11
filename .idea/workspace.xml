@@ -3,14 +3,35 @@
   <component name="ChangeListManager">
     <list default="true" id="ce7c7f44-148c-4a2e-b2e4-a4fe5fba219c" name="Default Changelist" comment="Training data path modified">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.sqlite3-shm" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3-shm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.sqlite3-wal" beforeDir="false" afterPath="$PROJECT_DIR$/database.sqlite3-wal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/chatbot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/static/assets/input_question.js" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/assets/input_question.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/personal_ques.txt" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/training_data/personal_ques.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/ques_ans.txt" beforeDir="false" afterPath="$PROJECT_DIR$/iMedbot/training_data/ques_ans.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.sqlite3-shm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.sqlite3-wal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/meeting2021.6.4.docx" beforeDir="false" afterPath="$PROJECT_DIR$/docs/meeting2021.6.4.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/audio.py" beforeDir="false" afterPath="$PROJECT_DIR$/audio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/imedbot_model_five_input_15.h5" beforeDir="false" afterPath="$PROJECT_DIR$/imedbot_model_five_input_15.h5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/modelTry.py" beforeDir="false" afterPath="$PROJECT_DIR$/modelTry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/assets/input_question.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/input_question.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/css/iMedbot.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/iMedbot.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/mic-animate.gif" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/mic-animate.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/mic-slash.gif" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/mic-slash.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/mic.gif" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/mic.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/microphone.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/microphone.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/nurse.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/nurse.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/robot.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/robot.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/img/woman.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/woman.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/static/js/iMedbot.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/iMedbot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/classes_button.json" beforeDir="false" afterPath="$PROJECT_DIR$/training_data/classes_button.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/personal_ques.txt" beforeDir="false" afterPath="$PROJECT_DIR$/training_data/personal_ques.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot/training_data/ques_ans.txt" beforeDir="false" afterPath="$PROJECT_DIR$/training_data/ques_ans.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/classes.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/coversationPattern.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/imedbot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/imedbotTraining.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/imedbot_model.h5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iMedbot_v1/words.pkl" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +68,16 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/templates/index.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/base.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/training_data/ques_ans.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/training_data/personal_ques.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/assets/input_question.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/js/iMedbot.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/css/iMedbot.css" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1sgCpWVmsAwMDsnIdTU8AD9bzLe" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -56,7 +87,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/iMedbot/static" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -64,9 +95,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot" />
       <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\iMedbot\static" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot" />
       <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\iMedbot\static\assets" />
       <recent name="C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\iMedbot_v1" />
     </key>
@@ -97,6 +130,9 @@
       <workItem from="1622811470347" duration="1478000" />
       <workItem from="1623097869087" duration="220000" />
       <workItem from="1623098101924" duration="7738000" />
+      <workItem from="1623171715999" duration="1088000" />
+      <workItem from="1623263679312" duration="16200000" />
+      <workItem from="1623335319133" duration="12991000" />
     </task>
     <task id="LOCAL-00001" summary="Training data path modified">
       <created>1621306050990</created>
