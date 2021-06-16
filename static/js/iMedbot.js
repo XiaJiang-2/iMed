@@ -148,6 +148,9 @@ function getinput(input_copy){
     more_que = "Do you have any other questions?"
     appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
     appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
+    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').placeholder="Enter your message..."
+
 })
 }
 
@@ -159,6 +162,8 @@ function generateBtnGroup(btn_group){
   let btn_array = Object.values(btn_group)
   // console.log( btn_array )
   if (btn_array.length != 0){
+      document.getElementById('textInput').disabled = true;
+      document.getElementById('textInput').placeholder = "You can not input now";
       buttonHtml = btn_array.map(function(btn){
         const element = `<button type="button" class="btn btn-success">${btn}</button>`
     return element

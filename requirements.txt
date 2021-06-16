@@ -1,9 +1,10 @@
 ChatterBot==1.0.4
 SpeechRecognition==3.8.1
 Flask==2.0.0
-numpy==1.20.1
+numpy==1.19.5
 nltk==3.6.2
 Flask_Bootstrap==3.3.7.1
-pyttsx3==2.90
+pyttsx3==2.71
 python_Levenshtein==0.12.2
 tensorflow==2.5.0
+pytz==2021.1

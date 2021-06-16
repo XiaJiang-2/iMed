@@ -19,6 +19,8 @@ def index():
 
 @app.route("/get")
 def get_bot_response():
+    speaker = tts.init()
+    speaker.say("hello")
     result = {}
     button_group = ""
     instruction = ""
@@ -44,6 +46,7 @@ def get_bot_response():
 def speak(response):
     speaker = tts.init()
     speaker.setProperty('rate', 150)
+    print(response)
     speaker.say(response)
     #speaker.startLoop(False)
     speaker.runAndWait()

@@ -40,14 +40,14 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/js/iMedbot.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/css/iMedbot.css" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/assets/input_question.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/index.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/base.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/training_data/ques_ans.txt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/training_data/personal_ques.txt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/static/assets/input_question.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/static/js/iMedbot.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/static/css/iMedbot.css" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1sgCpWVmsAwMDsnIdTU8AD9bzLe" />
   <component name="ProjectViewState">
@@ -105,6 +105,8 @@
       <workItem from="1623263679312" duration="16200000" />
       <workItem from="1623335319133" duration="12991000" />
       <workItem from="1623673767851" duration="739000" />
+      <workItem from="1623769003595" duration="3746000" />
+      <workItem from="1623810448969" duration="908000" />
     </task>
     <task id="LOCAL-00001" summary="Training data path modified">
       <created>1621306050990</created>
