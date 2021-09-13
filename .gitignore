@@ -15,12 +15,12 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.idea/
+.idea
 build/
 develop-eggs/
 dist/
 downloads/
-.idea
-.idea/
 results/testresultsnewtable.csv
 results/testresultsnewtable5year.csv
 results/testresultsnewtable10year.csv
