@@ -7,17 +7,17 @@ import json
 import datetime
 from tensorflow.keras.models import load_model
 
-app = Flask(__name__)
-app.static_folder = 'static'
-bootstrap = Bootstrap(app)
+application = Flask(__name__)
+application.static_folder = 'static'
+bootstrap = Bootstrap(application)
 class_button_json = json.loads(open('training_data/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
 model_15 = load_model('imedbot_model_five_input_15.h5')
-@app.route("/")
+@application.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/get")
+@application.route("/get")
 def get_bot_response():
     speaker = tts.init()
     speaker.say("hello")
@@ -54,7 +54,7 @@ def speak(response):
         speaker.endLoop()
     print("speak")
 # feature_array = ["DCIS_level", "size", "grade","PR_percent","invasive_tumor_Location","distant_recurrence\r"]
-@app.route("/getInput")
+@application.route("/getInput")
 def get_model_inputdata():
     input = request.args.get('msg')
     input = input.lstrip("[")
@@ -74,19 +74,19 @@ def get_model_inputdata():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
 
 
 
 # from flask import Flask
 #
-# app = Flask(__name__)
+# application = Flask(__name__)
 #
 #
-# @app.route('/')
+# @application.route('/')
 # def hello_world():
 #     return 'Hello World!'
 #
 #
 # if __name__ == '__main__':
-#     app.run()
+#     application.run()
