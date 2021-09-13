@@ -19,6 +19,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+.idea
 .idea/
 results/testresultsnewtable.csv
 results/testresultsnewtable5year.csv
