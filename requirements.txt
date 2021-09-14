@@ -10,6 +10,6 @@ pytz==2021.1
 pyttsx3==2.71
 numpy==1.19.5
 pymongo==3.11.4
-pypiwin32==223
 python-dateutil==2.7.5
 PyCryptodome==3.10.1
+
