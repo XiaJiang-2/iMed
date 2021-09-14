@@ -8,7 +8,7 @@ recognizer = speech_recognition.Recognizer()
 speaker = tts.init()
 speaker.setProperty('rate',150)
 
-speaker.say("Hello")
+#speaker.say("Hello")
 speaker.runAndWait()
 try:
     with speech_recognition.Microphone() as mic:

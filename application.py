@@ -56,6 +56,8 @@ def speak(response):
 # feature_array = ["DCIS_level", "size", "grade","PR_percent","invasive_tumor_Location","distant_recurrence\r"]
 @application.route("/getInput")
 def get_model_inputdata():
+    # only upload 15 year best model
+    print("1")
     input = request.args.get('msg')
     input = input.lstrip("[")
     print(input)
@@ -65,11 +67,13 @@ def get_model_inputdata():
     input = list(map(int, input))
     print(input)
     if input[0] == 15:
-        print("hello")
         print(input[1:])
         print(np.array(input[1:]))
+        print("2")
         res = model_15.predict(np.array([input[1:]]))
         print(res)
+    else:
+        res = "Sorry we only have 15 year model so far"
     return str(res)
 
 
