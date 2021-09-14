@@ -13,4 +13,5 @@ pymongo==3.11.4
 python-dateutil==2.7.5
 PyCryptodome==3.10.1
 python-espeak == 0.6.3
+libespeak1 == 1.49.0
 
