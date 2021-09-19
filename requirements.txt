@@ -8,3 +8,4 @@ pyttsx3==2.71
 python_Levenshtein==0.12.2
 tensorflow==2.5.0
 pytz==2021.1
+python-espeak==0.6.3
