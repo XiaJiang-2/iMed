@@ -69,6 +69,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+database.sqlite3
 
 # Flask stuff:
 instance/
@@ -133,3 +134,4 @@ dmypy.json
 .pyre/
 
 uploads/
+.idea/workspace.xml
