@@ -30,7 +30,7 @@ def get_bot_response():
     response = str(chatbot.get_response(userText))
     print(datetime.datetime.now())
     result["response"] = response
-    speak(response)
+    # speak(response)
 
     print(list_of_classes)
     print(response)
@@ -48,7 +48,7 @@ def speak(response):
     speaker.setProperty('rate', 150)
     print(response)
     speaker.say(response)
-    #speaker.startLoop(False)
+    speaker.startLoop(False)
     speaker.runAndWait()
     if speaker._inLoop:
         speaker.endLoop()
