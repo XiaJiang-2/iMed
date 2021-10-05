@@ -19,23 +19,16 @@ def index():
 
 @application.route("/get")
 def get_bot_response():
-    speaker = tts.init()
-    speaker.say("hello")
+    #speaker = tts.init()
+    #speaker.say("hello")
     result = {}
     button_group = ""
     instruction = ""
     userText = request.args.get('msg')
-    print(userText)
-    print(datetime.datetime.now())
     response = str(chatbot.get_response(userText))
-    print(datetime.datetime.now())
     result["response"] = response
     # speak(response)
-
-    print(list_of_classes)
-    print(response)
     for item in list_of_classes:
-        print(item['responses'])
         if response in item["responses"]:
             button_group = item["patterns"]
             instruction = item["instruction"]
@@ -43,35 +36,27 @@ def get_bot_response():
     result["instruction"] = instruction
     return result
 
-def speak(response):
-    speaker = tts.init()
-    speaker.setProperty('rate', 150)
-    print(response)
-    speaker.say(response)
-    speaker.startLoop(False)
-    speaker.runAndWait()
-    if speaker._inLoop:
-        speaker.endLoop()
-    print("speak")
+# def speak(response):
+#     speaker = tts.init()
+#     speaker.setProperty('rate', 150)
+#     print(response)
+#     speaker.say(response)
+#     speaker.startLoop(False)
+#     speaker.runAndWait()
+#     if speaker._inLoop:
+#         speaker.endLoop()
+#     print("speak")
 # feature_array = ["DCIS_level", "size", "grade","PR_percent","invasive_tumor_Location","distant_recurrence\r"]
 @application.route("/getInput")
 def get_model_inputdata():
     # only upload 15 year best model
-    print("1")
     input = request.args.get('msg')
     input = input.lstrip("[")
-    print(input)
     input = input.lstrip("]")
-    print(input)
     input = input.split(',')
     input = list(map(int, input))
-    print(input)
     if input[0] == 15:
-        print(input[1:])
-        print(np.array(input[1:]))
-        print("2")
         res = model_15.predict(np.array([input[1:]]))
-        print(res)
     else:
         res = "Sorry we only have 15 year model so far"
     return str(res)

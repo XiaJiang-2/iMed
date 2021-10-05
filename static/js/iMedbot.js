@@ -214,7 +214,7 @@ window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no inform
 // ****************************************************************************
 const start_button = document.getElementById("start_button");
 const hint = document.getElementById("hint");
-start_button.onclick = startButton;
+//start_button.onclick = startButton;
 const start_img = document.getElementById("start_img");
 
 
@@ -222,105 +222,106 @@ var final_transcript = '';
 var recognizing = false;
 var if_error;
 var start_timestamp;
-if (!('webkitSpeechRecognition' in window)) {
-  upgrade();
-} else {
-  start_button.style.display = 'inline-block';
-
-  var recognition = new webkitSpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-
-  recognition.onstart = function() {
-    recognizing = true;
-    // alert('info_speak_now');
-    start_img.src = 'static/img/mic-animate.gif';
-
-  };
-
-  recognition.onerror = function(event) {
-    if (event.error == 'no-speech') {
-      start_img.src = 'static/img/mic.gif';
-      alert('info_no_speech');
-      if_error = true;
-    }
-    if (event.error == 'audio-capture') {
-      start_img.src = 'static/img/mic.gif';
-      alert('info_no_microphone');
-      if_error = true;
-    }
-
-    }
-  };
-
-  recognition.onend = function() {
-    recognizing = false;
-    if (if_error) {
-      return;
-    }
-    start_img.src = 'static/img/mic.gif';
-    if (!final_transcript) {
-      return;
-    }
-  };
-
-  recognition.onresult = function(event) {
-    var interim_transcript = '';
-    for (var i = event.resultIndex; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
-      } else {
-        interim_transcript += event.results[i][0].transcript;
-      }
-    }
-    final_transcript = capitalize(final_transcript);
-    msgerInput.value =linebreak(final_transcript);
-
-  };
-
-
-function upgrade() {
-  start_button.style.visibility = 'hidden';
-  alert('info_upgrade');
-}
-
-var two_line = /\n\n/g;
-var one_line = /\n/g;
-function linebreak(s) {
-  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
-}
-
-var first_char = /\S/;
-function capitalize(s) {
-  return s.replace(first_char, function(m) { return m.toUpperCase(); });
-}
+// if (!('webkitSpeechRecognition' in window)) {
+//   upgrade();
+// } else {
+//   start_button.style.display = 'inline-block';
+//
+//   var recognition = new webkitSpeechRecognition();
+//   recognition.continuous = true;
+//   recognition.interimResults = true;
+//
+//   recognition.onstart = function() {
+//     recognizing = true;
+//     // alert('info_speak_now');
+//     start_img.src = 'static/img/mic-animate.gif';
+//
+//   };
+//
+//   recognition.onerror = function(event) {
+//     if (event.error == 'no-speech') {
+//       start_img.src = 'static/img/mic.gif';
+//       alert('info_no_speech');
+//       if_error = true;
+//     }
+//     if (event.error == 'audio-capture') {
+//       start_img.src = 'static/img/mic.gif';
+//       alert('info_no_microphone');
+//       if_error = true;
+//     }
+//
+//     }
+//   };
+//
+//   recognition.onend = function() {
+//     recognizing = false;
+//     if (if_error) {
+//       return;
+//     }
+//     start_img.src = 'static/img/mic.gif';
+//     if (!final_transcript) {
+//       return;
+//     }
+//   };
+//
+//   recognition.onresult = function(event) {
+//     var interim_transcript = '';
+//     for (var i = event.resultIndex; i < event.results.length; ++i) {
+//       if (event.results[i].isFinal) {
+//         final_transcript += event.results[i][0].transcript;
+//       } else {
+//         interim_transcript += event.results[i][0].transcript;
+//       }
+//     }
+//     final_transcript = capitalize(final_transcript);
+//     msgerInput.value =linebreak(final_transcript);
+//
+//   };
 
 
-function startButton(event) {
-  start_button.title = '&nbsp&nbsp Stop recording when you click'
-  hint.innerHTML = '&nbsp&nbsp Stop recording when you click microphone'
-  hint.style.color = "red"
-  if (recognizing) {
-
-    recognition.stop();
-    start_button.title = '&nbsp&nbsp Start recording when you click'
-    hint.innerHTML = '&nbsp&nbsp Start recording when you click microphone'
-    hint.style.color = "green"
-    return;
-  }
-
-  final_transcript = '';
-  recognition.lang = 'en-US';
-  recognition.start();
-
-  if_error = false;
-  start_img.src = 'static/img/mic-slash.gif';
-  start_timestamp = event.timeStamp;
-}
+// function upgrade() {
+//   start_button.style.visibility = 'hidden';
+//   alert('info_upgrade');
+// }
+//
+// var two_line = /\n\n/g;
+// var one_line = /\n/g;
+// function linebreak(s) {
+//   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+// }
+//
+// var first_char = /\S/;
+// function capitalize(s) {
+//   return s.replace(first_char, function(m) { return m.toUpperCase(); });
+// }
+//
+//
+// function startButton(event) {
+//   start_button.title = '&nbsp&nbsp Stop recording when you click'
+//   hint.innerHTML = '&nbsp&nbsp Stop recording when you click microphone'
+//   hint.style.color = "red"
+//   if (recognizing) {
+//
+//     recognition.stop();
+//     start_button.title = '&nbsp&nbsp Start recording when you click'
+//     hint.innerHTML = '&nbsp&nbsp Start recording when you click microphone'
+//     hint.style.color = "green"
+//     return;
+//   }
+//
+//   final_transcript = '';
+//   recognition.lang = 'en-US';
+//   recognition.start();
+//
+//   if_error = false;
+//   start_img.src = 'static/img/mic-slash.gif';
+//   start_timestamp = event.timeStamp;
+// }
 
 // ===========================================================================
 
 function autocomplete(inp, arr) {
+  console.log("hello")
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;
@@ -425,6 +426,8 @@ var possiblequestions = [ "Hello", "What can you do?", "I do not have other prob
                   "I want to know my risk of metastatic cancer",
 
 ];
+
+
 
 autocomplete(document.getElementById("textInput"), possiblequestions);
 
