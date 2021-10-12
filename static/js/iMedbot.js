@@ -424,6 +424,10 @@ var possiblequestions = [ "Hello", "What can you do?", "I do not have other prob
                   "Could you help me predict my breast cancer recurrence probability?",
                   "Could you tell me your name?",
                   "I want to know my risk of metastatic cancer",
+                  "No, I do not have other questions",
+                  "Yes, I have some other problems",
+                  "Thank you"
+
 
 ];
 
