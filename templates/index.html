@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
-
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/iMedbot.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
@@ -21,29 +19,27 @@
 </head>
 
 <body>
-
   <!-- partial:index.partial.html -->
   <section class="msger">
     <header class="msger-header">
       <div class="msger-header-title">
-          <div class="modal"></div>
+        <div class="modal"></div>
         <i class="fas fa-bug"></i>  Breast Cancer iMedbot  <i class="fas fa-bug"></i>
-
       </div>
-
     </header>
 
     <main class="msger-chat"></main>
       <div class="hint-loading" id = "hint">&nbsp&nbsp Please don't say too much, I am still learning now!</div>
-    <form class="msger-inputarea" autocomplete="off">
-        <div class="autocomplete" style="width:650px;"><input type="text" class="msger-input" id="textInput" placeholder="Enter your message..."></div>
-        <input type="submit" class="msger-send-btn" value="Send">
-<!--        <button  title = "start recording when you click" type = "button" class="record-send-btn" id = "start_button" >-->
-<!--            <img id="start_img" src="static/img/mic.gif" alt="Start">-->
-
-<!--        </button>-->
-
+    <form class="msger-inputarea" autocomplete="off" action="form.php" method="POST">
+        <div class="autocomplete" style="width:650px;">
+            <input type="text" class="msger-input" id="textInput" placeholder="Enter your message..." />
+        </div>
+        <input id="submit" type="submit" class="msger-send-btn" value="Send" />
     </form>
+            <!--        <button  title = "start recording when you click" type = "button" class="record-send-btn" id = "start_button" >-->
+            <!--            <img id="start_img" src="static/img/mic.gif" alt="Start">-->
+
+            <!--        </button>-->
 
   </section>
   <!-- partial -->
