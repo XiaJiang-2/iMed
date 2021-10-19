@@ -8,6 +8,11 @@
   },
   {"tag": "race",
   "patterns": ["Asian", "American Indian","Hispanic or Latino","White" ],
-  "responses": ["What is your race?"]}
+  "responses": ["What is your race?"]},
 
+  {"tag": "instructions",
+    "patterns": ["Choice 1", "Choice 2"],
+    "instruction": ["Two choices"],
+    "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice"]
+  }
 ]}

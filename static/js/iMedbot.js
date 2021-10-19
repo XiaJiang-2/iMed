@@ -5,6 +5,9 @@ const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
+//var predict = JSON.parse(predict)
+
+//var input_question_model = JSON.parse(input_question_model)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 // get the element for html
@@ -101,21 +104,23 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
 
 }
 function showNext(e){
-  var msgText = " "
-  var btnGroup = []
-  var nextques = ""
-  var pattern = e.target.innerHTML
-  console.log(pattern)
+    var msgText = " "
+    var btnGroup = []
+    var nextques = ""
+    var pattern = e.target.innerHTML
+    console.log(pattern)
+    if (pattern == "Choice 1"){
+         var input_choice = input_predict
+    }
 
-  console.log(input_question.length)
-  for (var i = 0 ; i < input_question.length; i++) {
-      console.log(Object.keys(input_question[i].patterns))
-    if(Object.keys(input_question[i].patterns).indexOf(pattern) != -1){
-      input.push(input_question[i].patterns[pattern])
-      nextques = input_question[i].nextques
-      console.log(nextques)
-       }
-  }
+    for (var i = 0 ; i < input_choice.length; i++) {
+        console.log(Object.keys(input_choice[i].patterns))
+        if(Object.keys(input_choice[i].patterns).indexOf(pattern) != -1){
+          input.push(input_choice[i].patterns[pattern])
+          nextques = input_choice[i].nextques
+          console.log(nextques)
+        }
+    }
   if(nextques == "none"){
     var input_cpoy = input
     input = []
@@ -123,16 +128,16 @@ function showNext(e){
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence","no information",btnGroup);
     return
   }
-  for (var i = 0 ; i < input_question.length; i++) {
-    if (input_question[i].tag == nextques) {
-      let index = Math.floor((Math.random()*input_question[i].responses.length))
-      msgText = input_question[i].responses[index]
-      btnGroup = Object.keys(input_question[i].patterns)
-      instruction = input_question[i].instruction
+  for (var i = 0 ; i < input_choice.length; i++) {
+    if (input_choice[i].tag == nextques) {
+      let index = Math.floor((Math.random()*input_choice[i].responses.length))
+      msgText = input_choice[i].responses[index]
+      btnGroup = Object.keys(input_choice[i].patterns)
+      instruction = input_choice[i].instruction
       console.log("hello")
       console.log(msgText)
       console.log(btnGroup)
-      console.log(input_question[i])
+      console.log(input_choice[i])
       console.log(instruction)
     }
   }

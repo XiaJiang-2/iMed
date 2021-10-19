@@ -1,4 +1,4 @@
-input_question = '[\n' +
+predict = '[\n' +
     '  {"tag": "treatment_year",\n' +
     ' "instruction": "treatment_year instruction",\n' +
     '  "nextques": "DCIS_level",\n' +
@@ -60,10 +60,3 @@ input_question = '[\n' +
 
 
     ']';
-// input_question = '[\n' +
-//     '  {"tag": "Instruction",\n' +
-//     ' "instruction": "Two choices",\n' +
-//     '  "nextques": "choice 1 or choice 2",\n' +
-//     '   "patterns": {"Choice 1":"1","Choice 2":"2"},\n' +
-//     '   "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"]'+
-//     '  }]';

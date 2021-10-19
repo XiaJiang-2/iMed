@@ -27,9 +27,12 @@ def get_bot_response():
     userText = request.args.get('msg')
     response = str(chatbot.get_response(userText))
     result["response"] = response
+    print(response)
     # speak(response)
     for item in list_of_classes:
+        print(item["responses"])
         if response in item["responses"]:
+            print("in")
             button_group = item["patterns"]
             instruction = item["instruction"]
     result["button_group"] = button_group
