@@ -1,5 +1,14 @@
-input_question = '[\n' +
-    '  {"tag": "treatment_year",\n' +
+input_question =
+    '  {' +
+    '"START":[{"tag": "Instruction",\n' +
+    ' "instruction": "Two choices",\n' +
+    '  "nextques": "choice 1 or choice 2",\n' +
+    '   "patterns": {"Choice 1":"1","Choice 2":"2"},\n' +
+    '   "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"]\n'+
+    '  }],\n' +
+
+    '"Choice 1": [' +
+    '{"tag": "treatment_year",\n' +
     ' "instruction": "treatment_year instruction",\n' +
     '  "nextques": "DCIS_level",\n' +
     '   "patterns": {"5 year":"5","10 year":"10","15 year":"15"},\n' +
@@ -7,13 +16,14 @@ input_question = '[\n' +
     '                 "I would love to help you, Can you tell me your treatment time" ,\n' +
     '                 "Could you tell me how long you have had breast cancer?"]\n' +
     '  },\n' +
-
     '  {"tag": "DCIS_level",\n' +
     ' "instruction": "DCIS_level instruction",\n' +
     '  "nextques": "size",\n' +
     '  "patterns": {"DCIS_level0":"0","DCIS_level1":"1","DCIS_level2":"2","DCIS_level3":"3", "DCIS_level4":"4","DCIS_level5":"5","DCIS_level6":"6", "DCIS_level7":"7","DCIS_leve8":"8"},\n' +
     '  "responses": ["What is your DCIS_level?","Could you tell me your DCIS_level"]' +
     '  },\n' +
+
+
 
      '  {"tag": "size",\n' +
     ' "instruction": "size instruction",\n' +
@@ -49,21 +59,17 @@ input_question = '[\n' +
     '  "responses": ["What is your PR_percent?","Could you tell me your PR_PERCENT?"]' +
     '  },\n' +
 
-
-
     '  {"tag": "invasive_tumor_Location",\n' +
     '  "instruction": "invasive_tumor_Location instruction",\n' +
     '  "nextques": "none",\n' +
     '  "patterns": {"invasive_tumor_Location0":"0", "invasive_tumor_Location1":"1","invasive_tumor_Location2":"2"},\n' +
     '  "responses": ["What is your invasive_tumor_Location?","Could you tell me your invasive_tumor_Location?"]' +
-    '  }\n' +
+    '  }],\n' +
 
-
-    ']';
-// input_question = '[\n' +
-//     '  {"tag": "Instruction",\n' +
-//     ' "instruction": "Two choices",\n' +
-//     '  "nextques": "choice 1 or choice 2",\n' +
-//     '   "patterns": {"Choice 1":"1","Choice 2":"2"},\n' +
-//     '   "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"]'+
-//     '  }]';
+      '"Choice 2":[{"tag": "choice2",\n' +
+    ' "instruction": "ways browse data",\n' +
+    '  "nextques": "Browse data",\n' +
+    '   "patterns": {"Manually input":"1","Browse Local":"2"},\n' +
+    '   "responses": ["Please select the way you want to upload your dataset"]'+
+    '  }]\n'+
+    '}'

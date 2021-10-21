@@ -1,17 +1,13 @@
-// Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "static/img/robot.svg";
 const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 const PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
-//var predict = JSON.parse(predict)
-
-//var input_question_model = JSON.parse(input_question_model)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 // get the element for html
-
+// Icons made by Freepik from www.flaticon.com
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
@@ -104,21 +100,36 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
 
 }
 function showNext(e){
+    var instruction = ""
     var msgText = " "
     var btnGroup = []
     var nextques = ""
     var pattern = e.target.innerHTML
     console.log(pattern)
     if (pattern == "Choice 1"){
-         var input_choice = input_predict
-    }
+        input_choice = input_question["Choice 1"]
+        console.log(input_choice)
+        console.log(input_choice.length)
+    }else if(pattern == "Choice 2"){
+        input_choice = input_question["Choice 2"]
 
-    for (var i = 0 ; i < input_choice.length; i++) {
-        console.log(Object.keys(input_choice[i].patterns))
-        if(Object.keys(input_choice[i].patterns).indexOf(pattern) != -1){
-          input.push(input_choice[i].patterns[pattern])
-          nextques = input_choice[i].nextques
-          console.log(nextques)
+    }
+    if (pattern == "Choice 1"){
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
+
+
+    }else if(pattern == "Choice 2"){
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please select the way you want to upload your dataset","ways browse data",{"Manually input":"Manually input","Browse Local":"Browse Local"})
+
+    }else {
+
+        for (var i = 0; i < input_choice.length; i++) {
+            console.log(Object.keys(input_choice[i].patterns))
+            if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
+                input.push(input_choice[i].patterns[pattern])
+                nextques = input_choice[i].nextques
+                console.log(nextques)
+            }
         }
     }
   if(nextques == "none"){
@@ -133,15 +144,11 @@ function showNext(e){
       let index = Math.floor((Math.random()*input_choice[i].responses.length))
       msgText = input_choice[i].responses[index]
       btnGroup = Object.keys(input_choice[i].patterns)
-      instruction = input_choice[i].instruction
-      console.log("hello")
-      console.log(msgText)
-      console.log(btnGroup)
-      console.log(input_choice[i])
+      instruction = Object.keys(input_choice[i].instruction)
       console.log(instruction)
     }
   }
-  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText,instruction,btnGroup);
+  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction ,btnGroup);
 
 }
 
