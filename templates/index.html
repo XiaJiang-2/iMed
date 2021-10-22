@@ -29,13 +29,20 @@
     </header>
 
     <main class="msger-chat"></main>
+
       <div class="hint-loading" id = "hint">&nbsp&nbsp Please don't say too much, I am still learning now!</div>
     <form class="msger-inputarea" autocomplete="off" >
+
         <div class="autocomplete" style="width:650px;">
             <input type="text" class="msger-input" id="textInput" placeholder="Enter your message..." />
         </div>
         <input id="submit" type="submit" class="msger-send-btn" value="Send" />
+
+
     </form>
+      <form id="form1" action="/dataset" method="POST" enctype="multipart/form-data">
+          <input id='fileid' type='file' name="dataset" style="display:none"/>
+      </form>
             <!--        <button  title = "start recording when you click" type = "button" class="record-send-btn" id = "start_button" >-->
             <!--            <img id="start_img" src="static/img/mic.gif" alt="Start">-->
 

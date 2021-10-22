@@ -6,6 +6,7 @@ import pyttsx3 as tts
 import json
 import datetime
 from tensorflow.keras.models import load_model
+from werkzeug.utils import secure_filename
 
 application = Flask(__name__)
 application.static_folder = 'static'
@@ -63,6 +64,14 @@ def get_model_inputdata():
     else:
         res = "Sorry we only have 15 year model so far"
     return str(res)
+
+@application.route("/dataset", methods=['POST','GET'])
+def get_model_dataset():
+    dataset = request.args.get('dataset')
+    print(dataset)
+    # upload_path = "dataset/" + str(dataset[name)
+    # dataset.save(upload_path)
+    return "chuhan"
 
 
 if __name__ == "__main__":

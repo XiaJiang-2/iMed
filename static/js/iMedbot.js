@@ -50,7 +50,24 @@ function getValue(event){
 		}
 	}
 }
+
+function uploadData(e) {
+    document.getElementById('fileid').click();
+    var dataset = $('#fileid').prop('files')[0];
+    function secondfunction(dataset) {
+        $.get("/dataset", { dataset: dataset }).done(function (data) {
+        console.log(data)
+    })}
+    secondfunction(dataset)
+    console.log(dataset)
+
+}
+
 function appendMessage(name, img, side, text, instruction,btnGroup) {
+    if (text == ""){
+        return
+    }
+
    var starHTML =``
   //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
@@ -91,25 +108,28 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
   msgerChat.scrollTop += 500;
   if(buttonHtml != " "){
     const btn_group = document.getElementsByClassName("btn btn-success");
-    console.log(btn_group)
+        console.log(btn_group)
+      console.log(text)
+      console.log(instruction)
     for (var i = 0 ; i < btn_group.length; i++) {
+        if (text == "Please upload your local dataset(Please click the button)"){
+             btn_group[i].addEventListener('click',uploadData,false)
+        }
+
        btn_group[i].addEventListener('click',showNext,false)
     }
-  }
 
+  }
 
 }
 function showNext(e){
     var instruction = ""
-    var msgText = " "
+    var msgText = ""
     var btnGroup = []
     var nextques = ""
     var pattern = e.target.innerHTML
-    console.log(pattern)
     if (pattern == "Choice 1"){
         input_choice = input_question["Choice 1"]
-        console.log(input_choice)
-        console.log(input_choice.length)
     }else if(pattern == "Choice 2"){
         input_choice = input_question["Choice 2"]
 
@@ -117,18 +137,16 @@ function showNext(e){
     if (pattern == "Choice 1"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
 
-
     }else if(pattern == "Choice 2"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Please select the way you want to upload your dataset","ways browse data",{"Manually input":"Manually input","Browse Local":"Browse Local"})
 
     }else {
 
         for (var i = 0; i < input_choice.length; i++) {
-            console.log(Object.keys(input_choice[i].patterns))
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
                 input.push(input_choice[i].patterns[pattern])
                 nextques = input_choice[i].nextques
-                console.log(nextques)
+
             }
         }
     }
@@ -145,17 +163,15 @@ function showNext(e){
       msgText = input_choice[i].responses[index]
       btnGroup = Object.keys(input_choice[i].patterns)
       instruction = Object.keys(input_choice[i].instruction)
-      console.log(instruction)
     }
   }
-  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction ,btnGroup);
+
+  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);
 
 }
 
 function getinput(input_copy){
   $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
-
-    console.log(data)
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
     more_que = "Do you have any other questions?"
     appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
@@ -189,16 +205,10 @@ function generateBtnGroup(btn_group){
   // console.log(buttonHtml)
   return buttonHtml
 }
-function RecordInformation(){
-  alert("hello")
-}
-
 
 function botResponse(rawText) {
   // Bot Response
   $.get("/get", { msg: rawText }).done(function (data) {
-    console.log(rawText);
-    console.log(data);
     const msgText = data["response"];
     const btnGroup = data["button_group"]
     const instruction = data["instruction"]
