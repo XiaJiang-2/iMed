@@ -1,3 +1,5 @@
+import webbrowser
+
 import numpy as np
 from chatbot import chatbot
 from flask import Flask, render_template, request
@@ -6,7 +8,7 @@ import pyttsx3 as tts
 import json
 import datetime
 from tensorflow.keras.models import load_model
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, redirect
 
 application = Flask(__name__)
 application.static_folder = 'static'
@@ -67,11 +69,15 @@ def get_model_inputdata():
 
 @application.route("/dataset", methods=['POST','GET'])
 def get_model_dataset():
-    dataset = request.args.get('dataset')
-    print(dataset)
-    # upload_path = "dataset/" + str(dataset[name)
-    # dataset.save(upload_path)
-    return "chuhan"
+    if request.method == "POST":
+        if request.files:
+            dataset = request.files['dataset']
+            if str(secure_filename(dataset.filename)) != "":
+                upload_path = "dataset/" + str(secure_filename(dataset.filename))
+                dataset.save(upload_path)
+                dataset_name = str(secure_filename(dataset.filename))
+
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":
@@ -79,15 +85,3 @@ if __name__ == "__main__":
 
 
 
-# from flask import Flask
-#
-# application = Flask(__name__)
-#
-#
-# @application.route('/')
-# def hello_world():
-#     return 'Hello World!'
-#
-#
-# if __name__ == '__main__':
-#     application.run()

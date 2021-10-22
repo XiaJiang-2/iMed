@@ -53,13 +53,22 @@ function getValue(event){
 
 function uploadData(e) {
     document.getElementById('fileid').click();
-    var dataset = $('#fileid').prop('files')[0];
-    function secondfunction(dataset) {
-        $.get("/dataset", { dataset: dataset }).done(function (data) {
-        console.log(data)
-    })}
-    secondfunction(dataset)
-    console.log(dataset)
+
+    // function secondfunction(dataset) {
+    //     $.get("/dataset", { dataset: dataset }).done(function (data) {
+    //     console.log(data)
+    // })}
+    // secondfunction(dataset)
+    // console.log(dataset)
+
+}
+
+function submit() {
+     document.getElementById('submitDataset').click();
+     var showdataset = document.getElementById('showdataset');
+     showdataset.style = "display:inline"
+     // showdataset.addEventListener()
+     var dataset = $('#fileid').prop('files')[0];
 
 }
 
@@ -111,13 +120,14 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
         console.log(btn_group)
       console.log(text)
       console.log(instruction)
+      if (text == "Please upload your local dataset(Please click the button)"){
+          console.log(btn_group)
+          btn_group[4].addEventListener('click',uploadData,false)
+          btn_group[5].addEventListener('click',submit,false)
+        }else{
     for (var i = 0 ; i < btn_group.length; i++) {
-        if (text == "Please upload your local dataset(Please click the button)"){
-             btn_group[i].addEventListener('click',uploadData,false)
-        }
-
        btn_group[i].addEventListener('click',showNext,false)
-    }
+    }}
 
   }
 

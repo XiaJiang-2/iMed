@@ -75,7 +75,7 @@ input_question =
     '{"tag": "Browse local",\n' +
     ' "instruction": "upload data",\n' +
     '  "nextques": "Browse data",\n' +
-    '   "patterns": {"Browse your dataset":"1"},\n' +
+    '   "patterns": {"Browse your dataset":"1","submit dataset":"2"},\n' +
     '   "responses": ["Please upload your local dataset"]'+
     '  }]\n'+
     '}'
