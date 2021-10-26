@@ -67,15 +67,15 @@ input_question =
     '  }],\n' +
 
       '"Choice 2":[{"tag": "choice2",\n' +
-    ' "instruction": "ways browse data",\n' +
-    '  "nextques": "Browse local",\n' +
-    '   "patterns": {"Manually input":"1","Browse Local":"2"},\n' +
-    '   "responses": ["Please select the way you want to upload your dataset"]'+
-    '  },' +
-    '{"tag": "Browse local",\n' +
-    ' "instruction": "upload data",\n' +
-    '  "nextques": "Browse data",\n' +
-    '   "patterns": {"Browse your dataset":"1","submit dataset":"2"},\n' +
+    ' "instruction": "Browse data",\n' +
+    '  "nextques": "View your dataset",\n' +
+    '   "patterns": {"Browse Local":"1"},\n' +
     '   "responses": ["Please upload your local dataset"]'+
+    '  },' +
+    '{"tag": "View your dataset",\n' +
+    ' "instruction": "View your dataset",\n' +
+    '  "nextques": "",\n' +
+    '   "patterns": {"View your dataset":"1"},\n' +
+    '   "responses": ["Please check the dataset you uploaded and it will give your some basic stats"]'+
     '  }]\n'+
     '}'

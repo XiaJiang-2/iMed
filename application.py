@@ -67,17 +67,28 @@ def get_model_inputdata():
         res = "Sorry we only have 15 year model so far"
     return str(res)
 
-@application.route("/dataset", methods=['POST','GET'])
+@application.route("/dataset")
 def get_model_dataset():
-    if request.method == "POST":
-        if request.files:
-            dataset = request.files['dataset']
-            if str(secure_filename(dataset.filename)) != "":
-                upload_path = "dataset/" + str(secure_filename(dataset.filename))
-                dataset.save(upload_path)
-                dataset_name = str(secure_filename(dataset.filename))
+    dataset = request.args.get('dataset')
+    name = request.args.get('name')
+    upload_path = "dataset/" + str(name)
+    dataset = dataset.split('\n')
+    print(list(dataset))
+    with open(upload_path, 'wb') as file:
+        for l in dataset:
+            file.write(l.strip().encode("utf-8"))
+            file.write('\n'.encode("utf-8"))
 
-    return redirect(request.referrer)
+    return str("chuhan")
+    # if request.method == "POST":
+    #     if request.files:
+    #         dataset = request.files['dataset']
+    #         if str(secure_filename(dataset.filename)) != "":
+    #             upload_path = "dataset/" + str(secure_filename(dataset.filename))
+    #             dataset.save(upload_path)
+    #             dataset_name = str(secure_filename(dataset.filename))
+
+
 
 
 if __name__ == "__main__":

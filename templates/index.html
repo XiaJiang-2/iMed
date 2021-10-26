@@ -28,10 +28,12 @@
       </div>
     </header>
 
-    <main class="msger-chat">
+    <main class="msger-chat"></main>
+    <div id="hidden_div" style="display:none">
+        <table id="hidden_table" class="table table-striped" >
 
-    </main>
-
+        </table>
+    </div>
       <div class="hint-loading " id = "hint">
           <button id = "showdataset" type="button" class="btn btn-info " style="display:none">Show Dataset!</button>
           &nbsp&nbsp Please don't say too much, I am still learning now!
@@ -49,7 +51,7 @@
 
     </form>
       <form id="form1" action="/dataset" method="POST" enctype="multipart/form-data">
-          <input id='fileid' type='file' name="dataset" style="display:none"/>
+          <input id='fileid' type='file' name="dataset" accept=".csv" style="display:none"/>
            <input id='submitDataset' type=submit value=Upload style="display:none">
 
       </form>

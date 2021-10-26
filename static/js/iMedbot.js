@@ -40,97 +40,168 @@ msgerForm.addEventListener("submit", event => {
  */
 
 function getValue(event){
-    // method 1
-  console.log(event)
-	var radio = document.getElementById("stars");
+    console.log(event)
+    var radio = document.getElementById("stars");
     // console.log(radio.length())
-	for (i=0; i<radio.length(); i++) {
-		if (radio[i].checked==true) {
-			alert(radio[i].id)
-		}
-	}
+    for (i=0; i<radio.length(); i++) {
+        if (radio[i].checked==true) {
+            alert(radio[i].id)
+        }
+    }
 }
 
 function uploadData(e) {
     document.getElementById('fileid').click();
-
-    // function secondfunction(dataset) {
-    //     $.get("/dataset", { dataset: dataset }).done(function (data) {
-    //     console.log(data)
-    // })}
-    // secondfunction(dataset)
-    // console.log(dataset)
-
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
 }
+
+function csvToArray(str, delimiter = ",") {
+  // slice from start of text to the first \n index
+  // use split to create an array from string by delimiter
+  const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+
+  // slice from \n index + 1 to the end of the text
+  // use split to create an array of each csv value row
+  const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+  // Map the rows
+  // split values from each row into an array
+  // use headers.reduce to create an object
+  // object properties derived from headers:values
+  // the object passed as an element of the array
+  const arr = rows.map(function (row) {
+    const values = row.split(delimiter);
+    const el = headers.reduce(function (object, header, index) {
+      object[header] = values[index];
+      return object;
+    }, {});
+    return el;
+  });
+
+  // return the array
+  return arr;
+}
+function viewDataset(dataset){
+    var hidden_div = document.getElementById("hidden_div")
+    var hidden_table = document.getElementById("hidden_table")
+    var tableHTML = '<thead><tr>'
+    var array = csvToArray(dataset, delimiter = ",")
+    const tablehead = Object.keys(array[0]);
+    for(var  i= 0; i< tablehead.length; i++) {
+        tableHTML+= '<th>' + tablehead[i] + '</th>'
+    }
+    tableHTML += '</tr></thead>'
+
+    for(var row = 0; row< array.length; row++) {
+       tableHTML+= '<tbody><tr>'
+        value_list = Object.values(array[row])
+            for(var col= 0; col< value_list.length; col++) {
+                tableHTML+= '<td>' + value_list[col] + '</td>'
+            }
+       tableHTML+= '</tr></tbody>'
+    }
+    hidden_table.innerHTML = tableHTML
+    // document.getElementById("hidden_div").style.display='inline'
+    // document.getElementById("hidden_table").style.display='inline'
+    var myWindow = window.open("", "MsgWindow", "width=200, height=100");
+    // $(newWindow).load(function(){
+    //     $(newWindow.document).find('body').html($('#hidden_table').html());
+    // });
+    myWindow.document.write('<html><head><title>Table</title></head><body>');
+    myWindow.document.write('<table>')
+    myWindow.document.write(tableHTML)
+    myWindow.document.write('</table>')
+    myWindow.document.write('</body></html>');
+
+    //     $(document).ready(function () {
+    //         $('#hidden_table').DataTable({
+    //             "scrollX": true,
+    //         });
+    //     }, false)
+    //     document.getElementById("hidden_table").style.display='inline'
+    // }
+ }
+
 
 function submit() {
-     document.getElementById('submitDataset').click();
-     var showdataset = document.getElementById('showdataset');
-     showdataset.style = "display:inline"
-     // showdataset.addEventListener()
-     var dataset = $('#fileid').prop('files')[0];
-
+    var showdataset = document.getElementById('showdataset');
+    showdataset.style = "display:inline"
+    function read(callback) {
+        var dataset = $('#fileid').prop('files')[0];
+        const name = dataset.name
+        var reader = new FileReader();
+        reader.onload = function() {
+            rawLog = reader.result
+            $.get("/dataset", { dataset: rawLog, name: name}).done(function (data) {
+                res = "Dataset name is " + dataset.name +'\n'+ " ; Size is " + dataset.size + " ; Type is " + dataset.type
+                more_que = "Do you have any other questions?"
+                appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
+                appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
+                document.getElementById('textInput').disabled = false;
+                document.getElementById('textInput').placeholder="Enter your message..."
+                showdataset.style = "display:inline"
+                showdataset.addEventListener('click',viewDataset(rawLog),false)
+            })
+        }
+        reader.readAsText(dataset);
+    }
+    read()
 }
 
-function appendMessage(name, img, side, text, instruction,btnGroup) {
+function appendMessage(name, img, side, text, instruction,btnGroup){
     if (text == ""){
         return
     }
-
-   var starHTML =``
-  //Simple solution for small apps
+    var starHTML =``
+    //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
     if (btnGroup!=""){
-      text = text + "(Please click the button)"
+        text = text + "(Please click the button)"
     }
     if (text == SURVEY){
        starHTML =`<div class="stars" id="stars"><form  onsubmit="getValue();return false">
-        <input class="star star-5" id="star-5" type="radio" name="star" value ="5"/>
-        <label class="star star-5" for="star-5"></label>
-        <input class="star star-4" id="star-4" type="radio" name="star" value ="4"/>
-        <label class="star star-4" for="star-4"></label>
-        <input class="star star-3" id="star-3" type="radio" name="star" value ="3"/>
-        <label class="star star-3" for="star-3"></label>
-        <input class="star star-2" id="star-2" type="radio" name="star" value ="2"/>
-        <label class="star star-2" for="star-2"></label>
-        <input class="star star-1" id="star-1" type="radio" name="star" value ="1"/>
-        <label class="star star-1" for="star-1"></label>
-        <input type="submit" value="Submit" class ="msger-send-btn">
-      </form>
-    </div>`
+            <input class="star star-5" id="star-5" type="radio" name="star" value ="5"/>
+            <label class="star star-5" for="star-5"></label>
+            <input class="star star-4" id="star-4" type="radio" name="star" value ="4"/>
+            <label class="star star-4" for="star-4"></label>
+            <input class="star star-3" id="star-3" type="radio" name="star" value ="3"/>
+            <label class="star star-3" for="star-3"></label>
+            <input class="star star-2" id="star-2" type="radio" name="star" value ="2"/>
+            <label class="star star-2" for="star-2"></label>
+            <input class="star star-1" id="star-1" type="radio" name="star" value ="1"/>
+            <label class="star star-1" for="star-1"></label>
+            <input type="submit" value="Submit" class ="msger-send-btn">
+        </form>
+        </div>`
     }
-      var msgHTML =
-          ` <div class="msg ${side}-msg">
-          <div class="msg-img" style="background-image: url(${img})"></div>
-          <div class="msg-bubble">
+    var msgHTML =
+    `<div class="msg ${side}-msg">
+        <div class="msg-img" style="background-image: url(${img})"></div>
+        <div class="msg-bubble">
             <div class="msg-info">
-              <div class="msg-info-name">${name}</div>
-              <div class="msg-info-time">${formatDate(new Date())}
+                <div class="msg-info-name">${name}</div>
+                <div class="msg-info-time">${formatDate(new Date())}
                     <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
-              </div>
+                </div>
             </div>
-            <div class="msg-text">${text}</div>` + buttonHtml + starHTML+`</div></div>`;
-
-
-  //'beforeend': Just inside the element, after its last child.
-  msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-  msgerChat.scrollTop += 500;
-  if(buttonHtml != " "){
-    const btn_group = document.getElementsByClassName("btn btn-success");
-        console.log(btn_group)
-      console.log(text)
-      console.log(instruction)
-      if (text == "Please upload your local dataset(Please click the button)"){
-          console.log(btn_group)
-          btn_group[4].addEventListener('click',uploadData,false)
-          btn_group[5].addEventListener('click',submit,false)
+        <div class="msg-text">${text}</div>` + buttonHtml + starHTML+`</div></div>`;
+    //'beforeend': Just inside the element, after its last child.
+    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+    msgerChat.scrollTop += 500;
+    if(buttonHtml != " "){
+        const btn_group = document.getElementsByClassName("btn btn-success");
+         if (instruction == "View your dataset"){
+             btn_group[3].addEventListener('click',submit,false)
+         }
+        if (text == "Please upload your local dataset(Please click the button)"){
+            btn_group[2].addEventListener('click',uploadData,false)
+            // btn_group[5].addEventListener('click',submit,false)
         }else{
-    for (var i = 0 ; i < btn_group.length; i++) {
-       btn_group[i].addEventListener('click',showNext,false)
-    }}
-
-  }
-
+            for (var i = 0 ; i < btn_group.length; i++) {
+               btn_group[i].addEventListener('click',showNext,false)
+            }
+        }
+    }
 }
 function showNext(e){
     var instruction = ""
@@ -142,42 +213,35 @@ function showNext(e){
         input_choice = input_question["Choice 1"]
     }else if(pattern == "Choice 2"){
         input_choice = input_question["Choice 2"]
-
     }
     if (pattern == "Choice 1"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
-
     }else if(pattern == "Choice 2"){
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please select the way you want to upload your dataset","ways browse data",{"Manually input":"Manually input","Browse Local":"Browse Local"})
-
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please upload your local dataset","Browse data",{"Browse Local":"Browse Local"})
     }else {
-
         for (var i = 0; i < input_choice.length; i++) {
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
                 input.push(input_choice[i].patterns[pattern])
                 nextques = input_choice[i].nextques
-
             }
         }
     }
-  if(nextques == "none"){
-    var input_cpoy = input
-    input = []
-    getinput(input_cpoy)
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence","no information",btnGroup);
-    return
-  }
-  for (var i = 0 ; i < input_choice.length; i++) {
-    if (input_choice[i].tag == nextques) {
-      let index = Math.floor((Math.random()*input_choice[i].responses.length))
-      msgText = input_choice[i].responses[index]
-      btnGroup = Object.keys(input_choice[i].patterns)
-      instruction = Object.keys(input_choice[i].instruction)
+    if(nextques == "none"){
+        var input_cpoy = input
+        input = []
+        getinput(input_cpoy)
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence","no information",btnGroup);
+        return
     }
-  }
-
-  appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);
-
+    for (var i = 0 ; i < input_choice.length; i++) {
+        if (input_choice[i].tag == nextques){
+            let index = Math.floor((Math.random()*input_choice[i].responses.length))
+            msgText = input_choice[i].responses[index]
+            btnGroup = Object.keys(input_choice[i].patterns)
+            instruction = Object.keys(input_choice[i].instruction)
+        }
+    }
+    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);
 }
 
 function getinput(input_copy){
@@ -191,9 +255,6 @@ function getinput(input_copy){
 
 })
 }
-
-
-
 
 function generateBtnGroup(btn_group){
   let buttonHtml = ""
@@ -228,14 +289,13 @@ function botResponse(rawText) {
 
 // Utils
 function get(selector, root = document) {
-  return root.querySelector(selector);
+    return root.querySelector(selector);
 }
 
-
 function formatDate(date) {
-  const h = "0" + date.getHours();
-  const m = "0" + date.getMinutes();
-  return `${h.slice(-2)}:${m.slice(-2)}`;
+    const h = "0" + date.getHours();
+    const m = "0" + date.getMinutes();
+    return `${h.slice(-2)}:${m.slice(-2)}`;
 }
 firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
 btnGroup = []
