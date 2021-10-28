@@ -81,11 +81,18 @@ function csvToArray(str, delimiter = ",") {
   // return the array
   return arr;
 }
-function viewDataset(dataset){
+
+
+function viewDataset(dataset,name){
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
     var tableHTML = '<thead><tr>'
-    var array = csvToArray(dataset, delimiter = ",")
+    if (name.slice(-3) == 'txt'){
+        var array = csvToArray(dataset, delimiter = " ")
+    }else{
+        var array = csvToArray(dataset, delimiter = ",")
+    }
+
     const tablehead = Object.keys(array[0]);
     for(var  i= 0; i< tablehead.length; i++) {
         tableHTML+= '<th>' + tablehead[i] + '</th>'
@@ -110,16 +117,11 @@ function viewDataset(dataset){
     myWindow.document.write('<html><head><title>Table</title></head><body>');
     myWindow.document.write('<table>')
     myWindow.document.write(tableHTML)
+    console.log(tableHTML)
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
 
-    //     $(document).ready(function () {
-    //         $('#hidden_table').DataTable({
-    //             "scrollX": true,
-    //         });
-    //     }, false)
-    //     document.getElementById("hidden_table").style.display='inline'
-    // }
+
  }
 
 
@@ -129,6 +131,11 @@ function submit() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
+        console.log(name)
+        if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
+            alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
+            return
+        }
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
@@ -140,12 +147,28 @@ function submit() {
                 document.getElementById('textInput').disabled = false;
                 document.getElementById('textInput').placeholder="Enter your message..."
                 showdataset.style = "display:inline"
-                showdataset.addEventListener('click',viewDataset(rawLog),false)
+                showdataset.addEventListener('click',viewDataset(rawLog,name),false)
             })
         }
         reader.readAsText(dataset);
     }
     read()
+}
+
+function showDemo() {
+    demoHtml = '<thead><tr><th></th><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
+        '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
+        '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
+        '</td></tr></tbody><tbody><tr><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>1\n' +
+        '</td></tr>'
+    var myWindow = window.open("", "MsgWindow", "width=200, height=100");
+
+    myWindow.document.write('<html><head><title>Table</title></head><body>');
+    myWindow.document.write('<table>')
+    myWindow.document.write(demoHtml)
+    myWindow.document.write('</table>')
+    myWindow.document.write('</body></html>');
+
 }
 
 function appendMessage(name, img, side, text, instruction,btnGroup){
@@ -191,10 +214,11 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
     if(buttonHtml != " "){
         const btn_group = document.getElementsByClassName("btn btn-success");
          if (instruction == "View your dataset"){
-             btn_group[3].addEventListener('click',submit,false)
+             btn_group[4].addEventListener('click',submit,false)
          }
-        if (text == "Please upload your local dataset(Please click the button)"){
-            btn_group[2].addEventListener('click',uploadData,false)
+        if (text == "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted(Please click the button)"){
+            btn_group[2].addEventListener('click',showDemo,false)
+            btn_group[3].addEventListener('click',uploadData,false)
             // btn_group[5].addEventListener('click',submit,false)
         }else{
             for (var i = 0 ; i < btn_group.length; i++) {
@@ -217,7 +241,7 @@ function showNext(e){
     if (pattern == "Choice 1"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
     }else if(pattern == "Choice 2"){
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please upload your local dataset","Browse data",{"Browse Local":"Browse Local"})
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Demo":"Demo","Browse Local":"Browse Local"})
     }else {
         for (var i = 0; i < input_choice.length; i++) {
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {

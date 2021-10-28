@@ -69,8 +69,8 @@ input_question =
       '"Choice 2":[{"tag": "choice2",\n' +
     ' "instruction": "Browse data",\n' +
     '  "nextques": "View your dataset",\n' +
-    '   "patterns": {"Browse Local":"1"},\n' +
-    '   "responses": ["Please upload your local dataset"]'+
+    '   "patterns": {"Demo":"1","Browse Local":"2"},\n' +
+    '   "responses": ["Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted"]'+
     '  },' +
     '{"tag": "View your dataset",\n' +
     ' "instruction": "View your dataset",\n' +

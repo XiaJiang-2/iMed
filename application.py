@@ -73,7 +73,6 @@ def get_model_dataset():
     name = request.args.get('name')
     upload_path = "dataset/" + str(name)
     dataset = dataset.split('\n')
-    print(list(dataset))
     with open(upload_path, 'wb') as file:
         for l in dataset:
             file.write(l.strip().encode("utf-8"))
