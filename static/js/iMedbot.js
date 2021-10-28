@@ -81,9 +81,14 @@ function csvToArray(str, delimiter = ",") {
   // return the array
   return arr;
 }
+// function openWindow(e) {
+//     console.log('CHUHAN')
+//     alert("happy")
+// }
 
 
 function viewDataset(dataset,name){
+    var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
     var tableHTML = '<thead><tr>'
@@ -92,8 +97,20 @@ function viewDataset(dataset,name){
     }else{
         var array = csvToArray(dataset, delimiter = ",")
     }
-
     const tablehead = Object.keys(array[0]);
+
+    var targetValue = String((tablehead[tablehead.length-1]).replace(/(?:\r\n|\r|\n)/g,""))
+
+    if (targetValue != "distant_recurrence"){
+        alert("The target feature of the table you uploaded is not distant_recurrence, please review the demo and submit it again")
+        location.reload();
+        return
+    }
+    if (array.length < 30){
+        alert ("Your dataset size is less than 30, please resubmit it ")
+        location.reload();
+        return
+    }
     for(var  i= 0; i< tablehead.length; i++) {
         tableHTML+= '<th>' + tablehead[i] + '</th>'
     }
@@ -110,47 +127,54 @@ function viewDataset(dataset,name){
     hidden_table.innerHTML = tableHTML
     // document.getElementById("hidden_div").style.display='inline'
     // document.getElementById("hidden_table").style.display='inline'
-    var myWindow = window.open("", "MsgWindow", "width=200, height=100");
+    var myWindow = window.open("", "MsgWindow", "width=500, height=500");
     // $(newWindow).load(function(){
     //     $(newWindow.document).find('body').html($('#hidden_table').html());
     // });
     myWindow.document.write('<html><head><title>Table</title></head><body>');
     myWindow.document.write('<table>')
     myWindow.document.write(tableHTML)
-    console.log(tableHTML)
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
+    showTable.style = "display:inline"
+    var openWindow=function(event,tableHTML){
 
+        var myWindow = window.open("", "MsgWindow", "width=500, height=500");
+        myWindow.document.write('<html><head><title>Table</title></head><body>');
+        myWindow.document.write('<table>')
+        myWindow.document.write(event)
+        myWindow.document.write('</table>')
+        myWindow.document.write('</body></html>');
 
+    }
+    showTable.addEventListener('click',openWindow.bind(event,tableHTML),false)
  }
 
-
 function submit() {
-    var showdataset = document.getElementById('showdataset');
-    showdataset.style = "display:inline"
+    //showdataset.style = "display:inline"
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
         console.log(name)
         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
+            location.reload();
             return
         }
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
             $.get("/dataset", { dataset: rawLog, name: name}).done(function (data) {
-                res = "Dataset name is " + dataset.name +'\n'+ " ; Size is " + dataset.size + " ; Type is " + dataset.type
-                more_que = "Do you have any other questions?"
+                res = "The name of dataset you have uploaded is " + dataset.name +'\n'+ " ; Size is " + (dataset.size/1000) + "kb; Type is " + dataset.name.slice(-3)
                 appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-                appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
                 document.getElementById('textInput').disabled = false;
                 document.getElementById('textInput').placeholder="Enter your message..."
-                showdataset.style = "display:inline"
-                showdataset.addEventListener('click',viewDataset(rawLog,name),false)
+                viewDataset(rawLog,name)
+
             })
         }
         reader.readAsText(dataset);
+
     }
     read()
 }
@@ -161,7 +185,7 @@ function showDemo() {
         '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr></tbody><tbody><tr><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr>'
-    var myWindow = window.open("", "MsgWindow", "width=200, height=100");
+    var myWindow = window.open("", "MsgWindow", "width=500, height=500");
 
     myWindow.document.write('<html><head><title>Table</title></head><body>');
     myWindow.document.write('<table>')
@@ -213,8 +237,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
     msgerChat.scrollTop += 500;
     if(buttonHtml != " "){
         const btn_group = document.getElementsByClassName("btn btn-success");
-         if (instruction == "View your dataset"){
-             btn_group[4].addEventListener('click',submit,false)
+         if (instruction == "View your dataset") {
+             btn_group[4].addEventListener('click', submit, false)
          }
         if (text == "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted(Please click the button)"){
             btn_group[2].addEventListener('click',showDemo,false)
