@@ -1,3 +1,4 @@
+import os
 import webbrowser
 
 import numpy as np
@@ -9,6 +10,7 @@ import json
 import datetime
 from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename, redirect
+from utils import modelTraining
 
 application = Flask(__name__)
 application.static_folder = 'static'
@@ -73,11 +75,11 @@ def get_model_dataset():
     name = request.args.get('name')
     upload_path = "dataset/" + str(name)
     dataset = dataset.split('\n')
+    #train_mode(name)
     with open(upload_path, 'wb') as file:
         for l in dataset:
             file.write(l.strip().encode("utf-8"))
             file.write('\n'.encode("utf-8"))
-
     return str("chuhan")
     # if request.method == "POST":
     #     if request.files:
@@ -87,6 +89,33 @@ def get_model_dataset():
     #             dataset.save(upload_path)
     #             dataset_name = str(secure_filename(dataset.filename))
 
+def train_mode(datasetname):
+    seed = 123
+    nsplits = 5
+    scores = "roc_auc"
+    filename = os.path.join("dataset/", datasetname)
+    predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+
+    cur_params = {
+        'mstruct': [(50, 1)],
+        'idim': [31],
+        'drate': [0.2],
+        'kinit': ['glorot_normal'],
+        'iacti': ['relu'],
+        'hacti': ['relu'],
+        'oacti': ['sigmoid'],
+        'opti': ['Adagrad'],
+        'lrate': [0.01],
+        'momen': [0.4],
+        'dec': [0.0005],
+        'ls': ['binary_crossentropy'],
+        'batch_size': [40],
+        'epochs': [85],
+        'L1': [0.005],
+        'L2': [0.005],
+        'ltype': [3]
+    }
+    results, score_val, score_man = modelTraining.model_gsearch_val(predset, target, cur_params, nsplits, seed, scores)
 
 
 

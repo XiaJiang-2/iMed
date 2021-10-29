@@ -11,6 +11,9 @@ const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many star
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
+const css ='<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">\n' +
+    '    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>\n' +
+    '    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>'
 
 $body = $("body");
 
@@ -91,21 +94,22 @@ function viewDataset(dataset,name){
     var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
-    var tableHTML = '<thead><tr>'
+    var tableHTML = '<thead class="thead-dark"><tr>'
     if (name.slice(-3) == 'txt'){
         var array = csvToArray(dataset, delimiter = " ")
+        var tablehead = Object.keys(array[0]);
     }else{
         var array = csvToArray(dataset, delimiter = ",")
-    }
-    const tablehead = Object.keys(array[0]);
+        var tablehead = Object.keys(array[0]);
+        var targetValue = String((tablehead[tablehead.length-1]).replace(/(?:\r\n|\r|\n)/g,""))
+        if (targetValue != "distant_recurrence"){
+            alert("The target feature of the table you uploaded is not distant_recurrence, please review the demo and submit it again")
+            location.reload();
+            return
+        }
 
-    var targetValue = String((tablehead[tablehead.length-1]).replace(/(?:\r\n|\r|\n)/g,""))
-
-    if (targetValue != "distant_recurrence"){
-        alert("The target feature of the table you uploaded is not distant_recurrence, please review the demo and submit it again")
-        location.reload();
-        return
     }
+
     if (array.length < 30){
         alert ("Your dataset size is less than 30, please resubmit it ")
         location.reload();
@@ -131,17 +135,18 @@ function viewDataset(dataset,name){
     // $(newWindow).load(function(){
     //     $(newWindow.document).find('body').html($('#hidden_table').html());
     // });
-    myWindow.document.write('<html><head><title>Table</title></head><body>');
-    myWindow.document.write('<table>')
+    myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
+    myWindow.document.write('<table  class="table">')
     myWindow.document.write(tableHTML)
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
     showTable.style = "display:inline"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
     var openWindow=function(event,tableHTML){
 
         var myWindow = window.open("", "MsgWindow", "width=500, height=500");
-        myWindow.document.write('<html><head><title>Table</title></head><body>');
-        myWindow.document.write('<table>')
+        myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
+        myWindow.document.write('<table  class="table">')
         myWindow.document.write(event)
         myWindow.document.write('</table>')
         myWindow.document.write('</body></html>');
@@ -180,15 +185,15 @@ function submit() {
 }
 
 function showDemo() {
-    demoHtml = '<thead><tr><th></th><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
+    demoHtml = '<thead class="thead-dark"><tr><th></th><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
         '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
         '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr></tbody><tbody><tr><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr>'
     var myWindow = window.open("", "MsgWindow", "width=500, height=500");
 
-    myWindow.document.write('<html><head><title>Table</title></head><body>');
-    myWindow.document.write('<table>')
+    myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
+    myWindow.document.write('<table class="table">')
     myWindow.document.write(demoHtml)
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');

@@ -1,0 +1,8 @@
+TNEG,ER,ER_percent,PR,PR_percent,P53,HER2,t_tnm_stage,n_tnm_stage,stage,lymph_node_removed,lymph_node_positive,lymph_node_status,Histology,size,grade,invasive,histology2,invasive_tumor_Location,DCIS_level,re_excision,surgical_margins,MRIs_60_surgery,distant_recurrence
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,1,0,0,0,1,0,1,0,0,1,0,1,0,0,1,1,0,0,0,1
+0,0,0,0,1,0,0,0,1,0,1,0,0,0,1,2,0,0,0,2,1,0,0,1
+0,0,0,0,0,0,0,0,2,1,1,1,1,2,0,1,0,1,2,3,0,0,0,1
+0,0,0,1,2,0,0,0,2,1,1,1,1,0,0,1,0,0,0,1,0,0,1,1
+0,1,1,2,2,1,0,1,2,1,1,1,1,1,2,1,0,0,1,0,0,0,1,1
+
