@@ -160,7 +160,6 @@ function submit() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
-        console.log(name)
         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
             location.reload();
@@ -169,17 +168,9 @@ function submit() {
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
-            $.get("/dataset", { dataset: rawLog, name: name}).done(function (data) {
-                res = "The name of dataset you have uploaded is " + dataset.name +'\n'+ " ; Size is " + (dataset.size/1000) + "kb; Type is " + dataset.name.slice(-3)
-                appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-                document.getElementById('textInput').disabled = false;
-                document.getElementById('textInput').placeholder="Enter your message..."
-                viewDataset(rawLog,name)
-
-            })
+            viewDataset(rawLog,name)
         }
         reader.readAsText(dataset);
-
     }
     read()
 }
@@ -197,6 +188,37 @@ function showDemo() {
     myWindow.document.write(demoHtml)
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
+
+}
+
+function nottrainModel() {
+    more_que = "Do you have any other questions?"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
+    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').placeholder="Enter your message..."
+}
+
+function trainModel() {
+    document.getElementById('textInput').disabled = true;
+    document.getElementById('textInput').placeholder = "Your model is training!";
+    function read(callback) {
+        var dataset = $('#fileid').prop('files')[0];
+        const name = dataset.name
+        var reader = new FileReader();
+        reader.onload = function() {
+            rawLog = reader.result
+            $.get("/dataset", { dataset: rawLog, name: name}).done(function (data) {
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
+                document.getElementById('textInput').disabled = false;
+                document.getElementById('textInput').placeholder="Enter your message..."
+            })
+        }
+        reader.readAsText(dataset);
+
+    }
+    read()
+
 
 }
 
@@ -245,11 +267,17 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
          if (instruction == "View your dataset") {
              btn_group[4].addEventListener('click', submit, false)
          }
-        if (text == "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted(Please click the button)"){
+        else if (text == "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted(Please click the button)"){
             btn_group[2].addEventListener('click',showDemo,false)
             btn_group[3].addEventListener('click',uploadData,false)
             // btn_group[5].addEventListener('click',submit,false)
-        }else{
+        }
+        else if ( instruction == "Train Model"){
+            btn_group[5].addEventListener('click',trainModel,false)
+            btn_group[6].addEventListener('click',nottrainModel,false)
+            // btn_group[5].addEventListener('click',submit,false)
+        }
+        else{
             for (var i = 0 ; i < btn_group.length; i++) {
                btn_group[i].addEventListener('click',showNext,false)
             }
@@ -564,12 +592,13 @@ function autocomplete(inp, arr) {
 }
 
 /*An array containing all the country names in the world:*/
-var possiblequestions = [ "Hello", "What can you do?", "I do not have other problems",
+var possiblequestions = [ "Hello", "What can you do?",
                   "What is a breast cancer?",
                   "Could you help me predict my breast cancer recurrence probability?",
                   "Could you tell me your name?",
                   "I want to know my risk of metastatic cancer",
                   "No, I do not have other questions",
+                  "I do not have other questions",
                   "Yes, I have some other problems",
                   "Thank you"
 

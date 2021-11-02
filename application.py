@@ -75,12 +75,14 @@ def get_model_dataset():
     name = request.args.get('name')
     upload_path = "dataset/" + str(name)
     dataset = dataset.split('\n')
-    #train_mode(name)
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    print(name)
+    validation_auc = train_mode(name)
     with open(upload_path, 'wb') as file:
         for l in dataset:
             file.write(l.strip().encode("utf-8"))
             file.write('\n'.encode("utf-8"))
-    return str("chuhan")
+    return str(validation_auc)
     # if request.method == "POST":
     #     if request.files:
     #         dataset = request.files['dataset']
@@ -94,7 +96,8 @@ def train_mode(datasetname):
     nsplits = 5
     scores = "roc_auc"
     filename = os.path.join("dataset/", datasetname)
-    predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+    if datasetname[-3:] == "txt":
+        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
 
     cur_params = {
         'mstruct': [(50, 1)],
@@ -116,6 +119,7 @@ def train_mode(datasetname):
         'ltype': [3]
     }
     results, score_val, score_man = modelTraining.model_gsearch_val(predset, target, cur_params, nsplits, seed, scores)
+    return score_val
 
 
 

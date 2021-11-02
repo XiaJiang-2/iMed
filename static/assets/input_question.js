@@ -76,6 +76,6 @@ input_question =
     ' "instruction": "View your dataset",\n' +
     '  "nextques": "",\n' +
     '   "patterns": {"View your dataset":"1"},\n' +
-    '   "responses": ["Please check the dataset you uploaded and it will give your some basic stats"]'+
+    '   "responses": ["Please check the chuhan dataset you uploaded and it will give your some basic stats"]'+
     '  }]\n'+
     '}'
