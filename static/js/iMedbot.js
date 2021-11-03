@@ -207,7 +207,7 @@ function trainModel() {
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
-            $.get("/dataset", { dataset: rawLog, name: name}).done(function (data) {
+            $.post("/dataset", { dataset: rawLog, name: name}).done(function (data) {
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
                 document.getElementById('textInput').disabled = false;

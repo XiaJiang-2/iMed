@@ -69,14 +69,16 @@ def get_model_inputdata():
         res = "Sorry we only have 15 year model so far"
     return str(res)
 
-@application.route("/dataset")
+@application.route("/dataset",methods=['GET','POST'])
 def get_model_dataset():
-    dataset = request.args.get('dataset')
-    name = request.args.get('name')
+    if request.method == "POST":
+        dataset = request.form.get('dataset')
+        name = request.form.get('name')
+    print(name)
+    # dataset = request.args.get('dataset')
+    # name = request.args.get('name')
     upload_path = "dataset/" + str(name)
     dataset = dataset.split('\n')
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    print(name)
     validation_auc = train_mode(name)
     with open(upload_path, 'wb') as file:
         for l in dataset:
