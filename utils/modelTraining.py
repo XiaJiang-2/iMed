@@ -4,15 +4,15 @@ from sklearn.preprocessing import MinMaxScaler
 
 sys.path.append('../../')
 from tensorflow import keras
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.models import Sequential
-from keras.wrappers.scikit_learn import KerasClassifier
-import keras.optimizers as opt
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+import tensorflow.keras.optimizers as opt
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold, StratifiedShuffleSplit
 from sklearn.metrics import roc_curve, auc
-from keras import regularizers
+from tensorflow.keras import regularizers
 import pandas as pandas
 
 
