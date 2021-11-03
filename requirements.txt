@@ -1,6 +1,7 @@
 ChatterBot==1.0.4
 SpeechRecognition==3.8.1
 Flask==2.0.0
+keras
 numpy==1.19.5
 sklearn
 tensorflow == 2.5.0
