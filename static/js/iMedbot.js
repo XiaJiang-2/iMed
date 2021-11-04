@@ -52,11 +52,21 @@ function getValue(event){
         }
     }
 }
+var alreaView = false
+
+function gobacktoBrowse() {
+    location.reload();
+    text = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", text,"Two choices",{"Choice 1":"Choice 1","Choice 2":"Choice 2"})
+
+}
 
 function uploadData(e) {
     document.getElementById('fileid').click();
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
-}
+    if (alreaView == false){
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+        alreaView = true
+    }}
 
 function csvToArray(str, delimiter = ",") {
   // slice from start of text to the first \n index
@@ -154,7 +164,6 @@ function viewDataset(dataset,name){
     }
     showTable.addEventListener('click',openWindow.bind(event,tableHTML),false)
  }
-
 function submit() {
     //showdataset.style = "display:inline"
     function read(callback) {
@@ -172,8 +181,38 @@ function submit() {
         }
         reader.readAsText(dataset);
     }
-    read()
+    var dataset = $('#fileid').prop('files')[0];
+    if (dataset == undefined){
+        alert("please upload your dataset first")
+        // gobacktoBrowse()
+    }else {
+        read()
+    }
 }
+// function submit() {
+//     //showdataset.style = "display:inline"
+//     function read(callback) {
+//         var dataset = $('#fileid').prop('files')[0];
+//         if (dataset == undefined){
+//             alert("please upload your dataset first")
+//             gobacktoBrowse()
+//         }
+//     }
+//         const name = dataset.name
+//         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
+//             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
+//             location.reload();
+//             return
+//         }
+//         var reader = new FileReader();
+//         reader.onload = function() {
+//             rawLog = reader.result
+//             viewDataset(rawLog,name)
+//         }
+//         reader.readAsText(dataset);
+//     }
+//     read()
+// }
 
 function showDemo() {
     demoHtml = '<thead class="thead-dark"><tr><th></th><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
