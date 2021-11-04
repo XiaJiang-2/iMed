@@ -267,7 +267,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
          if (instruction == "View your dataset") {
              btn_group[4].addEventListener('click', submit, false)
          }
-        else if (text == "Browse data"){
+        else if (instruction == "Browse data"){
             btn_group[2].addEventListener('click',showDemo,false)
             btn_group[3].addEventListener('click',uploadData,false)
             // btn_group[5].addEventListener('click',submit,false)
