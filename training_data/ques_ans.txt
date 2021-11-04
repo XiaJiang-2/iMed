@@ -4,8 +4,12 @@ I want to know my risk of metastatic cancer
 I would love to help you, Can you tell me your treatment time
 What can you do?
 I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
+What can you do?
+I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
 what else can you do?
 I can talk with you about your breast cancer
+What can you do?
+I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
 Could you help me predict my breast cancer recurrence probability?
 Sure I need you to tell me some basic information, Could you tell me how long you have had breast cancer
 I was diagnosed with breast cancer when I was 30 years old.
@@ -44,3 +48,6 @@ Thank you
 You are welcome, take care of yourself, and hope you feel better soon.
 Yes, I have some other problems.
 Sure, please tell me your problems
+What can you do?
+I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
+
