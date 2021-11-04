@@ -100,7 +100,9 @@ function csvToArray(str, delimiter = ",") {
 // }
 
 
-function viewDataset(dataset,name){
+function viewDataset(dataset,name,size){
+    var statisticalData = "Your dataset name is "+ name +" ; dataset size is "+ size/1000 +"kb; dataset format is "+name.slice(-3)
+    appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
     var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
@@ -169,6 +171,7 @@ function submit() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
+        const size = dataset.size
         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
             location.reload();
@@ -177,7 +180,7 @@ function submit() {
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
-            viewDataset(rawLog,name)
+            viewDataset(rawLog,name,size)
         }
         reader.readAsText(dataset);
     }
@@ -243,6 +246,7 @@ function trainModel() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
+
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
