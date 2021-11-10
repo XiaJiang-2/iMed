@@ -1,3 +1,4 @@
+
 const BOT_IMG = "static/img/robot.svg";
 const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
@@ -6,11 +7,13 @@ const PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
+
 // get the element for html
 // Icons made by Freepik from www.flaticon.com
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
+
 const css ='<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">\n' +
     '    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>\n' +
     '    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>'
@@ -229,8 +232,25 @@ function showDemo() {
     myWindow.document.write('<table class="table">')
     myWindow.document.write(demoHtml)
     myWindow.document.write('</table>')
+    myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
+    myWindow.document.write('<script>' +
+        'document.getElementById("runDemo").addEventListener(click,()=>{alert("hello") },false)' +
+
+        '<\/script>');
+
     myWindow.document.write('</body></html>');
 
+
+    // var runDemo = myWindow.document.getElementById('runDemo')
+    //
+    // function trainDemoModel() {
+    //     fetch('../../dataset/LSM-15Year.txt')
+    //       .then(response => response.text())
+    //       .then(text => console.log(text))
+    //
+    // }
+
+    //runDemo.addEventListener('click',trainDemoModel,false)
 }
 
 function nottrainModel() {
