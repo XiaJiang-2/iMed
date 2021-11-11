@@ -157,7 +157,7 @@ function viewDataset(dataset,name,size){
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
     showTable.style = "display:inline"
-    console.log(tableHTML)
+    // console.log(tableHTML)
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
     var openWindow=function(event,tableHTML){
 
@@ -569,7 +569,6 @@ var start_timestamp;
 // ===========================================================================
 
 function autocomplete(inp, arr) {
-  console.log("hello")
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;

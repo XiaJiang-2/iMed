@@ -79,11 +79,15 @@ def get_model_dataset():
     # name = request.args.get('name')
     upload_path = "dataset/" + str(name)
     dataset = dataset.split('\n')
-    validation_auc = train_mode(name)
+
     with open(upload_path, 'wb') as file:
         for l in dataset:
+            # if name[-3:] == "csv":
+            #     file.write(l.strip()[2:].encode("utf-8"))
+            # else:
             file.write(l.strip().encode("utf-8"))
             file.write('\n'.encode("utf-8"))
+    validation_auc = train_mode(name)
     return str(validation_auc)
     # if request.method == "POST":
     #     if request.files:
@@ -100,10 +104,11 @@ def train_mode(datasetname):
     filename = os.path.join("dataset/", datasetname)
     if datasetname[-3:] == "txt":
         predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
-
+    elif datasetname[-3:] == "csv":
+        predset, target = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
     cur_params = {
         'mstruct': [(50, 1)],
-        'idim': [31],
+        'idim': [len(predset[0])],
         'drate': [0.2],
         'kinit': ['glorot_normal'],
         'iacti': ['relu'],
