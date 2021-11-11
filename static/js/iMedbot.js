@@ -8,6 +8,7 @@ var input_question = JSON.parse(input_question)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 
+
 // get the element for html
 // Icons made by Freepik from www.flaticon.com
 const msgerForm = get(".msger-inputarea");
@@ -117,11 +118,11 @@ function viewDataset(dataset,name,size){
         var array = csvToArray(dataset, delimiter = ",")
         var tablehead = Object.keys(array[0]);
         var targetValue = String((tablehead[tablehead.length-1]).replace(/(?:\r\n|\r|\n)/g,""))
-        if (targetValue != "distant_recurrence"){
-            alert("The target feature of the table you uploaded is not distant_recurrence, please review the demo and submit it again")
-            location.reload();
-            return
-        }
+        // if (targetValue != "distant_recurrence"){
+        //     alert("The target feature of the table you uploaded is not distant_recurrence, please review the demo and submit it again")
+        //     location.reload();
+        //     return
+        // }
 
     }
 
@@ -156,6 +157,7 @@ function viewDataset(dataset,name,size){
     myWindow.document.write('</table>')
     myWindow.document.write('</body></html>');
     showTable.style = "display:inline"
+    console.log(tableHTML)
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
     var openWindow=function(event,tableHTML){
 
@@ -226,19 +228,29 @@ function showDemo() {
         '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr></tbody><tbody><tr><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>1\n' +
         '</td></tr>'
+    requirements = '<h2>Instructions:</h2>'+
+        '<ul className="list-group list-group-flush">'+
+        '<li className="list-group-item">1.The size of dataset should be in 50kb-500kb</li>'+
+        '<li className="list-group-item">2.The dataset must be in .csv or .txt format</li>'+
+        '<li className="list-group-item">3.The label must be the first row of dataset</li>'+
+        '<li className="list-group-item">4.The backend model is only for classification</li>'+
+        '<li className="list-group-item">5.The last column will be considered to the target</li>'+
+    '</ul>'
     var myWindow = window.open("", "MsgWindow", "width=500, height=500");
 
     myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
     myWindow.document.write('<table class="table">')
+    myWindow.document.write(requirements)
     myWindow.document.write(demoHtml)
     myWindow.document.write('</table>')
     myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
+    myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  >The Validation_AUC of demo dataset is 0.841</span>')
     myWindow.document.write('<script>' +
-        'document.getElementById("runDemo").addEventListener(click,()=>{alert("hello") },false)' +
-
+        'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
         '<\/script>');
 
     myWindow.document.write('</body></html>');
+    myWindow.document.close();
 
 
     // var runDemo = myWindow.document.getElementById('runDemo')
