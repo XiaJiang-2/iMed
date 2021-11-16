@@ -283,11 +283,11 @@ function showDemo() {
     myWindow.document.write(requirements)
     myWindow.document.write(demoHtml)
     myWindow.document.write('</table>')
-    myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
-    myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
-    myWindow.document.write('<script>' +
-        'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
-        '<\/script>');
+    //myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
+    //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
+    // myWindow.document.write('<script>' +
+    //     'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
+    //     '<\/script>');
 
     myWindow.document.write('</body></html>');
     myWindow.document.close();
@@ -337,11 +337,20 @@ function trainModel() {
 
 }
 
+function trainModelWithParameter() {
+    const question = "Please input the parameters you want"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
+    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').placeholder="Enter your message..."
+
+}
+
 function appendMessage(name, img, side, text, instruction,btnGroup){
     if (text == ""){
         return
     }
     var starHTML =``
+    var parameterHTML = ``
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
     if (btnGroup!=""){
@@ -363,6 +372,44 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
         </form>
         </div>`
     }
+    if (instruction == "Parameters"){
+        parameterHTML = '<form>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="learningrate" class="col-sm-2 col-form-label">Learning Rate</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" class="form-control" id="learningrate" placeholder=0.001>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+              '  <div class="form-group row">\n' +
+            '    <label for="batchsize" class="col-sm-2 col-form-label">Batch Size</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" class="form-control" id="batchsize" placeholder=15>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+              '  <div class="form-group row">\n' +
+            '    <label for="epoch" class="col-sm-2 col-form-label">Epoch</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" class="form-control" id="epoch" placeholder=50>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+              '  <div class="form-group row">\n' +
+            '    <label for="decay" class="col-sm-2 col-form-label">Decay</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" class="form-control" id="decay" placeholder=0.001>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="dropoutrate" class="col-sm-2 col-form-label">Dropout Rate</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" class="form-control" id="dropoutrate" placeholder=0.02>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '  <div class="col-sm-10"> <button type="submit" class="btn btn-primary">Submit</button>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '</form>\n'
+    }
     var msgHTML =
     `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -373,7 +420,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
                     <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
                 </div>
             </div>
-        <div class="msg-text">${text}</div>` + buttonHtml + starHTML+`</div></div>`;
+        <div class="msg-text">${text}</div>` + buttonHtml + starHTML+ parameterHTML +`</div></div>`;
     //'beforeend': Just inside the element, after its last child.
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
@@ -389,7 +436,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
         }
         else if ( instruction == "Train Model"){
             btn_group[5].addEventListener('click',trainModel,false)
-            btn_group[6].addEventListener('click',nottrainModel,false)
+            btn_group[6].addEventListener('click',trainModelWithParameter,false)
+            // btn_group[6].addEventListener('click',nottrainModel,false)
             // btn_group[5].addEventListener('click',submit,false)
         }
         else{
