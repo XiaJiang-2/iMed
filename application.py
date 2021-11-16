@@ -18,6 +18,7 @@ bootstrap = Bootstrap(application)
 class_button_json = json.loads(open('training_data/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
 model_15 = load_model('imedbot_model_five_input_15.h5')
+
 @application.route("/")
 def index():
     return render_template("index.html")
@@ -32,7 +33,6 @@ def get_bot_response():
     userText = request.args.get('msg')
     response = str(chatbot.get_response(userText))
     result["response"] = response
-    print(response)
     # speak(response)
     for item in list_of_classes:
         print(item["responses"])
@@ -73,29 +73,71 @@ def get_model_inputdata():
 def get_model_dataset():
     if request.method == "POST":
         dataset = request.form.get('dataset')
-        name = request.form.get('name')
-    print(name)
-    # dataset = request.args.get('dataset')
-    # name = request.args.get('name')
-    upload_path = "dataset/" + str(name)
+        datasetname = request.form.get('name')
+    upload_path = "dataset/" + str(datasetname)
     dataset = dataset.split('\n')
-
     with open(upload_path, 'wb') as file:
+        print("hello")
         for l in dataset:
-            # if name[-3:] == "csv":
-            #     file.write(l.strip()[2:].encode("utf-8"))
-            # else:
+
             file.write(l.strip().encode("utf-8"))
             file.write('\n'.encode("utf-8"))
-    validation_auc = train_mode(name)
+    validation_auc = train_mode(datasetname)
     return str(validation_auc)
-    # if request.method == "POST":
-    #     if request.files:
-    #         dataset = request.files['dataset']
-    #         if str(secure_filename(dataset.filename)) != "":
-    #             upload_path = "dataset/" + str(secure_filename(dataset.filename))
-    #             dataset.save(upload_path)
-    #             dataset_name = str(secure_filename(dataset.filename))
+
+@application.route("/parameter",methods=['GET','POST'])
+def get_model_parameter():
+    if request.method == "POST":
+        datasetname = request.form.get('datasetname')
+        learningrate = request.form.get('learningrate')
+        batchsize = request.form.get('batchsize')
+        epochs = request.form.get('epochs')
+        decay = request.form.get('decay')
+        dropoutrate = request.form.get('dropoutrate')
+        dataset = request.form.get('dataset')
+        print(dataset)
+    upload_path = "dataset/" + str(datasetname)
+    dataset = dataset.split('\n')
+    with open(upload_path, 'wb') as file:
+        for l in dataset:
+            file.write(l.strip().encode("utf-8"))
+            file.write('\n'.encode("utf-8"))
+
+    validation_auc = train_mode_parameter(datasetname, learningrate, batchsize, epochs, decay, dropoutrate)
+    return str(validation_auc)
+
+def train_mode_parameter(datasetname,learningrate, batchsize, epochs, decay, dropoutrate):
+    print(datasetname)
+    seed = 123
+    nsplits = 5
+    scores = "roc_auc"
+    filename = os.path.join("dataset/", datasetname)
+    if datasetname[-3:] == "txt":
+        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+    elif datasetname[-3:] == "csv":
+        predset, target = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
+    cur_params = {
+        'mstruct': [(50, 1)],
+        'idim': [len(predset[0])],
+        'drate': [float(dropoutrate)],
+        'kinit': ['glorot_normal'],
+        'iacti': ['relu'],
+        'hacti': ['relu'],
+        'oacti': ['sigmoid'],
+        'opti': ['Adagrad'],
+        'lrate': [float(learningrate)],
+        'momen': [0.4],
+        'dec': [float(decay)],
+        'ls': ['binary_crossentropy'],
+        'batch_size': [int(batchsize)],
+        'epochs': [int(epochs)],
+        'L1': [0.005],
+        'L2': [0.005],
+        'ltype': [3]
+    }
+    results, score_val, score_man = modelTraining.model_gsearch_val(predset, target, cur_params, nsplits, seed, scores)
+    return score_val
+
 
 def train_mode(datasetname):
     seed = 123

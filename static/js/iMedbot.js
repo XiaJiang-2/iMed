@@ -242,6 +242,42 @@ function submit() {
 //
 // text = readTextFile("file:///C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\static\js\LSM-15Year.txt")
 //console.log(text)
+
+function getParameter(){
+    document.getElementById('textInput').disabled = true;
+    document.getElementById('textInput').placeholder = "Your model is training!";
+    function read_parameter(callback) {
+        console.log("chuhan")
+        var dataset = $('#fileid').prop('files')[0];
+        const name = dataset.name
+        var learningrate = $("#parameterForm input[name=learningrate]").val()
+        var decay = $("#parameterForm input[name=decay]").val()
+        var batchsize= $("#parameterForm input[name=batchsize]").val()
+        var dropoutrate = $("#parameterForm input[name=dropoutrate]").val()
+        var epochs = $("#parameterForm input[name=epochs]").val()
+        var reader = new FileReader();
+        reader.onload = function() {
+            rawLog = reader.result
+            $.post("/parameter", {
+                dataset: rawLog,
+                datasetname: name,
+                learningrate: learningrate,
+                decay: decay,
+                batchsize: batchsize,
+                dropoutrate: dropoutrate,
+                epochs: epochs
+            }).done(function (data) {
+                console.log(data)
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ", "no information", [])
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is " + data, "no information", [])
+                document.getElementById('textInput').disabled = false;
+                document.getElementById('textInput').placeholder = "Enter your message..."
+            })
+        }
+    reader.readAsText(dataset);
+    }
+   read_parameter()
+}
 function showDemo() {
     demoHtml = '<thead class="thead-dark"><tr><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
         '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
@@ -318,7 +354,6 @@ function trainModel() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
-
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
@@ -373,35 +408,35 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
         </div>`
     }
     if (instruction == "Parameters"){
-        parameterHTML = '<form>\n' +
+        parameterHTML = '<form id="parameterForm" onsubmit="getParameter();return false" method="post">\n' +
             '  <div class="form-group row">\n' +
-            '    <label for="learningrate" class="col-sm-2 col-form-label">Learning Rate</label>\n' +
+            '    <label for="learningrate" class="col-sm-2 col-form-label"><font size="-1">Learning Rate</font></label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="learningrate" placeholder=0.001>\n' +
+            '      <input type="number" step="0.001" class="form-control" id="learningrate" name="learningrate" placeholder=0.001>\n' +
             '    </div>\n' +
             '  </div>\n' +
               '  <div class="form-group row">\n' +
             '    <label for="batchsize" class="col-sm-2 col-form-label">Batch Size</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="batchsize" placeholder=15>\n' +
+            '      <input type="number" class="form-control" id="batchsize" name="batchsize" placeholder=15>\n' +
             '    </div>\n' +
             '  </div>\n' +
               '  <div class="form-group row">\n' +
             '    <label for="epoch" class="col-sm-2 col-form-label">Epoch</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="epoch" placeholder=50>\n' +
+            '      <input type="number" class="form-control" id="epoch" name="epochs" placeholder=50>\n' +
             '    </div>\n' +
             '  </div>\n' +
               '  <div class="form-group row">\n' +
             '    <label for="decay" class="col-sm-2 col-form-label">Decay</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="decay" placeholder=0.001>\n' +
+            '      <input type="number" step="0.001" class="form-control" id="decay" name="decay" placeholder=0.001>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
             '    <label for="dropoutrate" class="col-sm-2 col-form-label">Dropout Rate</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="dropoutrate" placeholder=0.02>\n' +
+            '      <input type="number" step="0.001" class="form-control" id="dropoutrate" name="dropoutrate" placeholder=0.02>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +

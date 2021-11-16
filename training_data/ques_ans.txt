@@ -2,7 +2,7 @@ What is a breast cancer?
 Breast cancer can occur in women and rarely in men.Symptoms of breast cancer include a lump in the breast, bloody discharge from the nipple, and changes in the shape or texture of the nipple or breast.
 I want to know my risk of metastatic cancer
 I would love to help you, Can you tell me your treatment time
-What can you do?
+What can you do for me?
 I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
 What can you do?
 I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
