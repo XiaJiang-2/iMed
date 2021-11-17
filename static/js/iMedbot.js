@@ -68,7 +68,10 @@ function gobacktoBrowse() {
 function uploadData(e) {
     document.getElementById('fileid').click();
     if (alreaView == false){
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+        document.getElementById("fileid").onchange = function() {
+        submit();
+    };
+        //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
         alreaView = true
     }}
 
@@ -105,7 +108,7 @@ function csvToArray(str, delimiter = ",") {
 
 
 function viewDataset(dataset,name,size){
-    var statisticalData = "Your dataset name is "+ name +" ; dataset size is "+ size/1000 +"kb; dataset format is "+name.slice(-3)
+    var statisticalData = "Your dataset name is <b>"+ name +"</b> ; dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
     appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
     var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
