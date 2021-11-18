@@ -69,6 +69,22 @@ def get_model_inputdata():
         res = "Sorry we only have 15 year model so far"
     return str(res)
 
+@application.route("/patientform",methods=['GET','POST'])
+def get_model_patientform():
+    if request.method == "POST":
+        category_list = []
+        patient_dic = request.form.get('patient_dic')
+        patient_input_list = json.loads(patient_dic)
+        for item in patient_input_list:
+            category_list.append(int(item['value']))
+        print(np.array([category_list]))
+        user_training_model = load_model('user_training_model.h5')
+        res = user_training_model.predict(np.array([category_list]))
+        res = str(res).replace('[','').replace(']','')
+        print(res)
+    return res
+
+
 @application.route("/dataset",methods=['GET','POST'])
 def get_model_dataset():
     if request.method == "POST":

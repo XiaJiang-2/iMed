@@ -91,6 +91,7 @@ def create_model(mstruct, idim, drate, kinit, iacti, hacti, oacti, opti, lrate, 
     elif opti == 'SGD':
         cur_opt = opt.SGD(lr = lrate, momentum=momen, decay=dec)
     model.compile(optimizer=cur_opt, loss=ls, metrics = "accuracy")
+    model.save('user_training_model.h5')
     return model
 def model_val(params, x_cv, y_cv):
     print(params)
