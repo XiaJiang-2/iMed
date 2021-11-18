@@ -75,14 +75,15 @@ function uploadData(e) {
         alreaView = true
     }}
 
-function csvToArray(str, delimiter = ",") {
+function csvToArray(dataset, delimiter = ",") {
   // slice from start of text to the first \n index
   // use split to create an array from string by delimiter
-  const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+    var headers = dataset.slice(0, dataset.indexOf("\n")).split("\t").join(",").split(delimiter)
+
 
   // slice from \n index + 1 to the end of the text
   // use split to create an array of each csv value row
-  const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+  var rows = dataset.slice(dataset.indexOf("\n") + 1).split("\t").join(",").split("\n");
 
   // Map the rows
   // split values from each row into an array
@@ -101,10 +102,7 @@ function csvToArray(str, delimiter = ",") {
   // return the array
   return arr;
 }
-// function openWindow(e) {
-//     console.log('CHUHAN')
-//     alert("happy")
-// }
+
 
 
 function viewDataset(dataset,name,size){
@@ -114,10 +112,10 @@ function viewDataset(dataset,name,size){
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
     var tableHTML = '<thead class="thead-dark"><tr>'
-    if (name.slice(-3) == 'txt'){
-        var array = csvToArray(dataset, delimiter = " ")
-        var tablehead = Object.keys(array[0]);
-    }else{
+    // if (name.slice(-3) == 'txt'){
+    //     var array = csvToArray(dataset, delimiter = " ")
+    //     var tablehead = Object.keys(array[0]);
+    // }else{
         var array = csvToArray(dataset, delimiter = ",")
         var tablehead = Object.keys(array[0]);
         var targetValue = String((tablehead[tablehead.length-1]).replace(/(?:\r\n|\r|\n)/g,""))
@@ -127,7 +125,7 @@ function viewDataset(dataset,name,size){
         //     return
         // }
 
-    }
+    //}
 
     if (array.length < 30){
         alert ("Your dataset size is less than 30, please resubmit it ")
@@ -147,6 +145,7 @@ function viewDataset(dataset,name,size){
             }
        tableHTML+= '</tr></tbody>'
     }
+    // console.log((tableHTML))
     hidden_table.innerHTML = tableHTML
     // document.getElementById("hidden_div").style.display='inline'
     // document.getElementById("hidden_table").style.display='inline'
@@ -163,7 +162,6 @@ function viewDataset(dataset,name,size){
     // console.log(tableHTML)
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
     var openWindow=function(event,tableHTML){
-
         var myWindow = window.open("", "MsgWindow", "width=500, height=500");
         myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
         myWindow.document.write('<table  class="table">')
