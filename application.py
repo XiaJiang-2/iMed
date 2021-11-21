@@ -30,11 +30,10 @@ def get_bot_response():
     result = {}
     button_group = ""
     instruction = ""
-    userText = request.args.get('msg')
-    if userText == "What can you do?" or "What can you do for me?":
-        response = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice"
-    else:
-        response = str(chatbot.get_response(userText))
+    usertext = request.args.get('msg')
+    response = str(chatbot.get_response(usertext))
+    # if usertext == "What can you do?" or "What can you do for me?":
+    #     response = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice"
     result["response"] = response
     # speak(response)
     for item in list_of_classes:
