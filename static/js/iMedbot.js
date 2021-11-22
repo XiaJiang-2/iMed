@@ -309,7 +309,7 @@ function showDemo() {
         '<li className="list-group-item">1.The size of dataset should be in 50kb-500kb</li>'+
         '<li className="list-group-item">2.The dataset must be in .csv or .txt format</li>'+
         '<li className="list-group-item">3.The label must be the first row of dataset</li>'+
-        '<li className="list-group-item">4.The backend model is only for classification</li>'+
+        '<li className="list-group-item">4.Can only use categorical data for now</li>'+
         '<li className="list-group-item">5.The last column will be considered to the target</li>'+
     '</ul>'
     var myWindow = window.open("", "MsgWindow", "width=500, height=500");
