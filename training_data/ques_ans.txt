@@ -50,4 +50,5 @@ Yes, I have some other problems.
 Sure, please tell me your problems
 What can you do?
 I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset, or I can train a model for you if you can provide your own dataset, so how do you want to proceed? Please enter 1 for the first choice, or 2 for the second choice
-
+Sorry to hear about that
+Sorry I can't understand you, could you change your way of expression for me? Thank you!

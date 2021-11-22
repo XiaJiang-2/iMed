@@ -562,7 +562,7 @@ function showNext(e){
     if (pattern == "Choice 1"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
     }else if(pattern == "Choice 2"){
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Demo":"Demo","Browse Local":"Browse Local"})
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
     }else {
         for (var i = 0; i < input_choice.length; i++) {
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
