@@ -111,7 +111,6 @@ def get_model_parameter():
         decay = request.form.get('decay')
         dropoutrate = request.form.get('dropoutrate')
         dataset = request.form.get('dataset')
-        print(dataset)
     upload_path = "dataset/" + str(datasetname)
     dataset = dataset.split('\n')
     with open(upload_path, 'wb') as file:
@@ -123,7 +122,6 @@ def get_model_parameter():
     return str(validation_auc)
 
 def train_mode_parameter(datasetname,learningrate, batchsize, epochs, decay, dropoutrate):
-    print(datasetname)
     seed = 123
     nsplits = 5
     scores = "roc_auc"

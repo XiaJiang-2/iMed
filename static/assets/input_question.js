@@ -2,12 +2,12 @@ input_question =
     '  {' +
     '"START":[{"tag": "Instruction",\n' +
     ' "instruction": "Two choices",\n' +
-    '  "nextques": "choice 1 or choice 2",\n' +
+    '  "nextques": "Predict or Train a Model",\n' +
     '   "patterns": {"Predict":"1","Train a Model":"2"},\n' +
     '   "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"]\n'+
     '  }],\n' +
 
-    '"Choice 1": [' +
+    '"Predict": [' +
     '{"tag": "treatment_year",\n' +
     ' "instruction": "treatment_year instruction",\n' +
     '  "nextques": "DCIS_level",\n' +
@@ -66,7 +66,7 @@ input_question =
     '  "responses": ["What is your invasive_tumor_Location?","Could you tell me your invasive_tumor_Location?"]' +
     '  }],\n' +
 
-      '"Choice 2":[{"tag": "choice2",\n' +
+      '"Train a Model":[{"tag": "choice2",\n' +
     ' "instruction": "Browse data",\n' +
     '  "nextques": "View your dataset",\n' +
     '   "patterns": {"Example Dataset":"1","Browse Local":"2"},\n' +

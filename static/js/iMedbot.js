@@ -8,6 +8,15 @@ var input_question = JSON.parse(input_question)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 
+var patientParameter_dis = {"race": "race_dis",
+    "ethnicity": "ethnicity_dis",
+    "smoking": "smoking_dis",
+    "alcohol_useage": "alcohol_useage_dis",
+    "family_history": "family_history_dis",
+    "age_at_diagnosis": "age_at_diagnosis_dis",
+    "menopause_status": "menopause_status_dis",
+    "side": "side_dis",
+    "TNEG": "TNEG_dis"}
 
 // get the element for html
 // Icons made by Freepik from www.flaticon.com
@@ -61,7 +70,7 @@ var alreaView = false
 function gobacktoBrowse() {
     location.reload();
     text = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", text,"Two choices",{"Choice 1":"Choice 1","Choice 2":"Choice 2"})
+    appendMessage(BOT_NAME, NURSE_IMG, "left", text,"Two choices",{"Predict":"Predict","Train a Model":"Train a Model"})
 
 }
 
@@ -407,9 +416,10 @@ function generatePatientForm(labelList) {
           if (labelList.length != 0){
               document.getElementById('textInput').disabled = true;
               document.getElementById('textInput').placeholder = "You can not input now";
+
               patientFormHtml = labelList_withouttarget.map(function(label){
                 //const element = `<div class="form-group row"><label for=${label} class="col-sm-2 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-2"><input type="number" size="4" step="0.001" class="form-control" id=${label} name=${label} placeholder = "0"></div></div>`
-                 const element = `<div class="form-group row"><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"></div></div>`
+                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"></div></div>`
                   return element
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
@@ -554,14 +564,15 @@ function showNext(e){
     var btnGroup = []
     var nextques = ""
     var pattern = e.target.innerHTML
-    if (pattern == "Choice 1"){
-        input_choice = input_question["Choice 1"]
-    }else if(pattern == "Choice 2"){
-        input_choice = input_question["Choice 2"]
+    if (pattern == "Predict"){
+        input_choice = input_question["Predict"]
+    }else if(pattern == "Train a Model"){
+        input_choice = input_question["Train a Model"]
     }
-    if (pattern == "Choice 1"){
+
+    if (pattern == "Predict"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
-    }else if(pattern == "Choice 2"){
+    }else if(pattern == "Train a Model"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
     }else {
         for (var i = 0; i < input_choice.length; i++) {
