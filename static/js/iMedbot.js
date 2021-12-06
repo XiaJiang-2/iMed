@@ -278,7 +278,7 @@ function getParameter(){
             }).done(function (data) {
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ", "no information", [])
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is " + data, "no information", [])
-                appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Yes":"Yes","No":"No"})
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model"})
                 document.getElementById('textInput').disabled = false;
                 document.getElementById('textInput').placeholder = "Enter your message..."
             })
@@ -446,20 +446,20 @@ function testPatient() {
 
 }
 
-function appendMessage(name, img, side, text, instruction,btnGroup){
-    if (text == ""){
+function appendMessage(name, img, side, text, instruction,btnGroup) {
+    if (text == "") {
         return
     }
-    var starHTML =``
+    var starHTML = ``
     var parameterHTML = ``
     var patientHtml = ``
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
-    if (btnGroup!=""){
+    if (btnGroup != "") {
         text = text + "(Please click the button)"
     }
-    if (text == SURVEY){
-       starHTML =`<div class="stars" id="stars"><form  onsubmit="getValue();return false">
+    if (text == SURVEY) {
+        starHTML = `<div class="stars" id="stars"><form  onsubmit="getValue();return false">
             <input class="star star-5" id="star-5" type="radio" name="star" value ="5"/>
             <label class="star star-5" for="star-5"></label>
             <input class="star star-4" id="star-4" type="radio" name="star" value ="4"/>
@@ -474,7 +474,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
         </form>
         </div>`
     }
-    if (instruction == "Parameters"){
+    if (instruction == "Parameters") {
         parameterHTML = '<form id="parameterForm" onsubmit="getParameter();return false" method="post">\n' +
             '  <div class="form-group row">\n' +
             '    <label for="learningrate" class="col-sm-2 col-form-label"><font size="-1">Learning Rate</font></label>\n' +
@@ -482,19 +482,19 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
             '      <input type="number" step="0.001" class="form-control" id="learningrate" name="learningrate" placeholder=0.001 value=0.001>\n' +
             '    </div>\n' +
             '  </div>\n' +
-              '  <div class="form-group row">\n' +
+            '  <div class="form-group row">\n' +
             '    <label for="batchsize" class="col-sm-2 col-form-label">Batch Size</label>\n' +
             '    <div class="col-sm-10">\n' +
             '      <input type="number" class="form-control" id="batchsize" name="batchsize" placeholder=10 value=10>\n' +
             '    </div>\n' +
             '  </div>\n' +
-              '  <div class="form-group row">\n' +
+            '  <div class="form-group row">\n' +
             '    <label for="epoch" class="col-sm-2 col-form-label">Epoch</label>\n' +
             '    <div class="col-sm-10">\n' +
             '      <input type="number" class="form-control" id="epoch" name="epochs" placeholder=10 value=10>\n' +
             '    </div>\n' +
             '  </div>\n' +
-              '  <div class="form-group row">\n' +
+            '  <div class="form-group row">\n' +
             '    <label for="decay" class="col-sm-2 col-form-label">Decay</label>\n' +
             '    <div class="col-sm-10">\n' +
             '      <input type="number" step="0.001" class="form-control" id="decay" name="decay" placeholder=0.001 value=0.001>\n' +
@@ -517,7 +517,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
         instruction = "Patient Parameters"
     }
     var msgHTML =
-    `<div class="msg ${side}-msg">
+        `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
         <div class="msg-bubble">
             <div class="msg-info">
@@ -526,35 +526,59 @@ function appendMessage(name, img, side, text, instruction,btnGroup){
                     <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
                 </div>
             </div>
-        <div class="msg-text">${text}</div>` + buttonHtml + patientHtml + starHTML+ parameterHTML +`</div></div>`;
+        <div class="msg-text">${text}</div>` + buttonHtml + patientHtml + starHTML + parameterHTML + `</div></div>`;
     //'beforeend': Just inside the element, after its last child.
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
-    if(buttonHtml != " "){
+    if (buttonHtml != " ") {
         const btn_group = document.getElementsByClassName("btn btn-success");
-         // if (instruction == "View your dataset") {
-         //     btn_group[4].addEventListener('click', submit, false)
-         // }
-        if (instruction == "Browse data"){
-            btn_group[2].addEventListener('click',showDemo,false)
-            btn_group[3].addEventListener('click',uploadData,false)
-            // btn_group[5].addEventListener('click',submit,false)
-        }
-        else if ( instruction == "Train Model"){
-            btn_group[4].addEventListener('click',trainModel,false)
-            btn_group[5].addEventListener('click',trainModelWithParameter,false)
-            // btn_group[6].addEventListener('click',nottrainModel,false)
-            // btn_group[5].addEventListener('click',submit,false)
-        }
-        else if (instruction == "Test Patient"){
-            btn_group[6].addEventListener('click',testPatient,false)
-            btn_group[7].addEventListener('click',nottrainModel,false)
-
-        }
-        else{
-            for (var i = 0 ; i < btn_group.length; i++) {
-               btn_group[i].addEventListener('click',showNext,false)
+        for (let i = 0; i < btn_group.length; i++) {
+            console.log(btn_group[i].innerHTML)
+            if (btn_group[i].innerHTML == "Example dataset") {
+                btn_group[i].addEventListener('click', showDemo, false)
+            } else if (btn_group[i].innerHTML == "Browse Local") {
+                btn_group[i].addEventListener('click', uploadData, false)
+            } else if (btn_group[i].innerHTML == "Yes") {
+                btn_group[i].addEventListener('click', trainModel, false)
+            } else if (btn_group[i].innerHTML == "No") {
+                btn_group[i].addEventListener('click', trainModelWithParameter, false)
+            } else if (btn_group[i].innerHTML == "Testing with new patients") {
+                btn_group[i].addEventListener('click', testPatient, false)
+            } else if (btn_group[i].innerHTML == "End task") {
+                btn_group[i].addEventListener('click', nottrainModel, false)
+            } else if (btn_group[i].innerHTML == "Retrain the model") {
+                btn_group[i].addEventListener('click', trainModelWithParameter, false)
+            } else {
+                for (var j = 0; j < btn_group.length; j++) {
+                    btn_group[j].addEventListener('click', showNext, false)
+                }
             }
+
+            // if (instruction == "View your dataset") {
+            //     btn_group[4].addEventListener('click', submit, false)
+            // }
+            // if (instruction == "Browse data"){
+            //     btn_group[2].addEventListener('click',showDemo,false)
+            //     btn_group[3].addEventListener('click',uploadData,false)
+            //     // btn_group[5].addEventListener('click',submit,false)
+            // }
+            // else if ( instruction == "Train Model"){
+            //     btn_group[4].addEventListener('click',trainModel,false)
+            //     btn_group[5].addEventListener('click',trainModelWithParameter,false)
+            //     // btn_group[6].addEventListener('click',nottrainModel,false)
+            //     // btn_group[5].addEventListener('click',submit,false)
+            // }
+            // else if (instruction == "Test Patient"){
+            //     btn_group[6].addEventListener('click',testPatient,false)
+            //     btn_group[7].addEventListener('click',nottrainModel,false)
+            //
+            // }
+            // else{
+            //     for (var i = 0 ; i < btn_group.length; i++) {
+            //         console.log("1")
+            //        btn_group[i].addEventListener('click',showNext,false)
+            //     }
+            //}
         }
     }
 }
@@ -564,6 +588,7 @@ function showNext(e){
     var btnGroup = []
     var nextques = ""
     var pattern = e.target.innerHTML
+
     if (pattern == "Predict"){
         input_choice = input_question["Predict"]
     }else if(pattern == "Train a Model"){
