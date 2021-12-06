@@ -1,4 +1,3 @@
-
 const BOT_IMG = "static/img/robot.svg";
 const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
@@ -598,7 +597,21 @@ function showNext(e){
     if (pattern == "Predict"){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
     }else if(pattern == "Train a Model"){
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
+                Swal.fire({
+                  title: 'Model Method Description ',
+                  text: " We will use 80% of your dataset to train this model with 5 fold cross validation strategies and 20% dataset as validation dataset to return the validation AUC, do you want to proceed it?",
+                  icon: 'info',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, Go on!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                      appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
+                  }
+                })
+        //alert("Do you really want to train the model?")
+
     }else {
         for (var i = 0; i < input_choice.length; i++) {
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
