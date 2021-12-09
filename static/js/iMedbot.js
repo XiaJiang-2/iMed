@@ -74,6 +74,7 @@ function gobacktoBrowse() {
 }
 
 function uploadData(e) {
+    add_userMsg("Browse Local")
     document.getElementById('fileid').click();
     if (alreaView == false){
         document.getElementById("fileid").onchange = function() {
@@ -287,6 +288,7 @@ function getParameter(){
    read_parameter()
 }
 function showDemo() {
+    add_userMsg("Example dataset")
     demoHtml = '<thead class="thead-dark"><tr><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
         '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
         '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
@@ -350,37 +352,74 @@ function showDemo() {
 }
 
 function nottrainModel() {
+    add_userMsg("End task")
     more_que = "Do you have any other questions?"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
+    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = false;
     document.getElementById('textInput').placeholder="Enter your message..."
 }
 
 function trainModel() {
-    document.getElementById('textInput').disabled = true;
-    document.getElementById('textInput').placeholder = "Your model is training!";
-    function read(callback) {
-        var dataset = $('#fileid').prop('files')[0];
-        const name = dataset.name
-        var reader = new FileReader();
-        reader.onload = function() {
-            rawLog = reader.result
-            $.post("/dataset", { dataset: rawLog, name: name}).done(function (data) {
-                appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
-                appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
-                document.getElementById('textInput').disabled = false;
-                document.getElementById('textInput').placeholder="Enter your message..."
-            })
-        }
-        reader.readAsText(dataset);
-
-    }
-    read()
-
-
-}
+    add_userMsg("YES")
+    Swal.fire({
+                  title: 'Default Parameter Settings',
+                  text: " 'mstruct': [(50, 1)],\n" +
+                      "        'idim': [len(predset[0])],\n" +
+                      "        'drate': [float(dropoutrate)],\n" +
+                      "        'kinit': ['glorot_normal'],\n" +
+                      "        'iacti': ['relu'],\n" +
+                      "        'hacti': ['relu'],\n" +
+                      "        'oacti': ['sigmoid'],\n" +
+                      "        'opti': ['Adagrad'],\n" +
+                      "        'lrate': [float(learningrate)],\n" +
+                      "        'momen': [0.4],\n" +
+                      "        'dec': [float(decay)],\n" +
+                      "        'ls': ['binary_crossentropy'],\n" +
+                      "        'batch_size': [int(batchsize)],\n" +
+                      "        'epochs': [int(epochs)],\n" +
+                      "        'L1': [0.005],\n" +
+                      "        'L2': [0.005],\n" +
+                      "        'ltype': [3]",
+                  icon: 'info',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, Go on!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                      document.getElementById('textInput').disabled = true;
+                      document.getElementById('textInput').placeholder = "Your model is training!";
+                        function read(callback) {
+                            var dataset = $('#fileid').prop('files')[0];
+                            const name = dataset.name
+                            var reader = new FileReader();
+                            reader.onload = function() {
+                                rawLog = reader.result
+                                $.post("/dataset", { dataset: rawLog, name: name}).done(function (data) {
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
+                                    document.getElementById('textInput').disabled = false;
+                                    document.getElementById('textInput').placeholder="Enter your message..."
+                                })
+                            }
+                            reader.readAsText(dataset);
+                        }
+                        read()
+                  }
+                }
+                )}
 
 function trainModelWithParameter() {
+    add_userMsg("No")
+    const question = "Please input the parameters you want"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
+    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').placeholder="Enter your message..."
+
+}
+function retrainModelWithParameter() {
+    add_userMsg("Retrain the model")
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
     document.getElementById('textInput').disabled = false;
@@ -431,6 +470,7 @@ function generatePatientForm(labelList) {
     }
 
 function testPatient() {
+    add_userMsg("Testing with new patients")
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         var reader = new FileReader();
@@ -443,6 +483,22 @@ function testPatient() {
     }
     read()
 
+}
+
+function add_userMsg(msgText) {
+    appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,"no information",[]);
+
+}
+
+
+function noQuestion() {
+    add_userMsg("I have no questions")
+    appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
+}
+
+function haveQuestion() {
+    add_userMsg("I have questions")
+    appendMessage(BOT_NAME, NURSE_IMG, "left","Please tell me your questions, I will pass your question to our experts ","no information",[])
 }
 
 function appendMessage(name, img, side, text, instruction,btnGroup) {
@@ -532,7 +588,6 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     if (buttonHtml != " ") {
         const btn_group = document.getElementsByClassName("btn btn-success");
         for (let i = 0; i < btn_group.length; i++) {
-            console.log(btn_group[i].innerHTML)
             if (btn_group[i].innerHTML == "Example dataset") {
                 btn_group[i].addEventListener('click', showDemo, false)
             } else if (btn_group[i].innerHTML == "Browse Local") {
@@ -546,38 +601,18 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
             } else if (btn_group[i].innerHTML == "End task") {
                 btn_group[i].addEventListener('click', nottrainModel, false)
             } else if (btn_group[i].innerHTML == "Retrain the model") {
-                btn_group[i].addEventListener('click', trainModelWithParameter, false)
-            } else {
-                for (var j = 0; j < btn_group.length; j++) {
-                    btn_group[j].addEventListener('click', showNext, false)
-                }
+                btn_group[i].addEventListener('click', retrainModelWithParameter, false)
+            }
+            else if (btn_group[i].innerHTML == "I have no questions") {
+                btn_group[i].addEventListener('click', noQuestion, false)
+            }
+            else if (btn_group[i].innerHTML == "I have questions") {
+                btn_group[i].addEventListener('click', haveQuestion, false)
+            }
+            else {
+                    btn_group[i].addEventListener('click', showNext, false)
             }
 
-            // if (instruction == "View your dataset") {
-            //     btn_group[4].addEventListener('click', submit, false)
-            // }
-            // if (instruction == "Browse data"){
-            //     btn_group[2].addEventListener('click',showDemo,false)
-            //     btn_group[3].addEventListener('click',uploadData,false)
-            //     // btn_group[5].addEventListener('click',submit,false)
-            // }
-            // else if ( instruction == "Train Model"){
-            //     btn_group[4].addEventListener('click',trainModel,false)
-            //     btn_group[5].addEventListener('click',trainModelWithParameter,false)
-            //     // btn_group[6].addEventListener('click',nottrainModel,false)
-            //     // btn_group[5].addEventListener('click',submit,false)
-            // }
-            // else if (instruction == "Test Patient"){
-            //     btn_group[6].addEventListener('click',testPatient,false)
-            //     btn_group[7].addEventListener('click',nottrainModel,false)
-            //
-            // }
-            // else{
-            //     for (var i = 0 ; i < btn_group.length; i++) {
-            //         console.log("1")
-            //        btn_group[i].addEventListener('click',showNext,false)
-            //     }
-            //}
         }
     }
 }
@@ -595,8 +630,10 @@ function showNext(e){
     }
 
     if (pattern == "Predict"){
+        add_userMsg("Predict")
         appendMessage(BOT_NAME, NURSE_IMG, "left", "I can predict the recurrence probability of breast cancer, please tell me which year you want to predict","treatment_year instruction",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
     }else if(pattern == "Train a Model"){
+        add_userMsg("Train a Model")
                 Swal.fire({
                   title: 'Model Method Description ',
                   text: " We will use 80% of your dataset to train this model with 5 fold cross validation strategies and 20% dataset as validation dataset to return the validation AUC, do you want to proceed it?",
@@ -643,7 +680,7 @@ function getinput(input_copy){
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
     more_que = "Do you have any other questions?"
     appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",[])
+    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = false;
     document.getElementById('textInput').placeholder="Enter your message..."
 
@@ -691,9 +728,18 @@ function formatDate(date) {
     const m = "0" + date.getMinutes();
     return `${h.slice(-2)}:${m.slice(-2)}`;
 }
-firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
-btnGroup = []
-window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
+function load(){
+
+    firstMsg = "Hi, welcome to iMedBot! Go ahead and send me a message. 😄"
+    secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
+    btnGroup = []
+    appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
+    appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"Predict","Train a Model":"Train a Model"});
+}
+window.οnlοad =load()
+// window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
+//window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"1","Train a Model":"2"});
+
 
 
 
