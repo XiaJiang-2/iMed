@@ -3,7 +3,8 @@ import sys
 from sklearn.preprocessing import MinMaxScaler
 
 sys.path.append('../../')
-from tensorflow import keras
+from tensorflow import keras, metrics
+import matplotlib.pyplot as plt
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.models import Sequential
@@ -151,7 +152,15 @@ with the best set of parameter values found by grid search
     # way2 AUC
     FP2, TP2, thresholds2 = roc_curve(Y_val.astype(float), Y_pred2.astype(float))
     val_auc_manu = auc(FP2, TP2)
-
+    plt.title('Validation Roc Curve')
+    plt.plot(FP,  TP, label = r'Mean Validation ROC (area=%0.4f)' % val_auc_grid)
+    plt.plot([0, 1], ls="--")
+    plt.plot([0, 0], [1, 0], c=".7"), plt.plot([1, 1], c=".7")
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.legend()
+    plt.savefig('static/img/Roc/roc_curve.png')
+    plt.clf()
     print("best val score grid: "+str(val_auc_grid))
     print("best val score manual: "+str(val_auc_manu))
     print("best mean auc: %f and best index: %s using %s" % (gs.best_score_, gs.best_index_,gs.best_params_))

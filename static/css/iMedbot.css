@@ -298,3 +298,6 @@ label.star:before {
   content: '\f006';
   font-family: FontAwesome;
 }
+.fit-picture {
+    width: 50px;
+}

@@ -113,7 +113,13 @@ function csvToArray(dataset, delimiter = ",") {
 }
 
 
-
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
 function viewDataset(dataset,name,size){
     var statisticalData = "Your dataset name is <b>"+ name +"</b> ; dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
     appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
@@ -278,6 +284,8 @@ function getParameter(){
             }).done(function (data) {
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ", "no information", [])
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is " + data, "no information", [])
+                wait(20000);
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model"})
                 document.getElementById('textInput').disabled = false;
                 document.getElementById('textInput').placeholder = "Enter your message..."
@@ -398,6 +406,7 @@ function trainModel() {
                                 $.post("/dataset", { dataset: rawLog, name: name}).done(function (data) {
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
                                     document.getElementById('textInput').disabled = false;
                                     document.getElementById('textInput').placeholder="Enter your message..."
@@ -505,9 +514,14 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     if (text == "") {
         return
     }
+
     var starHTML = ``
     var parameterHTML = ``
     var patientHtml = ``
+    var rocHTML = ``
+    if(text.includes("roc curve")){
+        rocHTML = `<img className="fit-picture" src="static/img/ROC/roc_curve.png" alt="ROC Curve" style="width:300px;height:250px;">`
+    }
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
     if (btnGroup != "") {
@@ -581,7 +595,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
                     <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
                 </div>
             </div>
-        <div class="msg-text">${text}</div>` + buttonHtml + patientHtml + starHTML + parameterHTML + `</div></div>`;
+        <div class="msg-text">${text}</div>` + rocHTML + buttonHtml + patientHtml + starHTML + parameterHTML + `</div></div>`;
     //'beforeend': Just inside the element, after its last child.
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
@@ -678,9 +692,8 @@ function showNext(e){
 function getinput(input_copy){
   $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
-    more_que = "Do you have any other questions?"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
+      appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = false;
     document.getElementById('textInput').placeholder="Enter your message..."
 
