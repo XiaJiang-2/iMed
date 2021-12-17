@@ -5,6 +5,8 @@ from sklearn.preprocessing import MinMaxScaler
 sys.path.append('../../')
 from tensorflow import keras, metrics
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.models import Sequential
