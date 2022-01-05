@@ -520,7 +520,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     var patientHtml = ``
     var rocHTML = ``
     if(text.includes("roc curve")){
-        rocHTML = `<img className="fit-picture" src="static/img/ROC/roc_curve.png" alt="ROC Curve" style="width:300px;height:250px;">`
+        rocHTML = `<img className="fit-picture" src="static/img/roc/roc_curve.png" alt="ROC Curve" style="width:300px;height:250px;">`
     }
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
