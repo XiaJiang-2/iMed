@@ -453,9 +453,17 @@ function submitPatientForm(){
 
 }
 function generatePatientForm(labelList) {
+    console.log(labelList.toString())
     var labelList_withouttarget = labelList.split(",")
     labelList_withouttarget.pop()
+    if (labelList_withouttarget.length == 0){
+        labelList_withouttarget = (labelList.toString()).split("\t")
+        labelList_withouttarget.pop()
+    }
+
     console.log(labelList_withouttarget)
+
+
 
     let patientFormHtml = ""
 
