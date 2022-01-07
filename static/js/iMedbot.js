@@ -372,19 +372,18 @@ function trainModel() {
     Swal.fire({
                   title: 'Default Parameter Settings',
                   text: " 'mstruct': [(50, 1)],\n" +
-                      "        'idim': [len(predset[0])],\n" +
-                      "        'drate': [float(dropoutrate)],\n" +
+                      "        'drate': [0.2],\n" +
                       "        'kinit': ['glorot_normal'],\n" +
                       "        'iacti': ['relu'],\n" +
                       "        'hacti': ['relu'],\n" +
                       "        'oacti': ['sigmoid'],\n" +
                       "        'opti': ['Adagrad'],\n" +
-                      "        'lrate': [float(learningrate)],\n" +
+                      "        'lrate': [0.01],\n" +
                       "        'momen': [0.4],\n" +
-                      "        'dec': [float(decay)],\n" +
+                      "        'dec': [0.0005],\n" +
                       "        'ls': ['binary_crossentropy'],\n" +
-                      "        'batch_size': [int(batchsize)],\n" +
-                      "        'epochs': [int(epochs)],\n" +
+                      "        'batch_size': [40],\n" +
+                      "        'epochs': [85],\n" +
                       "        'L1': [0.005],\n" +
                       "        'L2': [0.005],\n" +
                       "        'ltype': [3]",

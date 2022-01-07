@@ -105,6 +105,8 @@ def model_val(params, x_cv, y_cv):
     del params['epochs']
     del params['batch_size']
     clf = KerasClassifier(build_fn=create_model, ** params, epochs=n_epochs, batch_size=batch )
+    params['batch_size'] = batch
+    params['epochs'] = n_epochs
     clf.fit(x_cv, y_cv)
     return clf
 
