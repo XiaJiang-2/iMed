@@ -473,7 +473,7 @@ function generatePatientForm(labelList) {
 
               patientFormHtml = labelList_withouttarget.map(function(label){
                 //const element = `<div class="form-group row"><label for=${label} class="col-sm-2 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-2"><input type="number" size="4" step="0.001" class="form-control" id=${label} name=${label} placeholder = "0"></div></div>`
-                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"></div></div>`
+                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"></div></div>`
                   return element
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
@@ -555,31 +555,31 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
             '  <div class="form-group row">\n' +
             '    <label for="learningrate" class="col-sm-2 col-form-label"><font size="-1">Learning Rate</font></label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" step="0.001" class="form-control" id="learningrate" name="learningrate" placeholder=0.001 value=0.001>\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="learningrate" name="learningrate" placeholder=0.001 value=0.001>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
             '    <label for="batchsize" class="col-sm-2 col-form-label">Batch Size</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="batchsize" name="batchsize" placeholder=10 value=10>\n' +
+            '      <input type="number" min="0" class="form-control" id="batchsize" name="batchsize" placeholder=10 value=10>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
             '    <label for="epoch" class="col-sm-2 col-form-label">Epoch</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" class="form-control" id="epoch" name="epochs" placeholder=10 value=10>\n' +
+            '      <input type="number" min="0" class="form-control" id="epoch" name="epochs" placeholder=10 value=10>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
             '    <label for="decay" class="col-sm-2 col-form-label">Decay</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" step="0.001" class="form-control" id="decay" name="decay" placeholder=0.001 value=0.001>\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="decay" name="decay" placeholder=0.001 value=0.001>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
             '    <label for="dropoutrate" class="col-sm-2 col-form-label">Dropout Rate</label>\n' +
             '    <div class="col-sm-10">\n' +
-            '      <input type="number" step="0.001" class="form-control" id="dropoutrate" name="dropoutrate" placeholder=0.02 value=0.02>\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="dropoutrate" name="dropoutrate" placeholder=0.02 value=0.02>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '  <div class="form-group row">\n' +
