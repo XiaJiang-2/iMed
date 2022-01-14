@@ -301,3 +301,8 @@ label.star:before {
 .fit-picture {
     width: 50px;
 }
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

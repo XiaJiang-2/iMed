@@ -75,6 +75,21 @@ function gobacktoBrowse() {
 
 function uploadData(e) {
     add_userMsg("Browse Local")
+
+
+    document.getElementById('fileid').click();
+    if (alreaView == false){
+        document.getElementById("fileid").onchange = function() {
+        submit();
+    };
+        //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+        alreaView = true
+    }
+
+}
+
+function uploadNewData(e) {
+    add_userMsg("Open new dataset")
     document.getElementById('fileid').click();
     if (alreaView == false){
         document.getElementById("fileid").onchange = function() {
@@ -286,9 +301,9 @@ function getParameter(){
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is " + data, "no information", [])
                 wait(20000);
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
-                appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model"})
+                appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
                 document.getElementById('textInput').disabled = false;
-                document.getElementById('textInput').placeholder = "Enter your message..."
+                //document.getElementById('textInput').placeholder = "Enter your message..."
             })
         }
     reader.readAsText(dataset);
@@ -361,14 +376,18 @@ function showDemo() {
 
 function nottrainModel() {
     add_userMsg("End task")
-    more_que = "Do you have any other questions?"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
+
+    noQuestion()
+
+    // more_que = "Do you have any other questions?"
+    // appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = false;
-    document.getElementById('textInput').placeholder="Enter your message..."
+    //document.getElementById('textInput').placeholder="Enter your message..."
 }
 
 function trainModel() {
     add_userMsg("YES")
+
     Swal.fire({
                   title: 'Default Parameter Settings',
                   text: " 'mstruct': [(50, 1)],\n" +
@@ -408,7 +427,7 @@ function trainModel() {
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
                                     document.getElementById('textInput').disabled = false;
-                                    document.getElementById('textInput').placeholder="Enter your message..."
+                                    //document.getElementById('textInput').placeholder="Enter your message..."
                                 })
                             }
                             reader.readAsText(dataset);
@@ -420,18 +439,20 @@ function trainModel() {
 
 function trainModelWithParameter() {
     add_userMsg("No")
+
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
     document.getElementById('textInput').disabled = false;
-    document.getElementById('textInput').placeholder="Enter your message..."
+    //document.getElementById('textInput').placeholder="Enter your message..."
 
 }
 function retrainModelWithParameter() {
     add_userMsg("Retrain the model")
+
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
     document.getElementById('textInput').disabled = false;
-    document.getElementById('textInput').placeholder="Enter your message..."
+    //document.getElementById('textInput').placeholder="Enter your message..."
 
 }
 function submitPatientForm(){
@@ -446,9 +467,9 @@ function submitPatientForm(){
     console.log(patient_dic)
 
     $.post("/patientform", {patient_dic: JSON.stringify(patient_dic)}).done(function (data) {
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Your patient validation auc is " + data, "no information", [])
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Your distant_recurrence probability is " + data, "no information", [])
         document.getElementById('textInput').disabled = false;
-        document.getElementById('textInput').placeholder = "Enter your message..."
+        //document.getElementById('textInput').placeholder = "Enter your message..."
     })
 
 }
@@ -473,7 +494,7 @@ function generatePatientForm(labelList) {
 
               patientFormHtml = labelList_withouttarget.map(function(label){
                 //const element = `<div class="form-group row"><label for=${label} class="col-sm-2 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-2"><input type="number" size="4" step="0.001" class="form-control" id=${label} name=${label} placeholder = "0"></div></div>`
-                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"></div></div>`
+                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" list="itemlist" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"><datalist id="itemlist"><option>0</option><option>1</option></datalist> </div></div>`
                   return element
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
@@ -487,12 +508,15 @@ function generatePatientForm(labelList) {
 
 function testPatient() {
     add_userMsg("Testing with new patients")
+
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
+            //console.log(rawLog)
             labelList = (rawLog.split("\n")[0])
+            //console.log(labelList.length())
             generatePatientForm(labelList)
         }
         reader.readAsText(dataset);
@@ -503,6 +527,10 @@ function testPatient() {
 
 function add_userMsg(msgText) {
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,"no information",[]);
+    const btn_group = document.getElementsByClassName("btn btn-success");
+    for (let i = 0; i < btn_group.length; i++) {
+    btn_group[i].className = "btn btn-success disabled"
+    }
 
 }
 
@@ -613,6 +641,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
                 btn_group[i].addEventListener('click', showDemo, false)
             } else if (btn_group[i].innerHTML == "Browse Local") {
                 btn_group[i].addEventListener('click', uploadData, false)
+            }else if (btn_group[i].innerHTML == "Open new dataset") {
+                btn_group[i].addEventListener('click', uploadNewData, false)
             } else if (btn_group[i].innerHTML == "Yes") {
                 btn_group[i].addEventListener('click', trainModel, false)
             } else if (btn_group[i].innerHTML == "No") {
@@ -702,7 +732,7 @@ function getinput(input_copy){
       appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = false;
-    document.getElementById('textInput').placeholder="Enter your message..."
+    //document.getElementById('textInput').placeholder="Enter your message..."
 
 })
 }
