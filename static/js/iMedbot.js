@@ -364,6 +364,7 @@ function showDemo() {
 
     myWindow.document.write('</body></html>');
     myWindow.document.close();
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
 
 
     // var runDemo = myWindow.document.getElementById('runDemo')
@@ -381,7 +382,7 @@ function showDemo() {
 function nottrainModel() {
     add_userMsg("End task")
 
-    noQuestion()
+    appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
 
     // more_que = "Do you have any other questions?"
     // appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
@@ -414,7 +415,9 @@ function trainModel() {
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
                   cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, Go on!'
+                  cancelButtonText: 'No,I want to set it manually',
+                  confirmButtonText: 'Yes, Go on!',
+                  reverseButtons: true
                 }).then((result) => {
                   if (result.isConfirmed) {
                       document.getElementById('textInput').disabled = true;
@@ -429,14 +432,16 @@ function trainModel() {
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
-                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
-                                    document.getElementById('textInput').disabled = false;
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
+                                    document.getElementById('textInput').disabled = true;
                                     //document.getElementById('textInput').placeholder="Enter your message..."
                                 })
                             }
                             reader.readAsText(dataset);
                         }
                         read()
+                  }else{
+                      trainModelWithParameter()
                   }
                 }
                 )}
@@ -472,6 +477,7 @@ function submitPatientForm(){
 
     $.post("/patientform", {patient_dic: JSON.stringify(patient_dic)}).done(function (data) {
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Your distant_recurrence probability is " + data, "no information", [])
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
         document.getElementById('textInput').disabled = false;
         //document.getElementById('textInput').placeholder = "Enter your message..."
     })
@@ -498,7 +504,7 @@ function generatePatientForm(labelList) {
 
               patientFormHtml = labelList_withouttarget.map(function(label){
                 //const element = `<div class="form-group row"><label for=${label} class="col-sm-2 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-2"><input type="number" size="4" step="0.001" class="form-control" id=${label} name=${label} placeholder = "0"></div></div>`
-                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" list="itemlist" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"><datalist id="itemlist"><option>0</option><option>1</option></datalist> </div></div>`
+                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" list="itemlist" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"><datalist id="itemlist"><option>0</option><option>1</option><option>2</option></datalist> </div></div>`
                   return element
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
@@ -696,11 +702,16 @@ function showNext(e){
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
                   cancelButtonColor: '#d33',
+                    cancelButtonText: 'No, cancel!',
                   confirmButtonText: 'Yes, Go on!'
                 }).then((result) => {
                   if (result.isConfirmed) {
                       appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
-                  }
+                  }else {
+                      console.log("hello")
+                        secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
+                        appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"Predict","Train a Model":"Train a Model"});
+                      }
                 })
         //alert("Do you really want to train the model?")
 
@@ -752,7 +763,7 @@ function generateBtnGroup(btn_group){
         const element = `<button type="button" class="btn btn-success">${btn}</button>`
     return element
   })
-    let front = '<div class="btn-group" role="group" aria-label="Basic example">'
+    let front = '<div class="btn-group-vertical" role="group" aria-label="Basic example">'
     let end = '</div>'
     buttonHtml = front+buttonHtml.join("")+end
   }else {
