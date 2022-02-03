@@ -78,9 +78,7 @@ function gobacktoBrowse() {
 }
 
 function uploadData(e) {
-    add_userMsg("Browse Local")
-
-
+    add_userMsg("Upload Local Dataset")
     document.getElementById('fileid').click();
     if (alreaView == false){
         document.getElementById("fileid").onchange = function() {
@@ -90,6 +88,11 @@ function uploadData(e) {
         alreaView = true
     }
 
+}
+
+function runModelExampleDateset(e){
+    add_userMsg("Run Model with Example Dataset")
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
 }
 
 function uploadNewData(e) {
@@ -306,7 +309,7 @@ function getParameter(){
                 wait(20000);
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
                 appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
-                document.getElementById('textInput').disabled = false;
+                document.getElementById('textInput').disabled = true;
                 //document.getElementById('textInput').placeholder = "Enter your message..."
             })
         }
@@ -314,8 +317,10 @@ function getParameter(){
     }
    read_parameter()
 }
+var myWindow = null
 function showDemo() {
-    add_userMsg("Example dataset")
+
+    //add_userMsg("Example dataset")
     demoHtml = '<thead class="thead-dark"><tr><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
         '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
         '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
@@ -349,23 +354,25 @@ function showDemo() {
         '<li className="list-group-item">4.Can only use categorical data for now</li>'+
         '<li className="list-group-item">5.The last column will be considered to the target</li>'+
     '</ul>'
-    var myWindow = window.open("", "MsgWindow", "width=500, height=500");
+    if ((myWindow == null) || (myWindow.closed)) {
+        myWindow = window.open("", "MsgWindow", "width=500, height=500");
 
-    myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
-    myWindow.document.write('<table class="table">')
-    myWindow.document.write(requirements)
-    myWindow.document.write(demoHtml)
-    myWindow.document.write('</table>')
-    //myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
-    //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
-    // myWindow.document.write('<script>' +
-    //     'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
-    //     '<\/script>');
+        myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
+        myWindow.document.write('<table class="table">')
+        myWindow.document.write(requirements)
+        myWindow.document.write(demoHtml)
+        myWindow.document.write('</table>')
 
-    myWindow.document.write('</body></html>');
-    myWindow.document.close();
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
-
+        myWindow.document.write('<button id = "runDemo" type="button" class="btn btn-info " >Run Demo!</button>')
+        //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
+        myWindow.document.write('<script>' +
+            'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
+            '<\/script>');
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+    }else{
+         Swal.fire("The example dataset is already open")
+        }
 
     // var runDemo = myWindow.document.getElementById('runDemo')
     //
@@ -386,7 +393,7 @@ function nottrainModel() {
 
     // more_que = "Do you have any other questions?"
     // appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
-    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').disabled = true;
     //document.getElementById('textInput').placeholder="Enter your message..."
 }
 
@@ -422,9 +429,22 @@ function trainModel() {
                   if (result.isConfirmed) {
                       document.getElementById('textInput').disabled = true;
                       document.getElementById('textInput').placeholder = "Your model is training!";
+                      var dataset = $('#fileid').prop('files')[0];
+                      if (dataset == null){
+                          $.post("/Examdataset", {name: '15_year_smote_balancedataset - Copy.csv'}).done(function (data) {
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
+                                    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
+                                    document.getElementById('textInput').disabled = true;
+                                    //document.getElementById('textInput').placeholder="Enter your message..."
+                                })
+
+                      }else{
                         function read(callback) {
                             var dataset = $('#fileid').prop('files')[0];
                             const name = dataset.name
+                            console.log(name)
                             var reader = new FileReader();
                             reader.onload = function() {
                                 rawLog = reader.result
@@ -438,8 +458,7 @@ function trainModel() {
                                 })
                             }
                             reader.readAsText(dataset);
-                        }
-                        read()
+                        }read()}
                   }else{
                       trainModelWithParameter()
                   }
@@ -451,7 +470,7 @@ function trainModelWithParameter() {
 
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
-    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').disabled = true;
     //document.getElementById('textInput').placeholder="Enter your message..."
 
 }
@@ -460,7 +479,7 @@ function retrainModelWithParameter() {
 
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
-    document.getElementById('textInput').disabled = false;
+    document.getElementById('textInput').disabled = true;
     //document.getElementById('textInput').placeholder="Enter your message..."
 
 }
@@ -478,7 +497,7 @@ function submitPatientForm(){
     $.post("/patientform", {patient_dic: JSON.stringify(patient_dic)}).done(function (data) {
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Your distant_recurrence probability is " + data, "no information", [])
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
-        document.getElementById('textInput').disabled = false;
+        document.getElementById('textInput').disabled = true;
         //document.getElementById('textInput').placeholder = "Enter your message..."
     })
 
@@ -536,11 +555,15 @@ function testPatient() {
 }
 
 function add_userMsg(msgText) {
+
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText,"no information",[]);
     const btn_group = document.getElementsByClassName("btn btn-success");
     for (let i = 0; i < btn_group.length; i++) {
     btn_group[i].className = "btn btn-success disabled"
     }
+    // if(msgText == "View Example Dataset"){
+    //     appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Upload Local Dataset",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset"})
+    // }
 
 }
 
@@ -647,9 +670,12 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     if (buttonHtml != " ") {
         const btn_group = document.getElementsByClassName("btn btn-success");
         for (let i = 0; i < btn_group.length; i++) {
-            if (btn_group[i].innerHTML == "Example dataset") {
+            if (btn_group[i].innerHTML == "View Example Dataset") {
                 btn_group[i].addEventListener('click', showDemo, false)
-            } else if (btn_group[i].innerHTML == "Browse Local") {
+
+            }else if (btn_group[i].innerHTML == "Run Model with Example Dataset") {
+                btn_group[i].addEventListener('click', runModelExampleDateset, false)
+            }else if (btn_group[i].innerHTML == "Upload Local Dataset") {
                 btn_group[i].addEventListener('click', uploadData, false)
             }else if (btn_group[i].innerHTML == "Open new dataset") {
                 btn_group[i].addEventListener('click', uploadNewData, false)
@@ -683,6 +709,10 @@ function showNext(e){
     var btnGroup = []
     var nextques = ""
     var pattern = e.target.innerHTML
+    if (e.target.innerHTML != "Predict" && e.target.innerHTML != "Train a Model"){
+    add_userMsg(e.target.innerHTML)
+    }
+
 
     if (pattern == "Predict"){
         input_choice = input_question["Predict"]
@@ -706,7 +736,7 @@ function showNext(e){
                   confirmButtonText: 'Yes, Go on!'
                 }).then((result) => {
                   if (result.isConfirmed) {
-                      appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"Example dataset":"Example dataset","Browse Local":"Browse Local"})
+                      appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"})
                   }else {
                       console.log("hello")
                         secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
@@ -745,8 +775,9 @@ function getinput(input_copy){
   $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
       appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
-    document.getElementById('textInput').disabled = false;
+      appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
+    // appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
+    document.getElementById('textInput').disabled = true;
     //document.getElementById('textInput').placeholder="Enter your message..."
 
 })

@@ -84,6 +84,12 @@ def get_model_patientform():
         print(res)
     return res
 
+@application.route("/Examdataset",methods=['GET','POST'])
+def get_model_Examdataset():
+    if request.method == "POST":
+        datasetname = request.form.get('name')
+    validation_auc = train_mode(datasetname)
+    return str(validation_auc)
 
 @application.route("/dataset",methods=['GET','POST'])
 def get_model_dataset():
