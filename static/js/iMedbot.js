@@ -92,7 +92,7 @@ function uploadData(e) {
 
 function runModelExampleDateset(e){
     add_userMsg("Run Model with Example Dataset")
-    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
+    appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train the example dataset","Train Model",{"Yes": "Yes","No,I don't":"No,I don't"})
 }
 
 function uploadNewData(e) {
@@ -280,13 +280,39 @@ function submit() {
 //
 // text = readTextFile("file:///C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\static\js\LSM-15Year.txt")
 //console.log(text)
-
+function getParameterExam(){
+    document.getElementById('textInput').disabled = true;
+    document.getElementById('textInput').placeholder = "Your model is training!";
+        const name = '15_year_smote_balancedataset - Copy.csv'
+        var learningrate = $("#parameterForm input[name=learningrate]").val()
+        var decay = $("#parameterForm input[name=decay]").val()
+        var batchsize= $("#parameterForm input[name=batchsize]").val()
+        var dropoutrate = $("#parameterForm input[name=dropoutrate]").val()
+        var epochs = $("#parameterForm input[name=epochs]").val()
+        $.post("/parameterExam", {
+            datasetname: name,
+            learningrate: learningrate,
+            decay: decay,
+            batchsize: batchsize,
+            dropoutrate: dropoutrate,
+            epochs: epochs
+        }).done(function (data) {
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ", "no information", [])
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is " + data, "no information", [])
+            wait(20000);
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
+            document.getElementById('textInput').disabled = true;
+            //document.getElementById('textInput').placeholder = "Enter your message..."
+        })
+    }
 function getParameter(){
     document.getElementById('textInput').disabled = true;
     document.getElementById('textInput').placeholder = "Your model is training!";
     function read_parameter(callback) {
+
         var dataset = $('#fileid').prop('files')[0];
-        const name = dataset.name
+        var name = dataset.name
         var learningrate = $("#parameterForm input[name=learningrate]").val()
         var decay = $("#parameterForm input[name=decay]").val()
         var batchsize= $("#parameterForm input[name=batchsize]").val()
@@ -464,7 +490,15 @@ function trainModel() {
                   }
                 }
                 )}
+function trainModelWithParameterExam() {
+    add_userMsg("No, I don't")
 
+    const question = "Please input the parameters you want to train the example dataset"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Train Model with Example dataset",[])
+    document.getElementById('textInput').disabled = true;
+    //document.getElementById('textInput').placeholder="Enter your message..."
+
+}
 function trainModelWithParameter() {
     add_userMsg("No")
 
@@ -476,7 +510,6 @@ function trainModelWithParameter() {
 }
 function retrainModelWithParameter() {
     add_userMsg("Retrain the model")
-
     const question = "Please input the parameters you want"
     appendMessage(BOT_NAME, NURSE_IMG, "left", question,"Parameters",[])
     document.getElementById('textInput').disabled = true;
@@ -649,6 +682,44 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
             '</div>\n' +
             '</form>\n'
     }
+    if(instruction == "Train Model with Example dataset") {
+        parameterHTML = '<form id="parameterForm" onsubmit="getParameterExam();return false" method="post">\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="learningrate" class="col-sm-2 col-form-label"><font size="-1">Learning Rate</font></label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="learningrate" name="learningrate" placeholder=0.001 value=0.001>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="batchsize" class="col-sm-2 col-form-label">Batch Size</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" min="0" class="form-control" id="batchsize" name="batchsize" placeholder=10 value=10>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="epoch" class="col-sm-2 col-form-label">Epoch</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" min="0" class="form-control" id="epoch" name="epochs" placeholder=10 value=10>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="decay" class="col-sm-2 col-form-label">Decay</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="decay" name="decay" placeholder=0.001 value=0.001>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '    <label for="dropoutrate" class="col-sm-2 col-form-label">Dropout Rate</label>\n' +
+            '    <div class="col-sm-10">\n' +
+            '      <input type="number" min="0" step="0.001" class="form-control" id="dropoutrate" name="dropoutrate" placeholder=0.02 value=0.02>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '  <div class="form-group row">\n' +
+            '  <div class="col-sm-10"> <button type="submit" class="btn btn-primary">Submit</button>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '</form>\n'
+    }
     if (text == "Please fill the patient form below and click submit") {
         patientHtml = instruction
         instruction = "Patient Parameters"
@@ -679,7 +750,9 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
                 btn_group[i].addEventListener('click', uploadData, false)
             }else if (btn_group[i].innerHTML == "Open new dataset") {
                 btn_group[i].addEventListener('click', uploadNewData, false)
-            } else if (btn_group[i].innerHTML == "Yes") {
+            } else if (btn_group[i].innerHTML == "No,I don't") {
+                btn_group[i].addEventListener('click', trainModelWithParameterExam, false)
+            }else if (btn_group[i].innerHTML == "Yes") {
                 btn_group[i].addEventListener('click', trainModel, false)
             } else if (btn_group[i].innerHTML == "No") {
                 btn_group[i].addEventListener('click', trainModelWithParameter, false)

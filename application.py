@@ -106,6 +106,18 @@ def get_model_dataset():
             file.write('\n'.encode("utf-8"))
     validation_auc = train_mode(datasetname)
     return str(validation_auc)
+@application.route("/parameterExam",methods=['GET','POST'])
+def get_model_parameter_exam():
+    if request.method == "POST":
+        datasetname = request.form.get('datasetname')
+        learningrate = request.form.get('learningrate')
+        batchsize = request.form.get('batchsize')
+        epochs = request.form.get('epochs')
+        decay = request.form.get('decay')
+        dropoutrate = request.form.get('dropoutrate')
+
+    validation_auc = train_mode_parameter(datasetname, learningrate, batchsize, epochs, decay, dropoutrate)
+    return str(validation_auc)
 
 @application.route("/parameter",methods=['GET','POST'])
 def get_model_parameter():

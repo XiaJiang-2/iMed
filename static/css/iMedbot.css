@@ -323,3 +323,8 @@ label.star:before {
   opacity: 0.6;
   cursor: not-allowed;
 }
+.copyright{
+  text-align: right;
+  font-size: x-small;
+  margin-right: 10px;
+}
