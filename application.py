@@ -11,7 +11,8 @@ import datetime
 from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename, redirect
 from utils import modelTraining
-
+import shap
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold, StratifiedShuffleSplit
 application = Flask(__name__)
 application.static_folder = 'static'
 bootstrap = Bootstrap(application)
@@ -71,7 +72,18 @@ def get_model_inputdata():
 
 @application.route("/patientform",methods=['GET','POST'])
 def get_model_patientform():
+
     if request.method == "POST":
+        filename = os.path.join("dataset/","LSM-15Year.txt")
+        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+        print(predset)
+        X_columns = list(predset[0])
+        print(X_columns)
+        strat_shuf = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=123)
+        for CV_index, val_index in strat_shuf.split(predset, target):
+            X_CV, X_val = predset[CV_index], predset[val_index]
+            Y_CV, Y_val = target[CV_index], target[val_index]
+
         category_list = []
         patient_dic = request.form.get('patient_dic')
         patient_input_list = json.loads(patient_dic)
@@ -79,7 +91,26 @@ def get_model_patientform():
             category_list.append(int(item['value']))
         print(np.array([category_list]))
         user_training_model = load_model('user_training_model.h5')
-        res = user_training_model.predict(np.array([category_list]))
+
+        def f(X):
+            # return best_model.predict(X).flatten()
+            print("++++++++++++++++++++++++")
+            result = []
+            for item in X:
+                prob = user_training_model.predict_proba(item.reshape(1,31))
+                # print(prob)
+                # print(prob[0][0])
+                result.append(prob[0][0])
+            print(np.array(result))
+            print(type(result))
+            return np.array(result)
+        explainer = shap.KernelExplainer(f, X_CV)
+        shap_values = explainer.shap_values(np.array([category_list]))
+        print(shap_values)
+        shap.waterfall_plot(
+            shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),
+                             feature_names=X_columns))
+        res = user_training_model.predict_proba(np.array([category_list]))
         res = str(res).replace('[','').replace(']','')
         print(res)
     return res

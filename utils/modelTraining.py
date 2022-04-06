@@ -17,6 +17,7 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, Stratified
 from sklearn.metrics import roc_curve, auc
 from tensorflow.keras import regularizers
 import pandas as pandas
+import shap
 
 
 def loadandprocess(file, sep='\t', predtype=1, scaled=True):
@@ -110,6 +111,8 @@ def model_val(params, x_cv, y_cv):
     clf.fit(x_cv, y_cv)
     return clf
 
+
+
 def model_gsearch_val(predset, target, params, nsplits=5, seed=123, scores='roc_auc'):
     split = 'SKF'
     """
@@ -169,4 +172,12 @@ with the best set of parameter values found by grid search
     print("best val score manual: "+str(val_auc_manu))
     print("best mean auc: %f and best index: %s using %s" % (gs.best_score_, gs.best_index_,gs.best_params_))
     print("")
+    # shap
+    # def f(X):
+    #     # return best_model.predict(X).flatten()
+    #     return gs.predict_proba(X)[:, 1]
+    #
+    # explainer = shap.KernelExplainer(f, X_CV)
+    # shap_values = explainer.shap_values(X_val[10])
+
     return gs, val_auc_grid, val_auc_manu
