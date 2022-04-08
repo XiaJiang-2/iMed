@@ -15,6 +15,7 @@ pymongo==3.11.4
 python-dateutil==2.7.5
 PyCryptodome==3.10.1
 matplotlib
+shap==0.40.0
 
 
 
