@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename, redirect
 from utils import modelTraining
 import shap
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold, StratifiedShuffleSplit
+import matplotlib.pyplot as plt
 application = Flask(__name__)
 application.static_folder = 'static'
 bootstrap = Bootstrap(application)
@@ -74,10 +75,12 @@ def get_model_inputdata():
 def get_model_patientform():
 
     if request.method == "POST":
-        filename = os.path.join("dataset/","LSM-15Year.txt")
-        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
-        print(predset)
-        X_columns = list(predset[0])
+        dataset_name = request.form.get('dataset_name')
+        print(dataset_name)
+        dataset_name_str = json.loads(dataset_name)
+        print(dataset_name_str)
+        filename = os.path.join("dataset/",dataset_name_str)
+        predset, target,X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
         print(X_columns)
         strat_shuf = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=123)
         for CV_index, val_index in strat_shuf.split(predset, target):
@@ -87,6 +90,7 @@ def get_model_patientform():
         category_list = []
         patient_dic = request.form.get('patient_dic')
         patient_input_list = json.loads(patient_dic)
+
         for item in patient_input_list:
             category_list.append(int(item['value']))
         print(np.array([category_list]))
@@ -104,12 +108,17 @@ def get_model_patientform():
             print(np.array(result))
             print(type(result))
             return np.array(result)
-        explainer = shap.KernelExplainer(f, X_CV)
+
+        X_train_summary = shap.kmeans(X_CV, 10)
+        print(X_train_summary)
+        explainer = shap.KernelExplainer(f, X_train_summary)
         shap_values = explainer.shap_values(np.array([category_list]))
         print(shap_values)
-        shap.waterfall_plot(
-            shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),
-                             feature_names=X_columns))
+        print(explainer.expected_value)
+        #shap.waterfall_plot(shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),feature_names=X_columns))
+        shap.waterfall_plot(shap.Explanation(values=shap_values[0], base_values=explainer.expected_value, data=np.array([category_list])[0],feature_names=X_columns))
+        plt.savefig('static/img/shap/shap.png')
+
         res = user_training_model.predict_proba(np.array([category_list]))
         res = str(res).replace('[','').replace(']','')
         print(res)
@@ -176,9 +185,9 @@ def train_mode_parameter(datasetname,learningrate, batchsize, epochs, decay, dro
     scores = "roc_auc"
     filename = os.path.join("dataset/", datasetname)
     if datasetname[-3:] == "txt":
-        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+        predset, target,X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
     elif datasetname[-3:] == "csv":
-        predset, target = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
+        predset, target,X_columns = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
     cur_params = {
         'mstruct': [(50, 1)],
         'idim': [len(predset[0])],
@@ -208,9 +217,9 @@ def train_mode(datasetname):
     scores = "roc_auc"
     filename = os.path.join("dataset/", datasetname)
     if datasetname[-3:] == "txt":
-        predset, target = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
+        predset, target, X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
     elif datasetname[-3:] == "csv":
-        predset, target = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
+        predset, target, X_columns = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
     cur_params = {
         'mstruct': [(50, 1)],
         'idim': [len(predset[0])],

@@ -39,6 +39,7 @@ def loadandprocess(file, sep='\t', predtype=1, scaled=True):
     """
     print(file)
     df = pandas.read_csv(file, sep, lineterminator='\n')
+    column_names = list(df.columns)[0:-1]
     # cols=[0,532]
     # predset = df.drop(df.columns[cols],axis=1)
     if predtype == 1:
@@ -64,7 +65,7 @@ def loadandprocess(file, sep='\t', predtype=1, scaled=True):
     # you can just comment"predset = predset.to_numpy()" because predset = scaler.transform(predset) will return numpy object directly
     print(predset.shape)
     # which we want to make a prediction
-    return (predset, tarcol)
+    return (predset, tarcol, column_names)
 def create_model(mstruct, idim, drate, kinit, iacti, hacti, oacti, opti, lrate, momen ,dec,ls, L1, L2,ltype):
     # create a model that KerasClassifier needs as an input for parameter build_fn
     model = Sequential()

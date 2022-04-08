@@ -214,6 +214,7 @@ function submit() {
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         const name = dataset.name
+        window.dataset_name = dataset.name
         const size = dataset.size
         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
@@ -461,6 +462,7 @@ function trainModel() {
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
+
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
                                     document.getElementById('textInput').disabled = true;
                                     //document.getElementById('textInput').placeholder="Enter your message..."
@@ -526,9 +528,11 @@ function submitPatientForm(){
         patient_dic.push({key:patient_Form.elements[i].name, value:patient_Form.elements[i].value})
     }
     console.log(patient_dic)
+    console.log(window.dataset_name)
 
-    $.post("/patientform", {patient_dic: JSON.stringify(patient_dic)}).done(function (data) {
+    $.post("/patientform", {patient_dic: JSON.stringify(patient_dic),dataset_name: JSON.stringify(window.dataset_name)}).done(function (data) {
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Your distant_recurrence probability is " + data, "no information", [])
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your SHAP plot","no information",[])
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
         document.getElementById('textInput').disabled = true;
         //document.getElementById('textInput').placeholder = "Enter your message..."
@@ -622,6 +626,9 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     var rocHTML = ``
     if(text.includes("roc curve")){
         rocHTML = `<img className="fit-picture" src="static/img/roc/roc_curve.png" alt="ROC Curve" style="width:300px;height:250px;">`
+    }
+    if(text.includes("SHAP")){
+        rocHTML = `<img className="fit-picture" src="static/img/shap/shap.png" alt="SHAP" style="width:300px;height:250px;">`
     }
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
