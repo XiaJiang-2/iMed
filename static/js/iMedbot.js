@@ -143,8 +143,8 @@ function wait(ms){
   }
 }
 function viewDataset(dataset,name,size){
-    var statisticalData = "Your dataset name is <b>"+ name +"</b> ; dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
+    // var statisticalData = "Your dataset name is <b>"+ name +"</b> ; dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
+    // appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
     var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
@@ -163,6 +163,8 @@ function viewDataset(dataset,name,size){
         // }
 
     //}
+    var statisticalData = "Your dataset name is <b>"+ name +"</b>; row number of dataset is <b>"+ array.length +"</b>; column number of dataset is <b>"+ tablehead.length +"</b>;dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
+    appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
 
     if (array.length < 30){
         alert ("Your dataset size is less than 30, please resubmit it ")
@@ -213,6 +215,7 @@ function submit() {
     //showdataset.style = "display:inline"
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
+        console.log(dataset)
         const name = dataset.name
         window.dataset_name = dataset.name
         const size = dataset.size
@@ -539,29 +542,43 @@ function submitPatientForm(){
     })
 
 }
-function generatePatientForm(labelList) {
-    console.log(labelList.toString())
+function generatePatientForm(labelList,table_result) {
+    //console.log(labelList.toString())
+    //console.log(table_result)
     var labelList_withouttarget = labelList.split(",")
     labelList_withouttarget.pop()
     if (labelList_withouttarget.length == 0){
         labelList_withouttarget = (labelList.toString()).split("\t")
         labelList_withouttarget.pop()
     }
-
-    console.log(labelList_withouttarget)
-
-
-
+    //console.log(labelList_withouttarget)
+    //console.log(table_result)
+    var final_result = labelList_withouttarget.map((e, i) => e + "&"+table_result[i]);
+    //console.log(final_result)
     let patientFormHtml = ""
-
           if (labelList.length != 0){
               document.getElementById('textInput').disabled = true;
               document.getElementById('textInput').placeholder = "You can not input now";
-
-              patientFormHtml = labelList_withouttarget.map(function(label){
+              patientFormHtml = final_result.map(function(item){
+                  const label = item.split("&")[0]
+                  const option_list = item.split("&")[1].split(',')
                 //const element = `<div class="form-group row"><label for=${label} class="col-sm-2 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-2"><input type="number" size="4" step="0.001" class="form-control" id=${label} name=${label} placeholder = "0"></div></div>`
-                 const element = `<div id="label" class="form-group row"><a href="#" id="show-option" title=${patientParameter_dis[label]}><i class="fas fa-info-circle" style="color:black"></i></a><label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label><div class="col-sm-6"><input type="number" list="itemlist" min="0" size="6" step="0.001"  id=${label} name=${label} value=0 placeholder = "0"><datalist id="itemlist"><option>0</option><option>1</option><option>2</option></datalist> </div></div>`
-                  return element
+                 const element = `<div id="label" class="form-group row">
+                                    <a href="#" id="show-option" title=${patientParameter_dis[label]}>
+                                       <i class="fas fa-info-circle" style="color:black"></i>
+                                    </a>
+                                       <label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label>
+                                       <div class="col-sm-6">
+                                                <select id=${label} class="form-control">
+                                        <option selected>Choose...</option>`
+
+                  const option_html = option_list.map(function(option){
+                      const one_option =  `<option>${option}</option>`
+
+                      return one_option
+                  })
+                  console.log(option_html)
+                  return element + option_html.join("") +`</select></div> </div>`
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
             let end ='<div class="form-group row"><div class="col-sm-10"> <button type="submit" class="btn btn-primary">Submit</button></div></div></form>'
@@ -574,16 +591,43 @@ function generatePatientForm(labelList) {
 
 function testPatient() {
     add_userMsg("Testing with new patients")
-
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
-            //console.log(rawLog)
+            console.log(rawLog)
             labelList = (rawLog.split("\n")[0])
+
+            table_rawLog = rawLog.split("\n")
+            //console.log(table_rawLog[4])
+            //console.log(typeof(table_rawLog[4]))
+            //console.log(table_rawLog[4].length)
+            for (let i = 1; i < table_rawLog.length; i++) {
+                table_rawLog[i] = table_rawLog[i].toString().split("\t")
+            }
+            // transpose = m[0].map((_, colIndex) => m.map(row => row[colIndex]));
+            //console.log(m[1])
+            // // console.log(typeof(table))
+            var table_result = []
+            for(var i=0; i<table_rawLog[1].length; i++) {
+                table_result[i] = []
+            }
+            //console.log(table_result)
+            //console.log(table_rawLog.length)
+            //console.log(table_rawLog[4])
+            for (let i = 1; i < table_rawLog.length; i++) {
+                for (let j = 0; j < table_rawLog[1].length; j++) {
+                    //console.log(table_rawLog[i][j])
+                    if (table_result[j].includes(table_rawLog[i][j]) == false){
+                    table_result[j].push(table_rawLog[i][j])}
+            }
+
+            }
+            //console.log(table_result.pop())
+            table_result = table_result.map(item => item.filter(function(x) {return x !== undefined || x !== ''}))
             //console.log(labelList.length())
-            generatePatientForm(labelList)
+            generatePatientForm(labelList, table_result)
         }
         reader.readAsText(dataset);
     }
@@ -1144,4 +1188,8 @@ var possiblequestions = [ "Hello", "What can you do?",
 autocomplete(document.getElementById("textInput"), possiblequestions);
 
 
-
+//
+// <!--                                                <datalist id="itemlist">-->
+//  <!-- <input type="number" required="required" id=${label} name=${label} value=0 placeholder = "0">-->
+// <!--                                                    <option>0</option><option>1</option><option>2</option>-->
+// <!--                                                </datalist>-->

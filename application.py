@@ -101,7 +101,9 @@ def get_model_patientform():
             print("++++++++++++++++++++++++")
             result = []
             for item in X:
-                prob = user_training_model.predict_proba(item.reshape(1,31))
+
+                prob = user_training_model.predict_proba(item.reshape(1,len(predset[0])))
+
                 # print(prob)
                 # print(prob[0][0])
                 result.append(prob[0][0])
