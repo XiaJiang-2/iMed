@@ -526,6 +526,8 @@ function submitPatientForm(){
     document.getElementById('textInput').placeholder = "We are evaluating your patient...";
     var patient_dic = []
     var patient_Form = document.getElementById("patientForm")
+    var shap_check = document.getElementById("shapCheck").checked
+    console.log(shap_check)
 
     for (var i = 0; i < patient_Form.elements.length-1; i++) {
         patient_dic.push({key:patient_Form.elements[i].name, value:patient_Form.elements[i].value})
@@ -533,9 +535,11 @@ function submitPatientForm(){
     console.log(patient_dic)
     console.log(window.dataset_name)
 
-    $.post("/patientform", {patient_dic: JSON.stringify(patient_dic),dataset_name: JSON.stringify(window.dataset_name)}).done(function (data) {
+    $.post("/patientform", {patient_dic: JSON.stringify(patient_dic),dataset_name: JSON.stringify(window.dataset_name),shap_check: JSON.stringify(shap_check)}).done(function (data) {
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Your distant_recurrence probability is " + data, "no information", [])
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your SHAP plot","no information",[])
+        if(shap_check == true){
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your SHAP plot","no information",[])}
+
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use your model to test your patients? ", "Test Patient", {"Testing with new patients":"Testing with new patients","End task":"End task","Retrain the model":"Retrain the model","Open new dataset":"Open new dataset"})
         document.getElementById('textInput').disabled = true;
         //document.getElementById('textInput').placeholder = "Enter your message..."
@@ -570,18 +574,21 @@ function generatePatientForm(labelList,table_result) {
                                        <label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label>
                                        <div class="col-sm-6">
                                                 <select id=${label} class="form-control">
-                                        <option selected>Choose...</option>`
+                                        <option selected>1</option>`
 
                   const option_html = option_list.map(function(option){
                       const one_option =  `<option>${option}</option>`
 
                       return one_option
                   })
-                  console.log(option_html)
+                  //console.log(option_html)
                   return element + option_html.join("") +`</select></div> </div>`
               })
             let front = '<form id="patientForm" onsubmit="submitPatientForm();return false" method="post">\n'
-            let end ='<div class="form-group row"><div class="col-sm-10"> <button type="submit" class="btn btn-primary">Submit</button></div></div></form>'
+            let end =' <div class="form-check">\n' +
+                '    <input type="checkbox" class="form-check-input" id="shapCheck">\n' +
+                '    <label class="form-check-label" for="shapCheck">Do you want to plot shap anlysis graph for this patient, it will take longer time according to your dataset size and model</label>\n' +
+                '  </div> <div class="form-group row"><div class="col-sm-10"> <button type="submit" class="btn btn-primary">Submit</button></div></div></form>'
             patientFormHtml = front+patientFormHtml.join("")+end
           }else {
                 patientFormHtml=" "

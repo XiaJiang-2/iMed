@@ -76,7 +76,8 @@ def get_model_patientform():
 
     if request.method == "POST":
         dataset_name = request.form.get('dataset_name')
-        print(dataset_name)
+        shap_check = request.form.get("shap_check")
+        print(shap_check)
         dataset_name_str = json.loads(dataset_name)
         print(dataset_name_str)
         filename = os.path.join("dataset/",dataset_name_str)
@@ -91,35 +92,38 @@ def get_model_patientform():
         patient_dic = request.form.get('patient_dic')
         patient_input_list = json.loads(patient_dic)
 
+        patient_input_list = patient_input_list[:-1]
+        print(patient_input_list)
         for item in patient_input_list:
             category_list.append(int(item['value']))
         print(np.array([category_list]))
         user_training_model = load_model('user_training_model.h5')
 
-        def f(X):
-            # return best_model.predict(X).flatten()
-            print("++++++++++++++++++++++++")
-            result = []
-            for item in X:
+        if shap_check == "true":
+            def f(X):
+                # return best_model.predict(X).flatten()
+                print("++++++++++++++++++++++++")
+                result = []
+                for item in X:
 
-                prob = user_training_model.predict_proba(item.reshape(1,len(predset[0])))
+                    prob = user_training_model.predict_proba(item.reshape(1,len(predset[0])))
 
-                # print(prob)
-                # print(prob[0][0])
-                result.append(prob[0][0])
-            print(np.array(result))
-            print(type(result))
-            return np.array(result)
+                    # print(prob)
+                    # print(prob[0][0])
+                    result.append(prob[0][0])
+                print(np.array(result))
+                print(type(result))
+                return np.array(result)
 
-        X_train_summary = shap.kmeans(X_CV, 10)
-        print(X_train_summary)
-        explainer = shap.KernelExplainer(f, X_train_summary)
-        shap_values = explainer.shap_values(np.array([category_list]))
-        print(shap_values)
-        print(explainer.expected_value)
-        #shap.waterfall_plot(shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),feature_names=X_columns))
-        shap.waterfall_plot(shap.Explanation(values=shap_values[0], base_values=explainer.expected_value, data=np.array([category_list])[0],feature_names=X_columns))
-        plt.savefig('static/img/shap/shap.png')
+            X_train_summary = shap.kmeans(X_CV, 10)
+            print(X_train_summary)
+            explainer = shap.KernelExplainer(f, X_train_summary)
+            shap_values = explainer.shap_values(np.array([category_list]))
+            print(shap_values)
+            print(explainer.expected_value)
+            #shap.waterfall_plot(shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),feature_names=X_columns))
+            shap.waterfall_plot(shap.Explanation(values=shap_values[0], base_values=explainer.expected_value, data=np.array([category_list])[0],feature_names=X_columns))
+            plt.savefig('static/img/shap/shap.png')
 
         res = user_training_model.predict_proba(np.array([category_list]))
         res = str(res).replace('[','').replace(']','')
