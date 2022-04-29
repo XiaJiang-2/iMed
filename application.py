@@ -83,6 +83,11 @@ def get_model_patientform():
         filename = os.path.join("dataset/",dataset_name_str)
         predset, target,X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
         print(X_columns)
+        # ['race', 'ethnicity', 'smoking', 'alcohol_useage', 'family_history', 'age_at_diagnosis', 'menopause_status',
+        #  'side', 'TNEG', 'ER', 'ER_percent', 'PR', 'PR_percent',
+        #  'P53', 'HER2', 't_tnm_stage', 'n_tnm_stage', 'stage', 'lymph_node_removed', 'lymph_node_positive',
+        #  'lymph_node_status', 'Histology', 'size', 'grade', 'invasive', 'hi
+        #  stology2', 'invasive_tumor_Location', 'DCIS_level', 're_excision', 'surgical_margins', 'MRIs_60_surgery']
         strat_shuf = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=123)
         for CV_index, val_index in strat_shuf.split(predset, target):
             X_CV, X_val = predset[CV_index], predset[val_index]
@@ -97,6 +102,7 @@ def get_model_patientform():
         for item in patient_input_list:
             category_list.append(int(item['value']))
         print(np.array([category_list]))
+        #[[2 0 1 1 2 1 1 0 0 1 1 1 1 1 0 1 1 2 1 1 1 1 2 1 1 0 2 3 1 1 1]]
         user_training_model = load_model('user_training_model.h5')
 
         if shap_check == "true":
@@ -105,20 +111,26 @@ def get_model_patientform():
                 print("++++++++++++++++++++++++")
                 result = []
                 for item in X:
-
                     prob = user_training_model.predict_proba(item.reshape(1,len(predset[0])))
-
                     # print(prob)
                     # print(prob[0][0])
                     result.append(prob[0][0])
                 print(np.array(result))
+                # the reason why we have 5 results is because we use kmeans to shrink the x_cv(background dataset) dataset to only 5 samples
+                #[0.4565038  0.3262849  0.3953898  0.23958007 0.3785722]
+
                 print(type(result))
                 return np.array(result)
 
-            X_train_summary = shap.kmeans(X_CV, 10)
+            #shap.kmeans(data, K) to summarize the background as K samples, in our case it transfer
+            X_train_summary = shap.kmeans(X_CV, 5)
             print(X_train_summary)
+            # < shap.utils._legacy.DenseData object at 0x0000024682E412B0 >
+            print("111111111111111111111111111111111111111")
             explainer = shap.KernelExplainer(f, X_train_summary)
+            print("222222222222222222222222222222222222222")
             shap_values = explainer.shap_values(np.array([category_list]))
+            print("333333333333333333333333333333333333333")
             print(shap_values)
             print(explainer.expected_value)
             #shap.waterfall_plot(shap.Explanation(values=shap_values, base_values=explainer.expected_value, data=np.array([category_list]),feature_names=X_columns))

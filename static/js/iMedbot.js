@@ -573,8 +573,9 @@ function generatePatientForm(labelList,table_result) {
                                     </a>
                                        <label for=${label} class="col-sm-5 col-form-label"><font size="-1">${label}</font></label>
                                        <div class="col-sm-6">
+                                      
                                                 <select id=${label} class="form-control" required>
-                                        <option selected value="">Choose</option>`
+                                        <option selected value="1">1</option>`
 
                   const option_html = option_list.map(function(option){
                       const one_option =  `<option value=${option}>${option}</option>`
