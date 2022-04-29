@@ -108,7 +108,7 @@ def get_model_patientform():
         if shap_check == "true":
             def f(X):
                 # return best_model.predict(X).flatten()
-                print("++++++++++++++++++++++++")
+                #print("++++++++++++++++++++++++")
                 result = []
                 for item in X:
                     prob = user_training_model.predict_proba(item.reshape(1,len(predset[0])))
@@ -123,7 +123,7 @@ def get_model_patientform():
                 return np.array(result)
 
             #shap.kmeans(data, K) to summarize the background as K samples, in our case it transfer
-            X_train_summary = shap.kmeans(X_CV, 5)
+            X_train_summary = shap.kmeans(X_CV, 1)
             print(X_train_summary)
             # < shap.utils._legacy.DenseData object at 0x0000024682E412B0 >
             print("111111111111111111111111111111111111111")
