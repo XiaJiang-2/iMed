@@ -1,0 +1,31 @@
+image: atlassian/default-image:2
+
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: "Deploy to Elastic Beanstalk"
+          deployment: production
+          script:
+            - &zip_app zip -r odpac.zip * .ebextensions
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.3.0
+              variables: &vars
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                S3_BUCKET: $AWS_S3_BUCKET
+                AWS_DEFAULT_REGION: "us-east-2"
+                APPLICATION_NAME: "odpac"
+                ZIP_FILE: "odpac.zip"
+                VERSION_LABEL: "bb_deploy_${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}_${BITBUCKET_COMMIT}"
+                ENVIRONMENT_NAME: "Odpac-env"
+    "*dev*":
+      - step:
+          name: "Deploy to Elastic Beanstalk"
+          deployment: staging
+          script:
+            - *zip_app
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.3.0
+              variables:
+                <<: *vars
+                ENVIRONMENT_NAME: Odpac-env-dev
