@@ -2,7 +2,7 @@ const BOT_IMG = "static/img/robot.svg";
 const NURSE_IMG = "static/img/nurse.svg"
 const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
-const PERSON_NAME = "You";
+PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
@@ -685,7 +685,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
     if (btnGroup != "") {
-        text = text + "(Please click the button)"
+        text = text + "(Please select one choice according to your situation)"
     }
     if (text == SURVEY) {
         starHTML = `<div class="stars" id="stars"><form  onsubmit="getValue();return false">
@@ -783,6 +783,26 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
         patientHtml = instruction
         instruction = "Patient Parameters"
     }
+    if (instruction != "no information")
+    {
+    var msgHTML =
+        `<div class="msg ${side}-msg">
+        <div class="msg-img" style="background-image: url(${img})"></div>
+        <div class="msg-bubble">
+            <div class="msg-info">
+                <div class="msg-info-name">${name}</div>
+                <div class="msg-info-time">
+                <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
+                ${formatDate(new Date())}
+
+                </div>
+            </div>
+        <div class="msg-text">
+            ${text}
+        </div>` + rocHTML + buttonHtml + patientHtml + starHTML + parameterHTML + `</div> </div>`;
+    }
+    if (instruction == "no information")
+    {
     var msgHTML =
         `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -790,10 +810,11 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
             <div class="msg-info">
                 <div class="msg-info-name">${name}</div>
                 <div class="msg-info-time">${formatDate(new Date())}
-                    <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
                 </div>
             </div>
         <div class="msg-text">${text}</div>` + rocHTML + buttonHtml + patientHtml + starHTML + parameterHTML + `</div></div>`;
+    }
+
     //'beforeend': Just inside the element, after its last child.
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
@@ -848,8 +869,10 @@ function showNext(e){
 
     if (pattern == "Predict"){
         input_choice = input_question["Predict"]
+        PERSON_NAME="Your choice is"
     }else if(pattern == "Train a Model"){
         input_choice = input_question["Train a Model"]
+        PERSON_NAME="Your choice is"
     }
 
     if (pattern == "Predict"){
@@ -897,7 +920,8 @@ function showNext(e){
             let index = Math.floor((Math.random()*input_choice[i].responses.length))
             msgText = input_choice[i].responses[index]
             btnGroup = Object.keys(input_choice[i].patterns)
-            instruction = Object.keys(input_choice[i].instruction)
+            instruction = input_choice[i].instruction
+            console.log(input_choice[i])
         }
     }
     appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);

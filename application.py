@@ -146,6 +146,7 @@ def get_model_patientform():
 def get_model_Examdataset():
     if request.method == "POST":
         datasetname = request.form.get('name')
+        print("data set name is ",datasetname)
     validation_auc = train_mode(datasetname)
     return str(validation_auc)
 
@@ -238,6 +239,7 @@ def train_mode(datasetname):
         predset, target, X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
     elif datasetname[-3:] == "csv":
         predset, target, X_columns = modelTraining.loadandprocess(filename, sep=',', predtype=1, scaled=False)
+    print(target)
     cur_params = {
         'mstruct': [(50, 1)],
         'idim': [len(predset[0])],

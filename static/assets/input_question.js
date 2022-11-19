@@ -17,18 +17,18 @@ input_question =
     '                 "Could you tell me how long you have had breast cancer?"]\n' +
     '  },\n' +
     '  {"tag": "DCIS_level",\n' +
-    ' "instruction": "DCIS_level instruction",\n' +
+    ' "instruction": "Choose the type of ductal carcinoma in situ. Ductal carcinoma in situ (DCIS) is the presence of abnormal cells inside a milk duct in the breast. DCIS is considered the earliest form of breast cancer. DCIS is noninvasive, meaning it has not spread out of the milk duct to invade other parts of the breast. ",\n' +
     '  "nextques": "size",\n' +
-    '  "patterns": {"DCIS_level0":"0","DCIS_level1":"1","DCIS_level2":"2","DCIS_level3":"3", "DCIS_level4":"4","DCIS_level5":"5","DCIS_level6":"6", "DCIS_level7":"7","DCIS_leve8":"8"},\n' +
+    '  "patterns": {"solid":"0","apocrine":"4","cribriform":"3","dcis":"5", "comedo":"2","papillary":"6","micropapillary":"8","micropapillalry":"7","not present":"1"},\n' +
     '  "responses": ["What is your DCIS_level?","Could you tell me your DCIS_level"]' +
     '  },\n' +
 
 
 
      '  {"tag": "size",\n' +
-    ' "instruction": "size instruction",\n' +
+   ' "instruction": "Size of tumor is measured in mm.",\n' +
     '  "nextques": "grade",\n' +
-    '  "patterns": {"size0":"0","size1":"1","size2":"2"},\n' +
+    '  "patterns": {"0-32":"0","32-70":"1","greater than 70":"2"},\n' +
     '  "responses": ["What is your tumor size?","Could you tell me your tumor size"]' +
     '  },\n' +
 
@@ -46,23 +46,23 @@ input_question =
     // '  "responses": ["What is your menopause_status?"]' +
     // '  }\n' +
     '  {"tag": "grade",\n' +
-    '  "instruction": "grade instruction",\n' +
+    '  "instruction": "Grade of disease: grade 1 – looks most like normal breast cells and is usually slow-growing; grade 2 – looks less like normal cells and is growing faster; grade 3 – looks different to normal breast cells and is usually fast-growing",\n' +
     '  "nextques": "PR_percent",\n' +
-    '  "patterns": {"grade0":"0","grade1":"1","grade2":"2"},\n' +
+    '  "patterns": {"grade1":"0","grade2":"1","grade3":"2"},\n' +
     '  "responses": ["What is your tumor grade?","Could you tell me your grade"]' +
     '  },\n' +
 
     '  {"tag": "PR_percent",\n' +
-    '  "instruction": "PR_percent instruction",\n' +
+    '  "instruction": "Receptors are proteins that attach to certain substances. Progesterone receptor (PR) tests look for receptors that attach to the hormones estrogen and progesterone in a sample of breast cancer tissue. PR Percent means percent of cell stain positive for PR receptors",\n' +
     '  "nextques": "invasive_tumor_Location",\n' +
-    '  "patterns": {"PR_percent0":"0", "PR_percent1":"1","PR_percent2":"2"},\n' +
+    '  "patterns": {"0-20":"2", "20-90":"1","90-100":"0"},\n' +
     '  "responses": ["What is your PR_percent?","Could you tell me your PR_PERCENT?"]' +
     '  },\n' +
 
     '  {"tag": "invasive_tumor_Location",\n' +
-    '  "instruction": "invasive_tumor_Location instruction",\n' +
+    '  "instruction": "Where invasive tumor is located. Ductal means an overgrowth of the cells that line the small tubes (ducts) inside the breast, while lobular is an overgrowth of cell lining the milk glands (lobules).",\n' +
     '  "nextques": "none",\n' +
-    '  "patterns": {"invasive_tumor_Location0":"0", "invasive_tumor_Location1":"1","invasive_tumor_Location2":"2"},\n' +
+    '  "patterns": {"mixed duct and lobular":"1", "duct":"0","lobular":"2","none":"3"},\n' +
     '  "responses": ["What is your invasive_tumor_Location?","Could you tell me your invasive_tumor_Location?"]' +
     '  }],\n' +
 
