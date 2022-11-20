@@ -6,3 +6,17 @@ input = np.array(input)
 print(input)
 res = model_15.predict(input)
 print(res)
+
+input = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+model_10 = load_model('model10.h5')
+input = np.array(input)
+print(input)
+res = model_10.predict(input)
+print(res)
+
+input = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+model_5 = load_model('model5.h5')
+input = np.array(input)
+print(input)
+res = model_5.predict(input)
+print(res)

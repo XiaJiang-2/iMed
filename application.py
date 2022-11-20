@@ -14,12 +14,15 @@ from utils import modelTraining
 import shap
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold, StratifiedShuffleSplit
 import matplotlib.pyplot as plt
+import joblib
 application = Flask(__name__)
 application.static_folder = 'static'
 bootstrap = Bootstrap(application)
 class_button_json = json.loads(open('training_data/classes_button.json').read())
 list_of_classes = class_button_json['classes_button']
 model_15 = load_model('imedbot_model_five_input_15.h5')
+model_10 = load_model('model10.h5')
+model_5 = load_model('model5.h5')
 
 @application.route("/")
 def index():
@@ -67,6 +70,30 @@ def get_model_inputdata():
     input = list(map(int, input))
     if input[0] == 15:
         res = model_15.predict(np.array([input[1:]]))
+    elif input[0] == 10:
+        dcis=input[1]
+        size=input[2]
+        grade=input[3]
+        pr_percent=input[4]
+        location=input[5]
+        model_input=[0 for i in range(18)]
+        model_input[2]=pr_percent
+        model_input[9]=dcis
+        model_input[12]=grade
+
+        res = model_10.predict(np.array([model_input]))
+    elif input[0] == 5:
+        dcis = input[1]
+        size = input[2]
+        grade = input[3]
+        pr_percent = input[4]
+        location = input[5]
+        model_input = [0 for i in range(20)]
+        model_input[8] = pr_percent
+        model_input[16] = size
+        model_input[17] = location
+        model_input[18] = dcis
+        res = model_5.predict(np.array([model_input]))
     else:
         res = "Sorry we only have 15 year model so far"
     return str(res)
