@@ -1,7 +1,7 @@
 input_question =
     '  {' +
     '"START":[{"tag": "Instruction",\n' +
-    ' "instruction": "Two choices",\n' +
+    ' "instruction": "We can either predict the probability of recurrence or help you train a model online.",\n' +
     '  "nextques": "Predict or Train a Model",\n' +
     '   "patterns": {"Predict":"1","Train a Model":"2"},\n' +
     '   "responses": ["I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"]\n'+
@@ -9,7 +9,7 @@ input_question =
 
     '"Predict": [' +
     '{"tag": "treatment_year",\n' +
-    ' "instruction": "treatment_year instruction",\n' +
+    ' "instruction": "Please choose the treatment year",\n' +
     '  "nextques": "DCIS_level",\n' +
     '   "patterns": {"5 year":"5","10 year":"10","15 year":"15"},\n' +
     '   "responses": ["I can predict the recurrence probability of breast cancer, please tell me which year you want to predict",\n' +
