@@ -72,7 +72,6 @@ def get_model_inputdata():
     input = input.lstrip("]")
     input = input.split(',')
     input = list(map(int, input))
-
     # due to different discrete to digital map,
     # transformation need according .txt in ../docs/informationprovidedfordevelopment/
 
