@@ -4,6 +4,10 @@ const PERSON_IMG = "static/img/woman.svg";
 const BOT_NAME = "iMedBot";
 PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
+var input_question10 = JSON.parse(input_question10)
+var input_question5 = JSON.parse(input_question5)
+
+
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
 
@@ -903,6 +907,21 @@ function showNext(e){
     }else {
         for (var i = 0; i < input_choice.length; i++) {
             if (Object.keys(input_choice[i].patterns).indexOf(pattern) != -1) {
+                console.log(input_choice[i].patterns[pattern])
+                if (input_choice[i].tag=="treatment_year")
+                {
+                    console.log("year")
+                    if (input_choice[i].patterns[pattern]=="10")
+                    {
+                        console.log(10)
+                        input_choice = input_question10["Predict"]
+                    }
+                    if (input_choice[i].patterns[pattern]=="5")
+                    {
+                    console.log(5)
+                        input_choice = input_question5["Predict"]
+                    }
+                }
                 input.push(input_choice[i].patterns[pattern])
                 nextques = input_choice[i].nextques
             }
@@ -917,11 +936,11 @@ function showNext(e){
     }
     for (var i = 0 ; i < input_choice.length; i++) {
         if (input_choice[i].tag == nextques){
+
             let index = Math.floor((Math.random()*input_choice[i].responses.length))
             msgText = input_choice[i].responses[index]
             btnGroup = Object.keys(input_choice[i].patterns)
             instruction = input_choice[i].instruction
-            console.log(input_choice[i])
         }
     }
     appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);
