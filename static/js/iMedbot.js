@@ -77,7 +77,7 @@ var alreaView = false
 function gobacktoBrowse() {
     location.reload();
     text = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
-    appendMessage(BOT_NAME, NURSE_IMG, "left", text,"Two choices",{"Predict":"Predict","Train a Model":"Train a Model"})
+    appendMessage(BOT_NAME, NURSE_IMG, "left", text,"no information",{"Predict":"Predict","Train a Model":"Train a Model"})
 
 }
 
@@ -401,7 +401,7 @@ function showDemo() {
         //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
         myWindow.document.write('<script>' +
             'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
-            '<\/script>');
+            '</script>');
         myWindow.document.write('</body></html>');
         myWindow.document.close();
     }else{
@@ -671,7 +671,7 @@ function haveQuestion() {
     appendMessage(BOT_NAME, NURSE_IMG, "left","Please tell me your questions, I will pass your question to our experts ","no information",[])
 }
 
-function appendMessage(name, img, side, text, instruction,btnGroup) {
+function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
     if (text == "") {
         return
     }
@@ -688,8 +688,15 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
     }
     //Simple solution for small apps
     let buttonHtml = generateBtnGroup(btnGroup)
+    original_text=text
     if (btnGroup != "") {
+        if (text=="What is your " || text=="Could you tell me your " || text=="What is your tumor " || text=="Could you tell me your tumor ")
+        {
+            text = text +"<a href='#' id='show-option' title='"+instruction+"'>"+tag+"</a>"+ " (Please select one choice according to your situation)"
+        }
+        else{
         text = text + "(Please select one choice according to your situation)"
+        }
     }
     if (text == SURVEY) {
         starHTML = `<div class="stars" id="stars"><form  onsubmit="getValue();return false">
@@ -787,8 +794,11 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
         patientHtml = instruction
         instruction = "Patient Parameters"
     }
-    if (instruction != "no information")
+    console.log(instruction)
+    console.log("text is ",original_text)
+    if (instruction != "no information" && original_text!="What is your " && original_text!="Could you tell me your " && original_text!="What is your tumor " && original_text!="Could you tell me your tumor " )
     {
+
     var msgHTML =
         `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -796,7 +806,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
             <div class="msg-info">
                 <div class="msg-info-name">${name}</div>
                 <div class="msg-info-time">
-                <a href="#" id="show-option" title="${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
+                <a href="#" id="show-option" title= "${instruction}"><i class="fas fa-info-circle" style="color:black"></i></a>
                 ${formatDate(new Date())}
 
                 </div>
@@ -804,9 +814,10 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
         <div class="msg-text">
             ${text}
         </div>` + rocHTML + buttonHtml + patientHtml + starHTML + parameterHTML + `</div> </div>`;
-    }
-    if (instruction == "no information")
+    } else
     {
+
+    console.log("no info")
     var msgHTML =
         `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -817,8 +828,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup) {
                 </div>
             </div>
         <div class="msg-text">${text}</div>` + rocHTML + buttonHtml + patientHtml + starHTML + parameterHTML + `</div></div>`;
-    }
 
+    }
     //'beforeend': Just inside the element, after its last child.
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
@@ -899,7 +910,7 @@ function showNext(e){
                   }else {
                       console.log("hello")
                         secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
-                        appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"Predict","Train a Model":"Train a Model"});
+                        appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"no information", {"Predict":"Predict","Train a Model":"Train a Model"});
                       }
                 })
         //alert("Do you really want to train the model?")
@@ -934,6 +945,7 @@ function showNext(e){
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Thank you! you answered all questions, we are calculating recurrence","no information",btnGroup);
         return
     }
+    tag=""
     for (var i = 0 ; i < input_choice.length; i++) {
         if (input_choice[i].tag == nextques){
 
@@ -941,9 +953,10 @@ function showNext(e){
             msgText = input_choice[i].responses[index]
             btnGroup = Object.keys(input_choice[i].patterns)
             instruction = input_choice[i].instruction
+            tag = input_choice[i].tag
         }
     }
-    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup);
+    appendMessage(BOT_NAME, NURSE_IMG, "left", msgText, instruction, btnGroup,tag);
 }
 
 function getinput(input_copy){
@@ -1005,7 +1018,7 @@ function load(){
     secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
     btnGroup = []
     appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
-    appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"Predict","Train a Model":"Train a Model"});
+    appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"no information", {"Predict":"Predict","Train a Model":"Train a Model"});
 }
 window.οnlοad =load()
 // window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
