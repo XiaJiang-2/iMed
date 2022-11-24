@@ -6,7 +6,7 @@ PERSON_NAME = "You";
 var input_question = JSON.parse(input_question)
 var input_question10 = JSON.parse(input_question10)
 var input_question5 = JSON.parse(input_question5)
-
+train_model_year=0
 
 var input = []
 const SURVEY = "BYE, It is my pleasure to help you,Have a nice day!How many stars you can give us?"
@@ -88,7 +88,7 @@ function uploadData(e) {
         document.getElementById("fileid").onchange = function() {
         submit();
     };
-        //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
         alreaView = true
     }
 
@@ -243,51 +243,7 @@ function submit() {
         read()
     }
 }
-// function submit() {
-//     //showdataset.style = "display:inline"
-//     function read(callback) {
-//         var dataset = $('#fileid').prop('files')[0];
-//         if (dataset == undefined){
-//             alert("please upload your dataset first")
-//             gobacktoBrowse()
-//         }
-//     }
-//         const name = dataset.name
-//         if (name.slice(-3) != 'txt' && name.slice(-3) != 'csv'){
-//             alert ("Your format is not 'txt' or 'csv', please upload allowed format!  ")
-//             location.reload();
-//             return
-//         }
-//         var reader = new FileReader();
-//         reader.onload = function() {
-//             rawLog = reader.result
-//             viewDataset(rawLog,name)
-//         }
-//         reader.readAsText(dataset);
-//     }
-//     read()
-// }
-// function readTextFile(file)
-// {
-//     var rawFile = new XMLHttpRequest();
-//     rawFile.open("GET", file, false);
-//     rawFile.onreadystatechange = function ()
-//     {
-//         if(rawFile.readyState === 4)
-//         {
-//             if(rawFile.status === 200 || rawFile.status == 0)
-//             {
-//                 var allText = rawFile.responseText;
-//                 alert(allText);
-//                 return allText
-//             }
-//         }
-//     }
-//     rawFile.send(null);
-// }
-//
-// text = readTextFile("file:///C:\Users\CHX37\PycharmProjects\ProjectW81XWH1900495-iMedbot\static\js\LSM-15Year.txt")
-//console.log(text)
+
 function getParameterExam(){
     document.getElementById('textInput').disabled = true;
     document.getElementById('textInput').placeholder = "Your model is training!";
@@ -401,7 +357,7 @@ function showDemo() {
         //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
         myWindow.document.write('<script>' +
             'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
-            '</script>');
+            '<\/script>');
         myWindow.document.write('</body></html>');
         myWindow.document.close();
     }else{
@@ -666,6 +622,22 @@ function noQuestion() {
     appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
 }
 
+function train5year(){
+            train_model_year=5;
+            add_userMsg("5 year");
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"});
+}
+function train10year(){
+            train_model_year=10;
+            add_userMsg("10 year");
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"});
+}
+function train15year(){
+            train_model_year=15;
+            add_userMsg("15 year");
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"});
+}
+
 function haveQuestion() {
     add_userMsg("I have questions")
     appendMessage(BOT_NAME, NURSE_IMG, "left","Please tell me your questions, I will pass your question to our experts ","no information",[])
@@ -794,8 +766,6 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
         patientHtml = instruction
         instruction = "Patient Parameters"
     }
-    console.log(instruction)
-    console.log("text is ",original_text)
     if (instruction != "no information" && original_text!="What is your " && original_text!="Could you tell me your " && original_text!="What is your tumor " && original_text!="Could you tell me your tumor " )
     {
 
@@ -817,7 +787,6 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
     } else
     {
 
-    console.log("no info")
     var msgHTML =
         `<div class="msg ${side}-msg">
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -835,8 +804,21 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
     msgerChat.scrollTop += 500;
     if (buttonHtml != " ") {
         const btn_group = document.getElementsByClassName("btn btn-success");
+
         for (let i = 0; i < btn_group.length; i++) {
-            if (btn_group[i].innerHTML == "View Example Dataset") {
+            if (btn_group[i].innerHTML == "5 year" && instruction == "no information")
+            {
+            btn_group[i].addEventListener('click', train5year, false)
+            }
+            else if (btn_group[i].innerHTML == "10 year" && instruction == "no information")
+            {
+            btn_group[i].addEventListener('click', train10year, false)
+            }
+            else if (btn_group[i].innerHTML == "15 year" && instruction == "no information")
+            {
+            btn_group[i].addEventListener('click', train15year, false)
+            }
+            else if (btn_group[i].innerHTML == "View Example Dataset") {
                 btn_group[i].addEventListener('click', showDemo, false)
 
             }else if (btn_group[i].innerHTML == "Run Model with Example Dataset") {
@@ -871,6 +853,8 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
         }
     }
 }
+
+
 function showNext(e){
     var instruction = ""
     var msgText = ""
@@ -906,7 +890,8 @@ function showNext(e){
                   confirmButtonText: 'Yes, Go on!'
                 }).then((result) => {
                   if (result.isConfirmed) {
-                      appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"})
+                      //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"})
+                      appendMessage(BOT_NAME, NURSE_IMG, "left", "We can train the model for 5 year, 10 year and 15 year respectively. The dataset format is different from three choices","no information",{"5 year":"5 year","10 year":"10 year","15 year":"15 year"})
                   }else {
                       console.log("hello")
                         secMsg = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
@@ -921,15 +906,12 @@ function showNext(e){
                 console.log(input_choice[i].patterns[pattern])
                 if (input_choice[i].tag=="treatment_year")
                 {
-                    console.log("year")
                     if (input_choice[i].patterns[pattern]=="10")
                     {
-                        console.log(10)
                         input_choice = input_question10["Predict"]
                     }
                     if (input_choice[i].patterns[pattern]=="5")
                     {
-                    console.log(5)
                         input_choice = input_question5["Predict"]
                     }
                 }

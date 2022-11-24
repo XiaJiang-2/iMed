@@ -64,7 +64,8 @@ input_question =
     '  "responses": ["What is your ","Could you tell me your "]' +
     '  }],\n' +
 
-      '"Train a Model":[{"tag": "choice2",\n' +
+      '"Train a Model":[\n'+
+      '{"tag": "choice2",\n' +
     ' "instruction": "Browse data",\n' +
     '  "nextques": "View your dataset",\n' +
     '   "patterns": {"Example Dataset":"1","Browse Local":"2"},\n' +
