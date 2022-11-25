@@ -89,6 +89,7 @@ function uploadData(e) {
         submit();
     };
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+        add_userMsg("view my dataset.")
         alreaView = true
     }
 
@@ -219,7 +220,7 @@ function submit() {
     //showdataset.style = "display:inline"
     function read(callback) {
         var dataset = $('#fileid').prop('files')[0];
-        console.log(dataset)
+        console.log("data set is ",dataset)
         const name = dataset.name
         window.dataset_name = dataset.name
         const size = dataset.size
@@ -311,31 +312,33 @@ var myWindow = null
 function showDemo() {
 
     //add_userMsg("Example dataset")
-    demoHtml = '<thead class="thead-dark"><tr><th>race</th><th>ethnicity</th><th>smoking</th><th>alcohol_useage</th><th>family_history</th><th>age_at_diagnosis</th><th>menopause_status</th><th>side</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_removed</th><th>lymph_node_positive</th><th>lymph_node_status</th><th>Histology</th><th>size</th><th>grade</th><th>invasive</th><th>histology2</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>re_excision</th><th>surgical_margins</th><th>MRIs_60_surgery</th><th>distant_recurrence\n' +
-        '</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0\n' +
-        '</td></tr></tbody><tbody><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr></tbody><tbody><tr><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>1\n' +
-        '</td></tr>'
+    if (train_model_year==5){
+    demoHtml =
+    '<thead class="thead-dark"><tr><th>race</th><th>smoking</th><th>family_history</th><th>age_at_diagnosis</th><th>TNEG</th><th>ER</th><th>ER_percent</th><th>PR</th><th>PR_percent</th><th>P53</th><th>HER2</th><th>t_tnm_stage</th><th>n_tnm_stage</th><th>stage</th><th>lymph_node_positive</th><th>Histology</th><th>size</th><th>invasive_tumor_Location</th><th>DCIS_level</th><th>surgical_margins</th><th>distant_recurrence</th></tr></thead>'+
+    '<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>2</td><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td></tr>'
+    }
+    if (train_model_year==10){
+    demoHtml=
+    '<thead class="thead-dark"><tr><th>lymph_node_positive</th><th>ER</th><th>PR_percent</th><th>smoking</th><th>ER_percent</th><th>family_history</th><th>alcohol_useage</th><th>Histology</th><th>age_at_diagnosis</th><th>DCIS_level</th><th>TNEG</th><th>surgical_margins</th><th>grade</th><th>stage</th><th>HER2</th><th>ethnicity</th><th>n_tnm_stage</th><th>PR</th><th>distant_recurrence</th></tr></thead>'+
+    '<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>'+
+    '<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>1</td><td>0</td><td>2</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td></tr>'+
+    '<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td>1</td><td>3</td><td>0</td><td>1</td><td>1</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>'
+    }
+    if (train_model_year==15){
+    demoHtml=
+    '<thead class="thead-dark"><tr><th>invasive_tumor_Location</th><th>ER</th><th>ER_percent</th><th>alcohol_useage</th><th>Histology</th><th>size</th><th>age_at_diagnosis</th><th>t_tnm_stage</th><th>lymph_node_status</th><th>menopause_status</th><th>surgical_margins</th><th>grade</th><th>stage</th><th>histology2</th><th>race</th><th>n_tnm_stage</th><th>re_excision</th><th>distant_recurrence</th></tr></thead>'+
+    '<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>'+
+    '<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>0</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>'+
+    '<tr><td>2</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>0</td><td>1</td></tr>'+
+    '<tr><td>0</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>2</td><td>0</td><td>1</td></tr>'
+    }
     requirements = '<h2>Instructions:</h2>'+
         '<ul className="list-group list-group-flush">'+
         '<li className="list-group-item">1.The size of dataset should be in 50kb-500kb</li>'+
@@ -357,7 +360,7 @@ function showDemo() {
         //myWindow.document.write('<span id = "Validation_AUC" className = "badge badge-primary" style="display:none"  ><br />The Validation_AUC of demo dataset is 0.841</span>')
         myWindow.document.write('<script>' +
             'document.getElementById("runDemo").addEventListener("click",()=>{ document.getElementById("Validation_AUC").style.display="inline"},false)' +
-            '<\/script>');
+            '</script>');
         myWindow.document.write('</body></html>');
         myWindow.document.close();
     }else{
@@ -420,8 +423,13 @@ function trainModel() {
                       document.getElementById('textInput').disabled = true;
                       document.getElementById('textInput').placeholder = "Your model is training!";
                       var dataset = $('#fileid').prop('files')[0];
+                      console.log("dataset",dataset);
                       if (dataset == null){
-                          $.post("/Examdataset", {name: '15_year_smote_balancedataset - Copy.csv'}).done(function (data) {
+                          if (train_model_year == 5) {data_name='Book1.csv'}
+                          else if (train_model_year == 10) {data_name='Book2.csv'}
+                          else if (train_model_year == 15) {data_name='Book3.csv'};
+                          console.log(data_name);
+                          $.post("/Examdataset", {name: data_name}).done(function (data) {
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Please wait, we are training your model ","no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "Your model validation auc is "+ data,"no information",[])
                                     appendMessage(BOT_NAME, NURSE_IMG, "left", "This is your roc curve","no information",[])
