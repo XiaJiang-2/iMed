@@ -104,15 +104,17 @@ function runModelExampleDateset(e){
 }
 
 function uploadNewData(e) {
+    alreaView=false;
     add_userMsg("Open new dataset")
     document.getElementById('fileid').click();
+    console.log(document.getElementById("fileid"))
     if (alreaView == false){
         document.getElementById("fileid").onchange = function() {
-        submit();
+            submit();
+        };
 
-    };
         //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
-
+    console.log(4)
     alreaView = true
     }}
 
@@ -228,9 +230,12 @@ function viewDataset(dataset,name,size){
  }
 function submit() {
     //showdataset.style = "display:inline"
+    console.log("enter submit")
     function read(callback) {
+
         var dataset = $('#fileid').prop('files')[0];
-        console.log("data set is ",dataset)
+
+
         const name = dataset.name
         window.dataset_name = dataset.name
         const size = dataset.size
@@ -265,6 +270,7 @@ function submit() {
 }
 
 function getParameterExam(){
+        console.log("enter getpara exam")
     document.getElementById('textInput').disabled = true;
     document.getElementById('textInput').placeholder = "Your model is training!";
         const name = '15_year_smote_balancedataset - Copy.csv'
@@ -724,7 +730,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
             '</div>\n' +
             '</form>\n'
     }
-    if(instruction == "Train Model with Example dataset") {
+    if(instruction == "Train Model with Example dataset" ||(instruction=="Parameters"&& $('#fileid').prop('files')[0]==null)) {
         parameterHTML = '<form id="parameterForm" onsubmit="getParameterExam();return false" method="post">\n' +
             '  <div class="form-group row">\n' +
             '    <label for="learningrate" class="col-sm-2 col-form-label"><font size="-1">Learning Rate</font></label>\n' +
