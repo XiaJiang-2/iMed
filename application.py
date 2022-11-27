@@ -144,7 +144,9 @@ def get_model_patientform():
         print(dataset_name_str)
         filename = os.path.join("dataset/", dataset_name_str)
         predset, target, X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
-        print(X_columns)
+        print("147",X_columns)
+        print("148",predset[0])
+        print("149",target[0])
         # ['race', 'ethnicity', 'smoking', 'alcohol_useage', 'family_history', 'age_at_diagnosis', 'menopause_status',
         #  'side', 'TNEG', 'ER', 'ER_percent', 'PR', 'PR_percent',
         #  'P53', 'HER2', 't_tnm_stage', 'n_tnm_stage', 'stage', 'lymph_node_removed', 'lymph_node_positive',
@@ -163,7 +165,7 @@ def get_model_patientform():
         print(patient_input_list)
         for item in patient_input_list:
             category_list.append(int(item['value']))
-        print(np.array([category_list]))
+        print("168",np.array([category_list]))
         # [[2 0 1 1 2 1 1 0 0 1 1 1 1 1 0 1 1 2 1 1 1 1 2 1 1 0 2 3 1 1 1]]
         user_training_model = load_model('user_training_model.h5')
 

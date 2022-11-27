@@ -89,7 +89,7 @@ function uploadData(e) {
         submit();
     };
         appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
-        add_userMsg("view my dataset.")
+       // add_userMsg("view my dataset.")
         alreaView = true
     }
 
@@ -150,6 +150,7 @@ function wait(ms){
 function viewDataset(dataset,name,size){
     // var statisticalData = "Your dataset name is <b>"+ name +"</b> ; dataset size is <b>"+ size/1000 +"</b> kb; dataset format is<b> "+name.slice(-3)+"</b>"
     // appendMessage(BOT_NAME, NURSE_IMG, "left", statisticalData,"statistical data of dataset",[])
+    console.log("breakpoint 153 ",dataset,name,size)
     var showTable = document.getElementById('showdataset');
     var hidden_div = document.getElementById("hidden_div")
     var hidden_table = document.getElementById("hidden_table")
@@ -189,7 +190,6 @@ function viewDataset(dataset,name,size){
             }
        tableHTML+= '</tr></tbody>'
     }
-    // console.log((tableHTML))
     hidden_table.innerHTML = tableHTML
     // document.getElementById("hidden_div").style.display='inline'
     // document.getElementById("hidden_table").style.display='inline'
@@ -197,6 +197,9 @@ function viewDataset(dataset,name,size){
     // $(newWindow).load(function(){
     //     $(newWindow.document).find('body').html($('#hidden_table').html());
     // });
+    if (myWindow != null){
+
+    console.log("200",myWindow)
     myWindow.document.write(css + '<html><head><title>Table</title></head><body>');
     myWindow.document.write('<table  class="table">')
     myWindow.document.write(tableHTML)
@@ -204,6 +207,7 @@ function viewDataset(dataset,name,size){
     myWindow.document.write('</body></html>');
     showTable.style = "display:inline"
     // console.log(tableHTML)
+    }
     appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you want to use our default parameter set to train  your dataset","Train Model",{"Yes":"Yes","No":"No"})
     var openWindow=function(event,tableHTML){
         var myWindow = window.open("", "MsgWindow", "width=500, height=500");
@@ -232,12 +236,13 @@ function submit() {
         var reader = new FileReader();
         reader.onload = function() {
             rawLog = reader.result
+            console.log("break point 235 ")
             viewDataset(rawLog,name,size)
         }
         reader.readAsText(dataset);
     }
     var dataset = $('#fileid').prop('files')[0];
-    if (dataset == undefined){
+    if (dataset === undefined){
         alert("please upload your dataset first")
         // gobacktoBrowse()
     }else {
