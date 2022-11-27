@@ -443,7 +443,7 @@ function trainModel() {
                         function read(callback) {
                             var dataset = $('#fileid').prop('files')[0];
                             const name = dataset.name
-                            console.log(name)
+                            console.log("upload dataset",name)
                             var reader = new FileReader();
                             reader.onload = function() {
                                 rawLog = reader.result
@@ -490,17 +490,25 @@ function retrainModelWithParameter() {
 
 }
 function submitPatientForm(){
+    console.log("submitPatientForm")
     document.getElementById('textInput').disabled = true;
     document.getElementById('textInput').placeholder = "We are evaluating your patient...";
     var patient_dic = []
     var patient_Form = document.getElementById("patientForm")
     var shap_check = document.getElementById("shapCheck").checked
-    console.log(shap_check)
 
     for (var i = 0; i < patient_Form.elements.length-1; i++) {
-        patient_dic.push({key:patient_Form.elements[i].name, value:patient_Form.elements[i].value})
+         console.log("patient form ",i," is ",patient_Form.elements[i])
+
+        patient_dic.push({key:patient_Form.elements[i].id, value:patient_Form.elements[i].value})
     }
     console.log(patient_dic)
+    if (window.dataset_name===undefined)
+    {
+        if (train_model_year==5){window.dataset_name="LSM-5Year-I-240.txt";}
+        if (train_model_year==10){window.dataset_name="LSM-10Year-I-240.txt";}
+        if (train_model_year==15){window.dataset_name="LSM-15Year-I-240.txt";}
+    }
     console.log(window.dataset_name)
 
     $.post("/patientform", {patient_dic: JSON.stringify(patient_dic),dataset_name: JSON.stringify(window.dataset_name),shap_check: JSON.stringify(shap_check)}).done(function (data) {
@@ -517,7 +525,8 @@ function submitPatientForm(){
 function generatePatientForm(labelList,table_result) {
     //console.log(labelList.toString())
     //console.log(table_result)
-    var labelList_withouttarget = labelList.split(",")
+    var labelList_withouttarget = labelList
+    console.log(labelList_withouttarget)
     labelList_withouttarget.pop()
     if (labelList_withouttarget.length == 0){
         labelList_withouttarget = (labelList.toString()).split("\t")
@@ -567,49 +576,13 @@ function generatePatientForm(labelList,table_result) {
 
 function testPatient() {
     add_userMsg("Testing with new patients")
-    function read(callback) {
-        var dataset = $('#fileid').prop('files')[0];
-        var reader = new FileReader();
-        reader.onload = function() {
-            rawLog = reader.result
-            console.log(rawLog)
-            labelList = (rawLog.split("\n")[0])
+    $.get("/getTestPatient", { msg: train_model_year }).done(function (data) {
+        generatePatientForm(data["labellist"], data["tableresult"])
 
-            table_rawLog = rawLog.split("\n")
-            //console.log(table_rawLog[4])
-            //console.log(typeof(table_rawLog[4]))
-            //console.log(table_rawLog[4].length)
-            for (let i = 1; i < table_rawLog.length; i++) {
-                table_rawLog[i] = table_rawLog[i].toString().split("\t")
-            }
-            // transpose = m[0].map((_, colIndex) => m.map(row => row[colIndex]));
-            //console.log(m[1])
-            // // console.log(typeof(table))
-            var table_result = []
-            for(var i=0; i<table_rawLog[1].length; i++) {
-                table_result[i] = []
-            }
-            //console.log(table_result)
-            //console.log(table_rawLog.length)
-            //console.log(table_rawLog[4])
-            for (let i = 1; i < table_rawLog.length; i++) {
-                for (let j = 0; j < table_rawLog[1].length; j++) {
-                    //console.log(table_rawLog[i][j])
-                    if (table_result[j].includes(table_rawLog[i][j]) == false){
-                    table_result[j].push(table_rawLog[i][j])}
-            }
-
-            }
-            //console.log(table_result.pop())
-            table_result = table_result.map(item => item.filter(function(x) {return x !== undefined || x !== ''}))
-            //console.log(labelList.length())
-            generatePatientForm(labelList, table_result)
-        }
-        reader.readAsText(dataset);
-    }
-    read()
-
+    })
 }
+
+
 
 function add_userMsg(msgText) {
 

@@ -107,6 +107,31 @@ def get_model_inputdata():
         res = "Sorry we only have 15 year model so far"
     return str(res)
 
+@application.route("/getTestPatient")
+def get_test_patient_list():
+    year = request.args.get('msg')
+    if int(year)==5:
+        with open('dataset/LSM-5Year-I-240.txt') as f:
+            contents = f.readlines()
+    if int(year)==10:
+        with open('dataset/LSM-10Year-I-240.txt') as f:
+            contents = f.readlines()
+    if int(year)==15:
+        with open('dataset/LSM-15Year-I-240.txt') as f:
+            contents = f.readlines()
+    print(year)
+    for i in range(len(contents)):
+        contents[i]=contents[i].split()
+    labellist = contents[0]
+    res = {}
+    print(len(labellist),len(contents))
+    for i in range(len(labellist)):
+        res[str(i)] = []
+        for j in range(1, len(contents)):
+            if contents[j][i] not in res[str(i)]:
+                res[str(i)].append(contents[j][i])
+    print(res)
+    return {"labellist":labellist,"tableresult":res}
 
 @application.route("/patientform", methods=['GET', 'POST'])
 def get_model_patientform():
@@ -114,6 +139,7 @@ def get_model_patientform():
         dataset_name = request.form.get('dataset_name')
         shap_check = request.form.get("shap_check")
         print(shap_check)
+        print("dataset_name ",dataset_name )
         dataset_name_str = json.loads(dataset_name)
         print(dataset_name_str)
         filename = os.path.join("dataset/", dataset_name_str)
