@@ -38,9 +38,9 @@ def loadandprocess(file, sep='\t', predtype=1, scaled=True):
     :return:
     """
     print(file)
-    if file[-3:]=="txt":
+    if file[-3:] == "txt":
         df = pandas.read_csv(file, sep, lineterminator='\n')
-    elif file[-3:]=="csv":
+    elif file[-3:] == "csv":
         df = pandas.read_csv(file)
     column_names = list(df.columns)[0:-1]
     print(column_names)

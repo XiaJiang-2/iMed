@@ -73,27 +73,30 @@ function getValue(event){
     }
 }
 var alreaView = false
-
 function gobacktoBrowse() {
     location.reload();
     text = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
     appendMessage(BOT_NAME, NURSE_IMG, "left", text,"no information",{"Predict":"Predict","Train a Model":"Train a Model"})
 
 }
-
 function uploadData(e) {
     add_userMsg("Upload Local Dataset")
     document.getElementById('fileid').click();
     if (alreaView == false){
+
         document.getElementById("fileid").onchange = function() {
         submit();
-    };
-        appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
-       // add_userMsg("view my dataset.")
-        alreaView = true
+
+        };
+
+            appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
+            alreaView = true
     }
 
 }
+
+
+
 
 function runModelExampleDateset(e){
     add_userMsg("Run Model with Example Dataset")
@@ -106,9 +109,11 @@ function uploadNewData(e) {
     if (alreaView == false){
         document.getElementById("fileid").onchange = function() {
         submit();
+
     };
         //appendMessage(BOT_NAME, NURSE_IMG, "left", "Please check the dataset you uploaded and it will give your some basic stats","View your dataset",{"View your dataset":"View your dataset"})
-        alreaView = true
+
+    alreaView = true
     }}
 
 function csvToArray(dataset, delimiter = ",") {
@@ -177,6 +182,7 @@ function viewDataset(dataset,name,size){
         location.reload();
         return
     }
+
     for(var  i= 0; i< tablehead.length; i++) {
         tableHTML+= '<th>' + tablehead[i] + '</th>'
     }
@@ -237,6 +243,14 @@ function submit() {
         reader.onload = function() {
             rawLog = reader.result
             console.log("break point 235 ")
+            var array = csvToArray(rawLog, delimiter = ",")
+            var tablehead = Object.keys(array[0]);
+            if ((train_model_year==5 && tablehead.length!=21)||(train_model_year==10 && tablehead.length!=19)||(train_model_year==15 && tablehead.lenght!=18))
+                {
+                    alert ("Your dataset size does not match the year you selected, please resubmit it ")
+                    location.reload();
+                    return
+             }
             viewDataset(rawLog,name,size)
         }
         reader.readAsText(dataset);
