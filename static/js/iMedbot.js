@@ -45,6 +45,8 @@ $(document).on({
 
 
 msgerForm.addEventListener("submit", event => {
+console.log("11111111111");
+alert("done")
   event.preventDefault();
   const msgText = msgerInput.value;
   if (!msgText) return;
@@ -64,16 +66,30 @@ msgerForm.addEventListener("submit", event => {
 
 function getValue(event){
     console.log(event)
-    var radio = document.getElementById("stars");
-    // console.log(radio.length())
+    var radio = document.getElementsByClassName('stars');
+    //var text = document.getElementById("usersuggestion");
+    //console.log("70",text);
+    console.log("72",radio);
+
+
+    console.log(radio.length());
+
     for (i=0; i<radio.length(); i++) {
         if (radio[i].checked==true) {
             alert(radio[i].id)
         }
     }
+    //$.post("/submitsurvey", {
+      //          radio:radio,
+        //        text:text
+          //  }).done(function (data) {
+       //         console.log(data)
+            //})
 }
 var alreaView = false
 function gobacktoBrowse() {
+    console.log("11111111111");
+alert("done")
     location.reload();
     text = "I can either predict breast cancer metastasis for your patient based on our deep learning models trained using one existing dataset,or I can train a model for you if you can provide your own dataset, so how do you want to proceed?Please enter 1 for the first choice, or 2 for the second choice"
     appendMessage(BOT_NAME, NURSE_IMG, "left", text,"no information",{"Predict":"Predict","Train a Model":"Train a Model"})
@@ -405,6 +421,7 @@ function showDemo() {
 }
 
 function nottrainModel() {
+
     add_userMsg("End task")
 
     appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
@@ -412,6 +429,7 @@ function nottrainModel() {
     // more_que = "Do you have any other questions?"
     // appendMessage(BOT_NAME, NURSE_IMG, "left", more_que,"survey",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = true;
+    console.log("end task")
     //document.getElementById('textInput').placeholder="Enter your message..."
 }
 
@@ -644,6 +662,16 @@ function train15year(){
             appendMessage(BOT_NAME, NURSE_IMG, "left", "Please review the demo dataset first and upload your local dataset, only .txt and .csv format are permitted","Browse data",{"View Example Dataset":"View Example Dataset","Upload Local Dataset":"Upload Local Dataset","Run Model with Example Dataset":"Run Model with Example Dataset"});
 }
 
+function takesurvey(){
+appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[]);
+}
+
+function takenosurvey(){
+
+            location.reload();
+            return
+}
+
 function haveQuestion() {
     add_userMsg("I have questions")
     appendMessage(BOT_NAME, NURSE_IMG, "left","Please tell me your questions, I will pass your question to our experts ","no information",[])
@@ -651,6 +679,7 @@ function haveQuestion() {
 
 function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
     if (text == "") {
+
         return
     }
 
@@ -677,20 +706,22 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
         }
     }
     if (text == SURVEY) {
-        starHTML = `<div class="stars" id="stars"><form  onsubmit="getValue();return false">
-            <input class="star star-5" id="star-5" type="radio" name="star" value ="5"/>
-            <label class="star star-5" for="star-5"></label>
-            <input class="star star-4" id="star-4" type="radio" name="star" value ="4"/>
-            <label class="star star-4" for="star-4"></label>
-            <input class="star star-3" id="star-3" type="radio" name="star" value ="3"/>
-            <label class="star star-3" for="star-3"></label>
-            <input class="star star-2" id="star-2" type="radio" name="star" value ="2"/>
-            <label class="star star-2" for="star-2"></label>
-            <input class="star star-1" id="star-1" type="radio" name="star" value ="1"/>
-            <label class="star star-1" for="star-1"></label>
-            <input type="submit" value="Submit" class ="btn btn-success">
-        </form>
-        </div>`
+        starHTML = '<div class="stars" id="stars"><form  onsubmit="getValue();" >\n' +
+           ' <input class="star star-5" id="star-5" type="radio" name="star" value ="5" onsubmit="getValue();"/>\n' +
+           ' <label class="star star-5" for="star-5"></label>\n' +
+           ' <input class="star star-4" id="star-4" type="radio" name="star" value ="4" onsubmit="getValue();"/>\n' +
+            '<label class="star star-4" for="star-4"></label>\n' +
+            '<input class="star star-3" id="star-3" type="radio" name="star" value ="3" onsubmit="getValue();"/>\n' +
+            '<label class="star star-3" for="star-3"></label>\n' +
+            '<input class="star star-2" id="star-2" type="radio" name="star" value ="2" onsubmit="getValue();"/>\n' +
+            '<label class="star star-2" for="star-2"></label>\n' +
+            '<input class="star star-1" id="star-1" type="radio" name="star" value ="1" onsubmit="getValue();"/>\n' +
+            '<label class="star star-1" for="star-1"></label>\n' +
+            '<label for="exampleFormControlTextarea1">Please leave your suggestions for iMedBot</label>\n' +
+            '<textarea class="form-control" id="usersuggestion" rows="5"></textarea>\n' +
+            '<input type="submit" value="Submit" class ="btn btn-success">\n' +
+        '</form>\n' +
+        '</div>\n'
     }
     if (instruction == "Parameters") {
         parameterHTML = '<form id="parameterForm" onsubmit="getParameter();return false" method="post">\n' +
@@ -824,6 +855,15 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
             {
             btn_group[i].addEventListener('click', train15year, false)
             }
+            else if (btn_group[i].innerHTML == "Yes" && original_text == "Would you like to take a survey?")
+            {
+            console.log(text)
+            btn_group[i].addEventListener('click', takesurvey, false)
+            }
+            else if (btn_group[i].innerHTML == "No" && original_text == "Would you like to take a survey?")
+            {
+            btn_group[i].addEventListener('click', takenosurvey, false)
+            }
             else if (btn_group[i].innerHTML == "View Example Dataset") {
                 btn_group[i].addEventListener('click', showDemo, false)
 
@@ -862,6 +902,7 @@ function appendMessage(name, img, side, text, instruction,btnGroup,tag="") {
 
 
 function showNext(e){
+
     var instruction = ""
     var msgText = ""
     var btnGroup = []
@@ -951,7 +992,11 @@ function getinput(input_copy){
   $.get("/getInput", { msg: input_copy.toString() }).done(function (data) {
     res = "Your risk of breast cancer recurrence is" +" "+data.substring(2,data.length-2)
       appendMessage(BOT_NAME, NURSE_IMG, "left", res,"no information",[])
-      appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
+      appendMessage(BOT_NAME, NURSE_IMG, "left","Would you like to take a survey?","no information",{"Yes":"Yes","No":"No"})
+     // appendMessage(BOT_NAME, NURSE_IMG, "left",SURVEY,"no information",[])
+
+
+
     // appendMessage(BOT_NAME, NURSE_IMG, "left", "Do you have any other questions?","no information",{"I have no questions":"I have no questions","I have questions":"I have questions"})
     document.getElementById('textInput').disabled = true;
     //document.getElementById('textInput').placeholder="Enter your message..."
@@ -1008,6 +1053,7 @@ function load(){
     appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
     appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"no information", {"Predict":"Predict","Train a Model":"Train a Model"});
 }
+
 window.οnlοad =load()
 // window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", firstMsg,"no information", btnGroup);
 //window.οnlοad = appendMessage(BOT_NAME, NURSE_IMG, "left", secMsg,"Two choices", {"Predict":"1","Train a Model":"2"});

@@ -328,3 +328,7 @@ label.star:before {
   font-size: medium;
   margin-right: 10px;
 }
+
+textarea {
+  resize: none;
+}

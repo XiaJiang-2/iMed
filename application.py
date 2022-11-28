@@ -107,31 +107,43 @@ def get_model_inputdata():
         res = "Sorry we only have 15 year model so far"
     return str(res)
 
+
 @application.route("/getTestPatient")
 def get_test_patient_list():
     year = request.args.get('msg')
-    if int(year)==5:
+    if int(year) == 5:
         with open('dataset/LSM-5Year-I-240.txt') as f:
             contents = f.readlines()
-    if int(year)==10:
+    if int(year) == 10:
         with open('dataset/LSM-10Year-I-240.txt') as f:
             contents = f.readlines()
-    if int(year)==15:
+    if int(year) == 15:
         with open('dataset/LSM-15Year-I-240.txt') as f:
             contents = f.readlines()
     print(year)
     for i in range(len(contents)):
-        contents[i]=contents[i].split()
+        contents[i] = contents[i].split()
     labellist = contents[0]
     res = {}
-    print(len(labellist),len(contents))
+    print(len(labellist), len(contents))
     for i in range(len(labellist)):
         res[str(i)] = []
         for j in range(1, len(contents)):
             if contents[j][i] not in res[str(i)]:
                 res[str(i)].append(contents[j][i])
     print(res)
-    return {"labellist":labellist,"tableresult":res}
+    return {"labellist": labellist, "tableresult": res}
+
+
+@application.route("/submitsurvey", methods=['POST','GET'])
+def get_user_survey():
+    if request.method == "POST":
+        star = request.args.get('radio')
+        text = request.args.get('text')
+        print(star, text)
+
+    return "success"
+
 
 @application.route("/patientform", methods=['GET', 'POST'])
 def get_model_patientform():
@@ -139,14 +151,14 @@ def get_model_patientform():
         dataset_name = request.form.get('dataset_name')
         shap_check = request.form.get("shap_check")
         print(shap_check)
-        print("dataset_name ",dataset_name )
+        print("dataset_name ", dataset_name)
         dataset_name_str = json.loads(dataset_name)
         print(dataset_name_str)
         filename = os.path.join("dataset/", dataset_name_str)
         predset, target, X_columns = modelTraining.loadandprocess(filename, predtype=1, scaled=False)
-        print("147",X_columns)
-        print("148",predset[0])
-        print("149",target[0])
+        print("147", X_columns)
+        print("148", predset[0])
+        print("149", target[0])
         # ['race', 'ethnicity', 'smoking', 'alcohol_useage', 'family_history', 'age_at_diagnosis', 'menopause_status',
         #  'side', 'TNEG', 'ER', 'ER_percent', 'PR', 'PR_percent',
         #  'P53', 'HER2', 't_tnm_stage', 'n_tnm_stage', 'stage', 'lymph_node_removed', 'lymph_node_positive',
@@ -165,7 +177,7 @@ def get_model_patientform():
         print(patient_input_list)
         for item in patient_input_list:
             category_list.append(int(item['value']))
-        print("168",np.array([category_list]))
+        print("168", np.array([category_list]))
         # [[2 0 1 1 2 1 1 0 0 1 1 1 1 1 0 1 1 2 1 1 1 1 2 1 1 0 2 3 1 1 1]]
         user_training_model = load_model('user_training_model.h5')
 
