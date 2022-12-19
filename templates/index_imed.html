@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            Welcome to iMed!
+        </h1>
+    </div>
+        <div id="main"}>
+
+            <!--left menu-->
+            <div id="left" class="menu">
+            <ul>
+            <li onclick="testdata('<h2>iMedBot</h2>Click <a href={{ url_for("index") }}>here</a> to go to iMedBot!<br><p>this is the description of iMedBot</p>')"><h3>iMedBot</h3></li>
+            <li onclick="testdata('<h2>DataAnalytics</h2>Click <a href=#>here</a> to go to DataAnalytics!<br><p>this is the description of DataAnalytics</p>')"><h3>DataAnalytics</h3></li>
+            <li onclick="testdata('<h2>DPAC</h2>Click <a href=#>here</a> to go to DPAC!<br><p>this is the description of DPAC</p>')"><h3>DPAC</h3></li>
+            <li onclick="testdata('<h2>MBIL</h2>Click <a href=#>here</a> to go to MBIL!<br><p>this is the description of MBIL</p>')"><h3>MBIL</h3></li>
+            </ul>
+            </div>
+            <!--right contents-->
+            <div id="right"><h2>Instructions of each part</h2></div>
+        </div>
+
+<script>
+function testdata(obj){
+document.getElementById('right').innerHTML=obj;
+ }
+</script>
+
+{% endblock %}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'main.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/iMedbot.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+<style type="text/css">
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+    td {overflow: hidden;}
+</style>
+
+    <style rel="stylesheet/scss" lang="scss" scoped>
+    .dashboard-editor-container {
+        padding: 15px;
+        background-color: rgb(240, 242, 245);
+
+        overflow-y: auto;
+        height: 672px;
+
+        .chart-wrapper {
+            background: #fff;
+            padding: 16px 16px 0;
+            margin-bottom: 32px;
+        }
+    }
+</style>
+
+    {% if title %}
+        <title>iMed-{{title}}</title>
+    {% else %}
+        <title>iMed</title>
+    {% endif %}
+<script type="text/javascript">
+            function selects(){
+                var ele=document.getElementsByName('chk');
+                for(var i=0; i<ele.length; i++){
+                    if(ele[i].type=='checkbox')
+                        ele[i].checked=true;
+                }
+            }
+            function deSelect(){
+                var ele=document.getElementsByName('chk');
+                for(var i=0; i<ele.length; i++){
+                    if(ele[i].type=='checkbox')
+                        ele[i].checked=false;
+
+                }
+            }
+        </script>
+</head>
+<section id="navbar">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2F8F9D;">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="color: #8CC0DE;"><b>iMed</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+              <form class="navbar-right">
+            <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{url_for('index_imed')}}" style="color: #82DBD8;">Home</a>
+                </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-book dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">
+                        iMedBot
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item " href="index">talk to the robot</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">
+                    DataAnalysis
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">
+                        DPAC
+                    </a>
+                </li>
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">
+                        MBIL
+                    </a>
+                </li>
+
+              </ul>
+            </div>
+              </form>
+
+          </div>
+        </nav>
+    </section>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<body >
+    <div class="dashboard-editor-container">
+
+
+
+    <!--
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ProjectW81XWH1910495</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+
+                <div class="dropdown">
+                  <button class="nav-link text-white btn btn-dark mt-2 mb-2">Dropdown</button>
+                  <div class="dropdown-content">
+                        <a href="/scatter">Scatter plot</a>
+                        <a href="/trend">Line plot</a>
+                        <a href="/threeD">3D plot</a>
+                        <a href = "/auc">ROC_AUC</a>
+                        <a href = "/wil">Wilcoxon Sign-Ranked Test</a>
+                        <a href="/chi">Chi-Squared Test</a>
+                        <a href="/fi">Feature importance</a>
+                        <a href="/feabar">Feature importance based on classification</a>
+                        <a href="/he">Heat Map</a>
+                      <a href="upload_dataset">Upload dataset</a>
+                      <a href="/retrieve_columns">Retrieve_columns</a>
+
+                  </div>
+                </div> -->
+<!--                <ul class="navbar-nav ml-auto mb-2 mb-lg-0 ">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/scatter">Scatter plot</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/trend">Line plot</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/threeD">3D plot</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/auc">ROC_AUC</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/wil">Wilcoxon Sign-Ranked Test</a>-->
+<!--                    </li>-->
+
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link text-white" href="/chi">Chi-Squared Test</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+     <!--       </div>
+        </div>
+    </nav>
+-->
+      <main>
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 col-sm-12 col-xm-12">
+                      <div class="ml-auto mr-auto">
+                        {% block content %}
+                        {% endblock %}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<!--    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>-->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+<!--    <script>-->
+<!--      // AOS.init({-->
+<!--      //   offset: 400,-->
+<!--      //   duration: 1000-->
+<!--      // });-->
+
+<!--    </script>-->
+     <footer class="bg-dark text-white text-center text-lg-start footer">
+              <!-- Grid container -->
+              <div class="container p-4">
+                <!--Grid row-->
+                <div class="row">
+                  <!--Grid column-->
+                  <div class="col-lg-5 col-md-12 mb-4 mb-md-0">
+                    <p >Terms and Conditions</p>
+                    <p>Privacy Policy</p>
+                  </div>
+                  <!--Grid column-->
+
+                  <!--Grid column-->
+                  <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <p>Contact:xij6@pitt.edu</p>
+                    <p>Copyright © Jiang's AI Lab 2021 </p>
+                      <p>Acknowledgement Text</p>
+
+                  </div>
+                  <!--Grid column-->
+
+                  <!--Grid column-->
+                  <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <ul class="list-unstyled">
+                      <li>
+                        <a href="#!" class="text-white">Link 1</a>
+                      </li>
+                        <li>
+                        <a href="#!" class="text-white">Link 2</a>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <!--Grid column-->
+                </div>
+                <!--Grid row-->
+              </div>
+              <!-- Grid container -->
+
+        </footer>
+    </div>
+</body>
+
+</html>

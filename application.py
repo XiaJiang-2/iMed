@@ -27,6 +27,10 @@ model_5 = load_model('model5.h5')
 
 
 @application.route("/")
+def index_imed():
+    return render_template("index_imed.html")
+
+@application.route("/index")
 def index():
     return render_template("index.html")
 

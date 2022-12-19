@@ -332,3 +332,57 @@ label.star:before {
 textarea {
   resize: none;
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  height:80px;
+}
+#left{
+    width:200px;
+    float:left;
+    border:#CCCCCC 1px solid;
+
+}
+#right{
+    width:500px;
+    float:left;
+    height:300px;
+    padding-top:10px;
+    margin-left:150px;
+}
+
+.main{
+    padding-bottom:20px;}
+
+.site-header-logo h1 {
+  color: rgb(47, 143, 157);
+  font-family: lobsterregular;
+  font-size: 3rem;
+  margin-top: 2rem;
+}
+
+.navbar-text {
+  color: rgb(250, 250, 250);
+}
+
+.navbar-brand {
+  color: rgb(250, 250, 250);
+  font-family: lobsterregular;
+  font-size: 2.5rem;
+}
+
+.navbar-brand:hover {
+  color: rgb(250, 250, 250);
+  font-family: lobsterregular;
+}
+
+#navbar{
+  width:80%;
+  margin:0px auto;
+  position:fixed;/*固定作用*/
+  top:0px;}
+
