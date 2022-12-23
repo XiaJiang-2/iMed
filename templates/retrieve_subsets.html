@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            Retrieve Subsets
+        </h1>
+    </div>
+
+    <div class="row p-4">
+        <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
+            <div class="card-body">
+              {% if datapath is none %}
+              <form id="load_dataset_form"  action ="{{ url_for('upload_dataset', flag=1) }}" method="POST" enctype="multipart/form-data" class="form">
+                    <input id="load_dataset" class="btn btn-primary mt-1 submit_button"
+                           value = "load_dataset" name ="load_dataset" type="submit">
+                </form>
+              {% endif %}
+              {% if data_path is not none %}
+
+                <label class ="mr-sm-2">upload succesfully!</label>
+                <label>{{data_path}}</label>
+                <a class="btn btn-success mt-2 mb-2 submit_button" href="{{url_for('download', data_path=data_path)}}">Download</a>
+                <button type="button" id="show_table" class="btn btn-dark mt-2 mb-2 submit_button" >Show Table</button>
+                <hr/>
+                <form id="form2"  action ="{{ url_for('expand_data', data_path = data_path) }}" method="POST" enctype="multipart/form-data" class="form">
+                    <input id="data_path_1" value="{{data_path}}" type="text" name="data_path_1" style="display:none">
+                    <input id="expand_dataset" class="btn btn-primary mt-1 submit_button"
+                           value = "expand_the_dataset" name ="data_path1" type="submit">
+                </form>
+                <form id="form3"  action ="{{ url_for('retrieve_columns',data_path=data_path) }}" method="POST" enctype="multipart/form-data" class ='form'>
+                    <input id="data_path_2" value="{{data_path}}" type="text" name="data_path_2" style="display:none">
+                    <input id="retrieve_columns_directly" class="btn btn-primary mt-1 submit_button"
+                        value = "retrieve columns based on filters" name ="data_path2" type="submit">
+                </form>
+                <form id="form4"  action ="{{ url_for('return_sorted_results',data_path=data_path)}}" method="POST" enctype="multipart/form-data" class ='form'>
+                    <input id="data_path_3" value="{{data_path}}" type="text" name="data_path_3" style="display:none">
+                    <input id="return_sorted_results" class="btn btn-primary mt-1 submit_button"
+                        value = "return sorted results" name ="data_path3" type="submit">
+                </form>
+                <div id="hidden_table" style=" display:none; overflow: auto; height: 80%; width: 95%; page-break-inside:auto" >
+                    <table id="table" class="table table-striped" >
+                        <thead>
+                            <tr>
+                            {% for head in heads %}
+                                <th>{{ head }}</th>
+                            {% endfor %}
+                          </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for iter,row in data.iterrows() %}
+                            <tr>
+                                {% for item in row %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+         document.getElementById("show_table").addEventListener('click', function(){
+            var hidden_table = document.getElementById("hidden_table")
+            if (hidden_table.style.display === 'block'){
+                hidden_table.style.display = 'none';
+            }else{
+                $(document).ready(function () {
+                    $('#data').DataTable({
+                        "scrollX": true,
+                    });
+                }, false)
+                document.getElementById("hidden_table").style.display='block';
+
+
+            }
+        });
+        function submitbtn(){
+            getElementById("submit1").disabled=true;
+        //Validation code goes here
+        };
+        function makelocalDisable(){
+          var x=document.getElementById("upload_local_dataset")
+          x.disabled=true
+          };
+         function makeserverEnable(){
+             var x=document.getElementById("upload_server_dataset")
+              x.disabled=false
+         };
+         function makelocalEnable(){
+          var x=document.getElementById("upload_local_dataset")
+          x.disabled=false
+          };
+         function makeserverDisable(){
+             var x=document.getElementById("upload_server_dataset")
+              x.disabled=true
+         };
+
+
+
+
+     </script>
+
+{% endblock %}

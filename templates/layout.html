@@ -8,7 +8,7 @@
 
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{url_for('static', filename = 'main.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'data_analytics.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/iMedbot.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
 <style type="text/css">
@@ -77,13 +77,17 @@
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item " href="index">talk to the robot</a></li>
+                        <li><a class="dropdown-item " href="{{ url_for('imedbot') }}">talk to the robot</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">
                     DataAnalysis
                   </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{url_for('upload_dataset', flag=1)}}">retrieve_columns</a></li>
+                        <li><a class="dropdown-item" href="#"></a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #8CC0DE;">

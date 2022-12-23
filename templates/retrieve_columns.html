@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            Retrieve Columns
+        </h1>
+    </div>
+
+    <div class="row p-4">
+        <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
+            <div class="card-body">
+                {% if new_df is none%}
+                <h2>{{data_path}}</h2>
+                 <label>the length of this data is {{df_length}}</label>
+                <form method ='post' id ='filters' class ='center' >
+                    <h3>choose values for discrete columns!</h3><br>
+                    <div class="dashboard-editor-container" >
+                    {% for column, specific_values in diversity_columns.items() %}
+                    <label for="diversity_filters_{{column}}">{{column}}:</label>
+                    <select id="diversity_filters_{{column}}" name = "diversity_filters_{{column}}" multiple>
+                        <option selected='selected' value ="any">any</option>
+                        {% for value in specific_values %}
+                        <option value="{{value}}">{{value}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <hr/>
+                    {% endfor %}
+                    </div>
+                    <h3>Please set minimum and maximum value for continuous columns</h3>
+                    <div class="dashboard-editor-container"  >
+                    {% for column, limits in continuous_columns.items() %}
+                    <label>{{column}}:</label><br/>
+                        <label for="value_{{column}}_minimum">minimum value</label>
+                        <input type="text" id="value_{{column}}_minimum" name="continuous_filters_minimum_{{column}}"
+                               value ="{{limits[0]}}" min="{{limits[0]}}" max="{{limits[1]}}">
+                        <label for="value_{{column}}_maximum">maximum value</label>
+                        <input type="text" id="value_{{column}}_maximum" name="continuous_filters_maximum_{{column}}"
+                               value ="{{limits[1]}}" min="{{limits[0]}}" max="{{limits[1]}}">
+                    <hr/>
+                    {% endfor %}
+                    </div>
+
+                <h3>Please choose columns which should be returned</h3>
+                    <div class="dashboard-editor-container">
+                    <table>
+                        <thead>
+                            <th><input type="checkbox" onClick="toggle(this)" /> Check All</th>
+                        </thead>
+                        <tbody>
+                            {% for column in all_columns %}
+                            <tr>
+                                <td><input type="checkbox" name="check_return_columns" value="{{column}}"></td>
+                                <td>{{column}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-primary mt-1 submit_button" >
+                </form>
+                {% endif %}
+                {% if new_df is not none%}
+                <label class ="mr-sm-2">retrieve successfully!</label>
+                <label>{{data_path}}</label>
+                <a class="btn btn-success mt-2 mb-2 submit_button" href="{{url_for('download', data_path=data_path)}}">Download</a><hr/>
+                <label>the length of this data is {{df_length}}</label>
+                <label>filters</label>
+                <button type="button" id="show_table_retrieve" class="btn btn-dark mt-2 mb-2 submit_button" >Show Table</button>
+                <div id="hidden_table_retrieve" style=" display:none; overflow: auto; height: 80%; width: 95%; page-break-inside:auto" >
+                    <table id="table3" class="table table-striped" >
+                        <thead>
+                            <tr>
+                            {% for head in all_columns %}
+                                <th>{{ head }}</th>
+                            {% endfor %}
+                          </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for iter,row in new_df.iterrows() %}
+                            <tr>
+                                {% for item in row %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+         document.getElementById("show_table_retrieve").addEventListener('click', function(){
+            var hidden_table= document.getElementById("hidden_table_retrieve")
+            if (hidden_table.style.display === 'block'){
+                hidden_table.style.display = 'none';
+            }else{
+                $(document).ready(function () {
+                    $('#data').DataTable({
+                        "scrollX": true,
+                    });
+                }, false)
+                document.getElementById("hidden_table_retrieve").style.display='block';
+
+
+            }
+        });
+     </script>
+        <script>
+        function toggle(source) {
+          checkboxes = document.getElementsByName('check_return_columns');
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+          }
+        }
+        </script>
+
+
+{% endblock %}

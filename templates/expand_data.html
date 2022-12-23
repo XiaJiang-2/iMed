@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            Expand Data
+        </h1>
+    </div>
+
+    <div class="row p-4">
+        <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
+            {% if new_data is none %}
+            <h3>Please choose columns which should be expanded:)</h3>
+            <form method ='post' action="{{url_for('expand_data',data_path=data_path)}}">
+                {% for column in candidate_columns %}
+                <input type="checkbox" id="{{column}}_checkbox" name="checkbox" value="{{column}}">
+                <label for="{{column}}_checkbox"> {{column}}</label><br>
+                {% endfor %}
+                <input id="data_path_2" value="{{data_path}}" type="text" name="data_path_2" style="display:none">
+              <input type="submit" value="Submit" class="btn btn-primary mt-1 submit_button">
+            </form>
+            {% endif %}
+            {% if new_data is not none %}
+            <label class ="mr-sm-2">expand successfully!</label>
+            <label>{{data_path}}</label>
+            <label>new adding columns are {{sub_parameters}}</label>
+            <a class="btn btn-success mt-2 mb-2 submit_button" href="{{url_for('download', data_path=data_path)}}">Download</a>
+            <button type="button" id="show_table_expand" class="btn btn-dark mt-2 mb-2 submit_button" >Show Table</button>
+            <form id="form4"  action ="{{ url_for('retrieve_subsets', data_path = data_path) }}" method="POST" enctype="multipart/form-data" class="form">
+                    <input id="data_path_3" value="{{data_path}}" type="text" name="data_path_3" style="display:none">
+                    <input id="to_retrieve_columns2" class="btn btn-primary mt-1 submit_button"
+                           value = "back to retrieve subsets" name ="to_retrieve_column" type="submit">
+            </form>
+            <div id="hidden_table_expand" style=" display:none; overflow: auto; height: 80%; width: 95%; page-break-inside:auto" >
+                <table id="table2" class="table table-striped" >
+                    <thead>
+
+                        <tr>
+                        {% for head in heads %}
+                            <th>{{ head }}</th>
+                        {% endfor %}
+                      </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for iter,row in new_data.iterrows() %}
+                        <tr>
+                            {% for item in row %}
+                                <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <script>
+         document.getElementById("show_table_expand").addEventListener('click', function(){
+            var hidden_table= document.getElementById("hidden_table_expand")
+            if (hidden_table.style.display === 'block'){
+                hidden_table.style.display = 'none';
+            }else{
+                $(document).ready(function () {
+                    $('#data').DataTable({
+                        "scrollX": true,
+                    });
+                }, false)
+                document.getElementById("hidden_table_expand").style.display='block';
+
+
+            }
+        });
+     </script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            return sorted_results
+        </h1>
+    </div>
+
+    <div class="row p-4">
+        <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
+            <form method ='post' id ='filters' class ='center' >
+
+                    <div class="dashboard-editor-container" >
+                        <label for="choose_target_column">choose target columns:</label>
+                        <select id="choose_target_column" name = "choose_target_column" multiple>
+                            {% for column in continuous_columns %}
+                            <option value="{{column}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                        <hr/>
+                        <label for="ascending">sort order</label>
+                        <select id="ascending" name="ascending">
+                            <option selected="selected" value="ascending">ascending</option>
+                            <option value="descending">descending</option>
+                        </select>
+                        <hr/>
+                        <h3>Please choose columns which should be returned</h3>
+                        <table>
+                            <thead>
+                                <th><input type="checkbox" onClick="toggle(this)" /> Check All</th>
+                            </thead>
+                            <tbody>
+                                {% for column in all_columns %}
+                                <tr>
+                                    <td><input type="checkbox" name="check_return_columns" value="{{column}}"></td>
+                                    <td>{{column}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-primary mt-1 submit_button" >
+            </form>
+        </div>
+    </div>
+
+        <script>
+        function toggle(source) {
+          checkboxes = document.getElementsByName('check_return_columns');
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+          }
+        }
+        </script>
+{% endblock %}

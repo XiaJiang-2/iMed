@@ -386,3 +386,7 @@ textarea {
   position:fixed;/*固定作用*/
   top:0px;}
 
+.submit_button{
+background-color:#2F8F9D;
+border:none;}
+
