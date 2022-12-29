@@ -8,7 +8,7 @@ from flask_bootstrap import Bootstrap
 import pyttsx3 as tts
 import json
 import datetime
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename, redirect
 from utils import modelTraining
 import shap

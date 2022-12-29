@@ -6,7 +6,6 @@ numpy==1.19.5
 sklearn
 pandas
 ipython
-tensorflow == 2.5.0
 nltk==3.6.2
 Flask_Bootstrap==3.3.7.1
 python_Levenshtein==0.12.2
