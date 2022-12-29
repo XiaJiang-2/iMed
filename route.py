@@ -8,7 +8,6 @@ from flask_bootstrap import Bootstrap
 import pyttsx3 as tts
 import json
 import datetime
-#from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename, redirect
 from utils import modelTraining
 import shap
@@ -23,7 +22,7 @@ from sklearn.ensemble import RandomForestClassifier
 from collections import defaultdict
 
 
-application = Flask(__name__)
+#application = Flask(__name__)
 application.static_folder = 'static'
 bootstrap = Bootstrap(application)
 class_button_json = json.loads(open('training_data/classes_button.json').read())
