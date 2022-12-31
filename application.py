@@ -17,6 +17,9 @@ from utils.retrieve_columns import find_columns_to_be_expanded, find_available_f
 from utils.merge_file import merge
 from collections import defaultdict
 
+import plotly
+import plotly.express as px
+
 application = Flask(__name__)
 
 @application.route("/")
@@ -81,12 +84,14 @@ def upload_dataset(flag):
                     flash(
                         f"the maximum file size limit is 500M! Your file is {file_size / 1000000}M! Please upload another dataset")
                     return render_template('upload_dataset.html', flag=0,data=None, files=files)
-        if int(flag) == 1:
+        if int(flag) == 1: #retrieve subsets
             print(data.columns,'dddddddd')
             return render_template('retrieve_subsets.html',data_path=data_path,data=data.head(10),heads=data.columns)
+        if int(flag) == 2: #plot trend
+            return redirect(url_for('plot_trend',data_path=data_path))
         return render_template('upload_dataset.html',flag=0, data=data.head(10), heads=data.columns, data_path = data_path, files = files)
 
-    return render_template('upload_dataset.html', flag=0,data=None, files=files)
+    return render_template('upload_dataset.html', flag=flag,data=None, files=files)
 
 @application.route('/data_analytics/retrieve_subsets/<path:data_path>',methods=['POST','GET'])
 def retrieve_subsets(data_path):
@@ -248,6 +253,27 @@ def merge_file(filenames):
     print(data)
     return render_template('merge_file.html',filenames=filenames,data_path =output_path,data=data,heads = data.columns )
 
+@application.route("/data_analytics/trend_plot/<path:data_path>",methods=['POST','GET'])
+def plot_trend(data_path):
+    """
+    this function aims to plot trend figures
+    """
+    print(data_path)
+    df = read_file(data_path)
+    columns = df.columns
+    graph1JSON = None
+    if request.method == "POST":
+        x_label = request.form.get("x_label", None)
+        y_label = request.form.get("y_label", None)
+        title = "Dataset: " + str(data_path)
+        if x_label and y_label:
+            fig1 = px.scatter(x=df[x_label], y=df[y_label], title=title,
+                labels=dict(x=x_label, y=y_label))
+            graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+    if graph1JSON:
+        print('success to get figure')
+        return render_template('trend.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path)
+    return render_template('trend.html',columns = columns,data_path=data_path)
 if __name__ == "__main__":
 
     application.static_folder = 'static'

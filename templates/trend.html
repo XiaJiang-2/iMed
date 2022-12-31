@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="site-header-logo">
+        <h1 class="text-center">
+            Trend Analysis
+        </h1>
+    </div>
+
+    <div class="row p-4">
+        <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
+            <div class="card-body">
+                <form id="form1"  method="POST" enctype="multipart/form-data">
+                    <label class="mr-sm-2" for="inlineFormCustomSelect">X:</label>
+                    <select id="x_label" name = "x_label">
+                        <option value ="000">--Select please--</option>
+                        {% for column in columns %}
+                        <option value={{ column }}>{{ column }}</option>
+                        {% endfor %}
+                    </select>
+                    <label class="mr-sm-2" for="inlineFormCustomSelect">Y:</label>
+                    <select id="y_label" name = "y_label">
+                        <option value ="000">--Select please--</option>
+                        {% for column in columns %}
+                        <option value={{ column }}>{{ column }}</option>
+                        {% endfor %}
+
+                    </select>
+                    <input type="submit" class="btn btn-primary mt-1 submit_button" value="Submit">
+                </form>
+                <div id="figure"></div>
+                <p class="card-text">some explanations</p>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- plotly CDN -->
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var graphs1 = {{ graph1JSON | safe }};
+        Plotly.plot("figure", graphs1,{});
+        document.getElementById('x_label').value = "<?php echo $_POST['x_label'];?>";
+        document.getElementById('y_label').value = "<?php echo $_POST['y_label'];?>";
+
+    </script>
+
+{% endblock %}

@@ -10,7 +10,7 @@
         <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
             <div class="card-body">
                 {% if data is none %}
-                <form name ='form_load_data' id = 'form_load_data' action ="{{url_for('upload_dataset',flag=1)}}" method="POST"
+                <form name ='form_load_data' id = 'form_load_data' action ="{{url_for('upload_dataset',flag=flag)}}" method="POST"
                       enctype="multipart/form-data" class ='form center' >
                     <label class="mr-sm-2" >Upload your own dataset</label>
                     <input id="upload_local_dataset" type="file" name="dataset" onclick="makeserverDisable();"
