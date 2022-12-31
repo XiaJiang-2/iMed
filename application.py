@@ -14,24 +14,38 @@ import joblib
 from utils.retrieve_columns import expand_parameters_stored_in_one_column,sort_data_based_on_target_columns
 from utils.retrieve_columns import read_file,retrieve_target_columns_based_on_values
 from utils.retrieve_columns import find_columns_to_be_expanded, find_available_filters
+from utils.merge_file import merge
 from collections import defaultdict
 
 application = Flask(__name__)
 
 @application.route("/")
 def index_imed():
+    """
+    index page
+    """
     return render_template("index_imed.html")
 
 @application.route("/imedbot")
 def imedbot():
+    """
+    go to imedbot application
+    """
     return redirect(url_for("http://imedbot.odpac.net/"))
 
-@application.route('/download/<path:data_path>')
+@application.route('/data_analytics/download/<path:data_path>')
 def download(data_path):
+    """
+    download the data
+    """
+    print('data_pathhhhhhhhh',data_path)
     return send_file("../"+data_path, as_attachment=True)
 
-@application.route('/upload_dataset/<flag>', methods =['POST','GET'])
+@application.route('/data_analytics/upload_dataset/<flag>', methods =['POST','GET'])
 def upload_dataset(flag):
+    """
+    there are two ways to upload  dataset, one is from the local computer, and the other  is from the application
+    """
     file_dir = "dataset/"
     files = os.listdir(file_dir)
     data, data_path, head = None, None, None
@@ -73,14 +87,22 @@ def upload_dataset(flag):
         return render_template('upload_dataset.html',flag=0, data=data.head(10), heads=data.columns, data_path = data_path, files = files)
 
     return render_template('upload_dataset.html', flag=0,data=None, files=files)
-@application.route('/retrieve_subsets/<path:data_path>',methods=['POST','GET'])
+
+@application.route('/data_analytics/retrieve_subsets/<path:data_path>',methods=['POST','GET'])
 def retrieve_subsets(data_path):
+    """
+    this function returns to  themain retireve subsets page
+    """
     data = read_file(data_path)
     if request.method =='POST':
         pass
     return render_template('retrieve_subsets.html',data=data.head(10),data_path=data_path,heads=data.columns)
-@application.route('/expand_data/<path:data_path>', methods=['POST','GET'])
+
+@application.route('/data_analytics/expand_data/<path:data_path>', methods=['POST','GET'])
 def expand_data(data_path):
+    """
+    this function aims to check which column needs to be expanded, and then return an expanded dataset
+    """
     data = read_file(data_path)
     try:
         candidate_columns = find_columns_to_be_expanded(data)
@@ -101,8 +123,11 @@ def expand_data(data_path):
         return render_template('retrieve_subsets.html', data=data.head(10),data_path=data_path, heads=data.columns)
     return render_template('expand_data.html',data_path=data_path, candidate_columns=candidate_columns, new_data = None)
 
-@application.route('/return_sorted_results/<path:data_path>', methods=['POST','GET'])
+@application.route('/data_analytics/return_sorted_results/<path:data_path>', methods=['POST','GET'])
 def return_sorted_results(data_path):
+    """
+    this function aims to return sorted results
+    """
     data = read_file(data_path)
     ready_to_return=False
     try:
@@ -135,14 +160,11 @@ def return_sorted_results(data_path):
     return render_template('return_sorted_results.html',continuous_columns=continuous_columns,all_columns=data.columns)
 
 
-
-# @application.route('/show_table/<path:data_path>/',methods=['POST','GET'])
-# def show_table(data_path):
-#     data = read_file(data_path)
-#     print(data.head())
-
-@application.route('/retrieve_columns/<path:data_path>/', methods = ['POST','GET'])
+@application.route('/data_analytics/retrieve_columns/<path:data_path>/', methods = ['POST','GET'])
 def retrieve_columns(data_path):
+    """
+    this function aims to list diversity_columns and continuous_columns separately
+    """
     data = read_file(data_path)
     try:
         # if find_columns_to_be_expanded(data):
@@ -188,6 +210,43 @@ def retrieve_columns(data_path):
                            all_columns = data.columns, i = 0,
                            diversity_columns = diversity_columns, continuous_columns=continuous_columns, new_df = None)
 
+@application.route("/data_analytics/upload_multiple_dataset",methods=['GET','POST'])
+def upload_multiple_dataset():
+    """
+    this function aims to merge files which share the same format
+    """
+    file_dir = "dataset/"
+    files = os.listdir(file_dir)
+    if request.method=='POST':
+        files = request.files.getlist("datasets")
+        # Iterate for each file in the files List, and Save them
+        filenames = []
+        for file in files:
+            print(file.filename)
+            data_path = 'dataset/' + secure_filename(file.filename)
+            file.save(data_path)
+            filenames.append(data_path)
+            print('ddddddddd',data_path)
+        if len(filenames)!=0:
+            filenames = ",".join(map(str,filenames))
+            print(filenames)
+            return redirect(url_for('merge_file',filenames=filenames))
+    return render_template("upload_multiple_dataset.html",data=None)
+
+@application.route("/data_analytics/merge_file/<path:filenames>",methods=['POST','GET'])
+def merge_file(filenames):
+    """
+    this function aims to merge files which share the same format
+    """
+    print('ffffffffffffffffffffffffffffffff',filenames)
+    filenames=filenames.split(',')
+    print('ffff',filenames)
+    output_path = 'dataset/'+secure_filename('merge_file.csv')
+    keep_index = False
+    merge(filenames, keep_index, output_path)
+    data =  read_file(output_path).head(10)
+    print(data)
+    return render_template('merge_file.html',filenames=filenames,data_path =output_path,data=data,heads = data.columns )
 
 if __name__ == "__main__":
 

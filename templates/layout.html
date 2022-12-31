@@ -8,8 +8,7 @@
 
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{url_for('static', filename = 'data_analytics.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/iMedbot.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/data_analytics.css')}}" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
 <style type="text/css">
     table { page-break-inside:auto }
@@ -85,8 +84,20 @@
                     DataAnalysis
                   </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=1)}}">retrieve_columns</a></li>
-                        <li><a class="dropdown-item" href="#"></a></li>
+                        <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=1)}}">retrieve subsets</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('upload_multiple_dataset') }}">merge files</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">plot roc curves</a></li>
+                        <li><a class="dropdown-item" href="#">box plot</a></li>
+                        <li><a class="dropdown-item" href="#">trend analysis</a></li>
+                        <li><a class="dropdown-item" href="#">other plots</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">time analysis</a></li>
+                        <li><a class="dropdown-item" href="#">summary statistics</a></li>
+                        <li><a class="dropdown-item" href="#">feature importance analysis</a></li>
+                        <li><hr class="dropdown-divider">models</li>
+                        <li><a class="dropdown-item" href="#">train and save model</a></li>
+                        <li><a class="dropdown-item" href="#">predict and plot roc curve</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

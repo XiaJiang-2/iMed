@@ -1,3 +1,19 @@
+@font-face {
+  font-family: "lobsterregular";
+  src: url("./fonts/lobster-regular-webfont.woff2") format("woff2"),
+    url("./fonts/lobster-regular-webfont.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "work_sansregular";
+  src: url("./fonts/worksans-variablefont_wght-webfont.woff2") format("woff2"),
+    url("./fonts/worksans-variablefont_wght-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   --msger-bg: #fff;
