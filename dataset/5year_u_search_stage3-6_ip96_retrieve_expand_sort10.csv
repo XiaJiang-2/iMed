@@ -1,0 +1,11 @@
+mean_test_auc,percent_auc_diff,mean_train_auc,L1,L2,batch_size,dec,drate,epochs,hacti,iacti,idim,kinit,lrate,ls,ltype,momen,mstruct,oacti,opti
+0.753376,0.05998,0.798563,0.008,0.01,456,0.0008,0.05,145,relu,relu,20,he_uniform,0.09,binary_crossentropy,3,0.5,"(765, 773, 1)",sigmoid,adam
+0.750233,0.02779,0.771082,0.024,0.02,458,0.0008,0.06,168,relu,relu,20,he_uniform,0.03,binary_crossentropy,3,0.1,"(722, 769, 581, 1)",sigmoid,adam
+0.749886,0.0463,0.784606,0.018,0.005,374,0.0001,0.05,140,relu,relu,20,he_normal,0.07,binary_crossentropy,3,0.9,"(630, 593, 755, 1)",sigmoid,adam
+0.749271,0.019104,0.763585,0.03,0.003,395,0.0,0.0,135,relu,relu,20,glorot_uniform,0.04,binary_crossentropy,3,0.2,"(696, 580, 1)",sigmoid,adam
+0.749083,0.020187,0.764205,0.019,0.007,265,0.0003,0.01,166,relu,relu,20,he_normal,0.06,binary_crossentropy,3,0.6,"(612, 727, 1)",sigmoid,adam
+0.748933,0.045704,0.783163,0.012,0.0,450,0.0009,0.03,131,relu,relu,20,glorot_uniform,0.04,binary_crossentropy,3,0.1,"(702, 676, 1)",sigmoid,adam
+0.748905,0.025212,0.767786,0.014,0.017,221,0.0005,0.09,114,relu,relu,20,he_normal,0.01,binary_crossentropy,3,0.3,"(693, 626, 1)",sigmoid,adam
+0.748867,0.029226,0.770753,0.019,0.025,257,0.0009,0.0,103,relu,relu,20,glorot_uniform,0.02,binary_crossentropy,3,0.7,"(589, 612, 1)",sigmoid,adam
+0.748686,0.025108,0.767484,0.016,0.02,304,0.0002,0.0,121,relu,relu,20,he_normal,0.07,binary_crossentropy,3,0.8,"(774, 721, 1)",sigmoid,adam
+0.748574,0.029323,0.770524,0.018,0.001,468,0.0003,0.02,160,relu,relu,20,glorot_normal,0.05,binary_crossentropy,3,0.5,"(771, 558, 1)",sigmoid,adam

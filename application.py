@@ -20,6 +20,8 @@ from collections import defaultdict
 import plotly
 import plotly.express as px
 
+from sklearn.metrics import roc_curve, auc
+
 application = Flask(__name__)
 
 @application.route("/")
@@ -87,8 +89,12 @@ def upload_dataset(flag):
         if int(flag) == 1: #retrieve subsets
             print(data.columns,'dddddddd')
             return render_template('retrieve_subsets.html',data_path=data_path,data=data.head(10),heads=data.columns)
-        if int(flag) == 2: #plot trend
+        elif int(flag) == 2: #plot trend
             return redirect(url_for('plot_trend',data_path=data_path))
+        elif int(flag)==3: #plot roc curve
+            return redirect(url_for('plot_roc_curve',data_path=data_path))
+        elif int(flag)==4: #box plot
+            return redirect(url_for('plot_box',data_path=data_path))
         return render_template('upload_dataset.html',flag=0, data=data.head(10), heads=data.columns, data_path = data_path, files = files)
 
     return render_template('upload_dataset.html', flag=flag,data=None, files=files)
@@ -262,18 +268,104 @@ def plot_trend(data_path):
     df = read_file(data_path)
     columns = df.columns
     graph1JSON = None
-    if request.method == "POST":
-        x_label = request.form.get("x_label", None)
-        y_label = request.form.get("y_label", None)
-        title = "Dataset: " + str(data_path)
-        if x_label and y_label:
-            fig1 = px.scatter(x=df[x_label], y=df[y_label], title=title,
-                labels=dict(x=x_label, y=y_label))
-            graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
-    if graph1JSON:
-        print('success to get figure')
-        return render_template('trend.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path)
-    return render_template('trend.html',columns = columns,data_path=data_path)
+    try:
+        if request.method == "POST":
+            x_label = request.form.get("x_label", None)
+            y_label = request.form.get("y_label", None)
+            type = request.form.get("type", None)
+            title = "Dataset: " + str(data_path)
+            if x_label and y_label and type:
+                if type == 'scatter':
+                    fig1 = px.scatter(x=df[x_label], y=df[y_label], title=title+"-scatter",
+                        labels=dict(x=x_label, y=y_label))
+                elif type == 'line':
+                    fig1 = px.line(x=df[x_label], y=df[y_label], title=title + "-line",
+                                      labels=dict(x=x_label, y=y_label))
+                graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+
+        if graph1JSON:
+            print('success to get figure')
+            return render_template('trend.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    except:
+        flash("Please choose X, Y and type")
+        return render_template('trend.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    return render_template('trend.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+
+@application.route("/data_analytics/plot_roc_curve/<path:data_path>",methods=['POST','GET'])
+def plot_roc_curve(data_path):
+    """
+    this function aims to plot trend figures
+    """
+    print(data_path)
+    df = read_file(data_path)
+    columns = df.columns
+    graph1JSON = None
+    try:
+        if request.method == "POST":
+            predicted_column = request.form.get("predicted_values", None)
+            true_column = request.form.get("true_values", None)
+            title = "Dataset: " + str(data_path) + 'roc_curve'
+            if predicted_column and true_column:
+                pred_values = np.asarray(df[predicted_column])
+                true_values = np.asarray(df[true_column])
+                print(pred_values)
+                print('1111111111')
+                print(true_values)
+                fpr, tpr, thresholds = roc_curve(true_values.astype(float),pred_values.astype(float))
+                fig = px.area(
+                    x=fpr, y=tpr,
+                    title=title + f'ROC Curve (AUC={auc(fpr, tpr):.4f})',
+                    labels=dict(x='False Positive Rate', y='True Positive Rate'),
+                    width=700, height=500
+                )
+                fig.add_shape(
+                    type='line', line=dict(dash='dash'),
+                    x0=0, x1=1, y0=0, y1=1
+                )
+
+                fig.update_yaxes(scaleanchor="x", scaleratio=1)
+                fig.update_xaxes(constrain='domain')
+                graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        if graph1JSON:
+            print('success to get figure')
+            return render_template('roc_curve.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    except:
+        flash("Please choose true values and predicted values")
+        flash("Please make sure the true values are binary labels")
+        return render_template('roc_curve.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    return render_template('roc_curve.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+
+@application.route("/data_analytics/plot_box/<path:data_path>",methods=['POST','GET'])
+def plot_box(data_path):
+    """
+    this function aims to plot trend figures
+    """
+    print(data_path)
+    df = read_file(data_path)
+    columns = df.columns
+    graph1JSON = None
+    try:
+        if request.method == "POST":
+            x_label = request.form.get("x_label", None)
+            y_label = request.form.get("y_label", None)
+            color = request.form.get('color',None)
+            print(x_label,y_label)
+            title = "Dataset: " + str(data_path) + '-box'
+            if x_label and y_label:
+                fig = px.box(df, x=x_label, y=y_label, color=color,title=title,
+                               labels=dict(x=x_label, y=y_label))
+                fig.update_traces(quartilemethod="exclusive")
+                graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        if graph1JSON:
+            print('success to get figure')
+            return render_template('box.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    except:
+        flash("Please choose true values and predicted values")
+        flash("Please make sure the true values are binary labels")
+        return render_template('box.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    return render_template('box.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+
+
 if __name__ == "__main__":
 
     application.static_folder = 'static'

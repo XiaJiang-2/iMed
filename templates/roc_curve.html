@@ -2,7 +2,7 @@
 {% block content %}
     <div class="site-header-logo">
         <h1 class="text-center">
-            Trend Analysis
+            Plot ROC Curves
         </h1>
     </div>
 
@@ -10,34 +10,26 @@
         <div class="card m-auto" style="width: 90%;" data-aos="fade-left">
             <div class="card-body">
                 <form id="form1"  method="POST" enctype="multipart/form-data">
-                    <label class="mr-sm-2" for="inlineFormCustomSelect">X:</label>
-                    <select id="x_label" name = "x_label">
+                    <label class="mr-sm-2" for="inlineFormCustomSelect">true values</label>
+                    <select id="true_values" name = "true_values">
                         <option value ="000">--Select please--</option>
                         {% for column in columns %}
                         <option value={{ column }}>{{ column }}</option>
                         {% endfor %}
                     </select>
-                    <br>
-                    <label class="mr-sm-2" for="inlineFormCustomSelect">Y:</label>
-                    <select id="y_label" name = "y_label">
+                    <label class="mr-sm-2" for="inlineFormCustomSelect">predicted values</label>
+                    <select id="predicted_values" name = "predicted_values">
                         <option value ="000">--Select please--</option>
                         {% for column in columns %}
                         <option value={{ column }}>{{ column }}</option>
                         {% endfor %}
+
                     </select>
-                    <br>
-                    <label class="mr-sm-2" for="inlineFormCustomSelect">Type(scatter or line):</label>
-                    <select id="type" name = "type">
-                        <option value ="000">--Select please--</option>
-                        <option value='scatter'>scatter</option>
-                        <option value="line">line</option>
-                    </select>
-                    <br>
                     <input type="submit" class="btn btn-primary mt-1 submit_button" value="Submit">
-                    <button type="button" id="show_table" class="btn btn-dark mt-2 mb-2 submit_button" >Show Table</button>
                 </form>
-                <div id="figure1"></div>
-                <p class="card-text">some explanations</p>
+                <div id="figure"></div>
+                <button type="button" id="show_table" class="btn btn-dark mt-2 mb-2 submit_button" >Show Table</button>
+                <p class="card-text">To plot roc curve, please choose predicted_values and true_values from the dataset</p>
                 <div id="hidden_table" style=" display:none; overflow: auto; height: 80%; width: 95%; page-break-inside:auto" >
                     <table id="table" class="table table-striped" >
                         <thead>
@@ -66,12 +58,13 @@
             </div>
         </div>
     </div>
+
     <!-- plotly CDN -->
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
         var graphs1 = {{ graph1JSON | safe }};
-        Plotly.plot("figure1", graphs1,{});
+        Plotly.plot("figure", graphs1,{});
         document.getElementById('x_label').value = "<?php echo $_POST['x_label'];?>";
         document.getElementById('y_label').value = "<?php echo $_POST['y_label'];?>";
     </script>

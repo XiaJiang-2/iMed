@@ -87,8 +87,8 @@
                         <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=1)}}">retrieve subsets</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('upload_multiple_dataset') }}">merge files</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">plot roc curves</a></li>
-                        <li><a class="dropdown-item" href="#">box plot</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=3)}}">plot roc curves</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=4)}}">box plot</a></li>
                         <li><a class="dropdown-item" href="{{url_for('upload_dataset',flag=2)}}">trend analysis</a></li>
                         <li><a class="dropdown-item" href="#">other plots</a></li>
                         <li><hr class="dropdown-divider"></li>
