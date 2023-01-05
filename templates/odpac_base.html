@@ -1,0 +1,114 @@
+{% extends "bootstrap/base.html" %}
+{% block metas %}
+<meta charset="utf-8" />
+{{ super() }}
+{% endblock %}
+{% block title %}ODPAC {% endblock %}
+
+{% block styles %}
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block navbar %}
+<div class="container-fluid padd-zero">
+  <div class="top-header">
+    <div class="container">
+      <div class="col-md-4 logo-grid padd-zero">
+        <!-- <img class="" src="logo.png" alt="logo"> -->
+      </div>
+    </div>
+  </div>
+  </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      
+      <div class="container">
+        <a class="navbar-brand" href="#"><img class="card-img-bottom" src="http://placehold.it/135x40" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item {% if "learn" in request.url %} active {% endif %}">
+                <a class="nav-link" href="{{ url_for('learn') }}">Learn
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item {% if "test" in request.url %} active {% endif %}">
+                <a class="nav-link" href="{{url_for('test_prediction')}}">Test Prediction</a>
+            </li>
+            <li class="nav-item {% if "treatment" in request.url %} active {% endif %}">
+                <a class="nav-link" href="{{url_for('treatment_interaction')}}">Treatment Interaction</a>
+            </li>
+
+            <li class="nav-item dropdown {% if "dataset" in request.url %} active {% endif %}">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Datasets</a>
+               <div class="dropdown-menu">
+                   <a class="dropdown-item" href="{{ url_for('datasets_avail') }}">Available Datasets</a>
+                   <a class="dropdown-item" href="{{ url_for('datasets_share') }}">Share Your Datasets</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown {% if "about" in request.url %} active {% endif %}">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">About</a>
+               <div class="dropdown-menu">
+                   <a class="dropdown-item" href="{{ url_for('about_us') }}">Who We Are</a>
+                   <a class="dropdown-item" href="{{ url_for('about_research') }}">Relevant Research</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Account</a>
+               <div class="dropdown-menu">
+                  {% if current_user.is_authenticated %}
+                  <a class="dropdown-item" href="{{ url_for('security.logout') }}">Logout</a>
+                  {% else  %}
+                  <a class="dropdown-item" href="{{ url_for('security.login') }}">Sign In</a>
+                  <a class="dropdown-item" href="{{ url_for('security.register') }}">Create an Account</a>
+                  {% endif %}
+               </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+
+    <!-- Page Content -->
+    {% block content %}
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-4">
+                  <p class=" m-0 text-center text-white"><a href="#">Terms and Conditions</a></p>
+                  <p class=" m-0 text-center text-white"><a href="#">Privacy Policy</a></p>
+              </div>
+              <div class="col-md-4">
+                  <p class=" m-0 text-center text-white">Contact: <a href="mailto:xij6@pitt.edu">xij6@pitt.edu</a></p>
+                  <p class=" m-0 text-center text-white">Copyright &copy; Jiang's AI Lab 2019</p>
+              </div>
+              <div class="col-md-4">
+                  <p class=" m-0 text-center text-white">External Links</p>
+                  <p class=" m-0 text-center text-white"><a href="#">external_link1</a></p>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12 text-center">
+                  <p class=" m-0 text-center text-white">Acknowledgement Text</p>
+              </div>
+          </div>
+      </div>
+      <!-- /.container -->
+    </footer>
+    {% endblock %}
+
+    {% block scripts %}
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    {% endblock %}
+

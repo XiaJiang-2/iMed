@@ -1,0 +1,32 @@
+{% import "wtf-bootstrap.html" as wtf %}
+
+{%- extends "odpac_base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="col-md-12 mt-3 text-center">
+        <h1>{{heading}}</h1>
+    </div>
+    <div class="col-md-12 my-5">
+        {{ wtf.quick_form(form) }}
+    </div>
+    {%if result %}
+    {% if plot_id %}
+    <div class="row">
+        <div class="col-md-12">
+            <img class="mx-auto img-fluid d-block" src="{{url_for('download_plot', uuid=plot_id)}}">
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12 my-3">
+            <div class="text-center">
+                <a href="{{ url_for('predict_file_result_download', uuid=uuid) }}" class="btn btn-primary btn-lg mx-auto">Download Prediction</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{{ super() }}
+{% endblock %}

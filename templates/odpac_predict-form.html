@@ -1,0 +1,21 @@
+{% import "wtf-bootstrap.html" as wtf %}
+
+{%- extends "odpac_base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="col-md-12 mt-3 text-center">
+        <h1>{{heading}}</h1>
+    </div>
+    <div class="col-md-12 my-5">
+        {{ wtf.quick_form(form) }}
+    </div>
+    {%if result != None%}
+    <div class="col-md-12 my-3">
+        <h3>Prediction: {{result}}</h3>
+    </div>
+    {% endif %}
+</div>
+{{ super() }}
+{% endblock %}

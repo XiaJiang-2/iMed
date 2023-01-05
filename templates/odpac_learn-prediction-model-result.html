@@ -1,0 +1,36 @@
+{%- extends "odpac_base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mt-3 text-center">
+            <h1>{{heading}}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 my-3 text-center text-large">
+            <p> Mean Auc from 5-fold cross validation: {{auc}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <img class="mx-auto img-fluid d-block" src="{{url_for('download_plot', uuid=plot)}}">
+        </div>
+    </div>
+    <div class="row predict-btns">
+        <div class="col-md-6 my-3">
+            <div class="text-center">
+                <a href="{{url_for('predict_manual', uuid=uuid)}}" class="btn btn-primary btn-lg mx-auto">Predict Using Model Just Learned via Manual Entry</a>
+            </div>
+        </div>
+        <div class="col-md-6 my-3">
+            <div class="text-center">
+                <a href="{{url_for('predict_file', uuid=uuid)}}" class="btn btn-primary btn-lg mx-auto">Predict Using Model Just Learned via File Upload</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{ super() }}
+{% endblock %}

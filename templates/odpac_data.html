@@ -1,0 +1,67 @@
+{% extends "odpac_base.html" %}
+{% if title != None %}
+    {% block title %}{{title}} | {{ super() }}{% endblock  %}
+{% endif %}
+{% block content %}
+    <div class="container">
+
+      <!-- Page Heading -->
+
+    {% if title != None %}
+      <h1 class="my-4 text-center">
+          {{ title  }}
+      </h1>
+    {% endif %}
+      <div class="container mt-3">
+          <div class="col-12">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">
+                              Name of Dataset
+                          </th>
+                          <th scope="col">
+                              Provider
+                          </th>
+                          <th scope="col">
+                              Number of Records
+                          </th>
+                          <th scope="col">
+                              Number of Features
+                          </th>
+                          <th scope="col">
+                              Original Publication
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for record in records %}
+                      <tr>
+                          <td>
+                              <a href="{{ url_for('dataset_info', uuid=record.uuid) }}" >{{record.name}}</a>
+                          </td>
+                          <td>
+                              {{record.provider}}
+                          </td>
+                          <td>
+                              {{record.records}}
+                          </td>
+                          <td>
+                              {{record.features}}
+                          </td>
+                          <td>
+                              {{record.original_publication}}
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+    {{ super()  }}
+
+{% endblock %}

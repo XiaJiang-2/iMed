@@ -1,9 +1,14 @@
 import os
 import webbrowser
-
-import numpy as np
-from flask import Flask,render_template, request, url_for, redirect, send_file, flash
 from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
+import numpy as np
+from flask import Flask,render_template, request, url_for, redirect, send_file, flash,abort
+from flask_mail import Mail
+from flask_security import Security, login_required
+from uuid import uuid4
+from utils.forms import DataForm
+from io import BytesIO
 import json
 import datetime
 from werkzeug.utils import secure_filename, redirect
@@ -23,6 +28,92 @@ import plotly.express as px
 from sklearn.metrics import roc_curve, auc
 
 application = Flask(__name__)
+application.config.from_object("config")
+db = SQLAlchemy(application)
+bootstrap = Bootstrap(application)
+
+from functools import wraps
+"""
+models
+"""
+from flask_security import RoleMixin, UserMixin, SQLAlchemyUserDatastore
+class ResultDownload(db.Model):
+    # uuid is always 32 chars
+    uuid = db.Column(db.String(32), primary_key=True, unique=True)
+    # 260 is possible max file path for windows
+    file_path = db.Column(db.String(260), unique=True)
+    html_table = db.Column(db.String(21844))
+    score = db.Column(db.String(10))
+    created = db.Column(db.DateTime(), default=db.func.current_timestamp())
+
+roles_users = db.Table(
+    "roles_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
+)
+
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    submitted_treatment_form = db.Column(db.Boolean(), default=False)
+    tneg = db.Column(db.Boolean())
+    grade = db.Column(db.Integer())
+    p53 = db.Column(db.Boolean())
+    er = db.Column(db.Boolean())
+    node_status = db.Column(db.Boolean())
+    menopause = db.Column(db.Boolean())
+    her2 = db.Column(db.Boolean())
+    active = db.Column(db.Boolean())
+    confirmed_at = db.Column(db.DateTime())
+    registered_at = db.Column(db.DateTime(), default=db.func.current_timestamp())
+    roles = db.relationship(
+        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    )
+
+
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+
+
+class DataSet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String(32), unique=True)
+    name = db.Column(db.String(255))
+    provider = db.Column(db.String(255))
+    curator = db.Column(db.String(255))
+    original_publication = db.Column(db.String(255))
+    dataset_file = db.Column(db.String(260))
+    description_file = db.Column(db.String(260))
+    data_restriction = db.Column(db.Boolean())
+    restriction_text = db.Column(db.String(1000))
+    uploaded_at = db.Column(db.DateTime(), default=db.func.current_timestamp())
+    records = db.Column(db.Integer)
+    features = db.Column(db.Integer)
+
+
+security = Security(application, user_datastore)
+mail = Mail()
+mail.init_app(application)
+
+with application.app_context():
+    db.init_app(application)
+    db.create_all()
+
+import sys
+sys.path.append("../")
+
+
+
+#import prediction, java_prediction  # NOQA
+
+
 
 @application.route("/")
 def index_imed():
@@ -364,7 +455,144 @@ def plot_box(data_path):
         flash("Please make sure the true values are binary labels")
         return render_template('box.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
     return render_template('box.html',columns = columns,data_path=data_path,heads=columns,data=df.head(10))
+    if request.method == "POST":
+        x_label = request.form.get("x_label", None)
+        y_label = request.form.get("y_label", None)
+        title = "Dataset: " + str(data_path)
+        if x_label and y_label:
+            fig1 = px.scatter(x=df[x_label], y=df[y_label], title=title,
+                labels=dict(x=x_label, y=y_label))
+            graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+    if graph1JSON:
+        print('success to get figure')
+        return render_template('trend.html', graph1JSON=graph1JSON,columns = columns,data_path=data_path)
+    return render_template('trend.html',columns = columns,data_path=data_path)
 
+"""
+project of ODPAC
+"""
+@application.route("/odpac")
+@application.route("/odpac/learn/")
+def learn():
+    """Renders the front page."""
+    return render_template("odpac_learn.html")
+
+@application.route("/odpac/learn/interaction/")
+def learn_interaction():
+    return render_template("odpac_learn-interaction.html")
+
+#change the name of function(from download to odpac_download)
+@application.route("/odpac/learn/download/<uuid>/")
+def odpac_download(uuid):
+    """download from the download table"""
+    return send_file(
+        read_result_file_by_uuid(uuid),
+        mimetype="application/octet-stream",
+        attachment_filename="result.tar.gz",
+        as_attachment=True,
+    )
+
+@application.route("/odpac/datasets/available")
+@login_required
+def datasets_avail():
+    records = DataSet.query.all()
+    return render_template("odpac_data.html", records=records, title="Datasets")
+
+def get_records(fname):
+    df = pd.read_csv(fname, sep=None, engine="python", header=0)
+    return len(df)
+
+def get_features(fname):
+    df = pd.read_csv(fname, sep=None, engine="python", header=0)
+    return len(df.columns)
+
+@application.route("/odpac/datasets/share/", methods=("GET", "POST"))
+def datasets_share():
+    form = DataForm()
+    if form.validate_on_submit():
+        data_path = BytesIO()
+        form.input_data.data.save(data_path)
+        desc_path = BytesIO()
+        form.input_description.data.save(desc_path)
+        dataset_uuid = upload_filepath(data_path)
+        desc_uuid = upload_filepath(desc_path)
+        database.session.add(
+            DataSet(
+                uuid=uuid4().hex,
+                name=form.name.data,
+                provider=form.provider.data,
+                curator=form.curator.data,
+                original_publication=form.original_publication.data,
+                dataset_file=dataset_uuid,
+                description_file=desc_uuid,
+                data_restriction=True if form.data_restrict.data == "Yes" else False,
+                restriction_text=form.restriction.data,
+                records=get_records(read_result_file_by_uuid(dataset_uuid)),
+                features=get_features(read_result_file_by_uuid(dataset_uuid)),
+            )
+        )
+        database.session.commit()
+        return render_template(
+            "odpac_blurb.html", text="Successfully uploaded dataset", title="Success"
+        )
+
+    return render_template("odpac_form.html", heading="Upload Dataset", form=form)
+
+@application.route("/odpac/datasets/info/<uuid>/")
+@login_required
+def dataset_info(uuid):
+    record = DataSet.query.filter_by(uuid=uuid).first()
+    return render_template(
+        "data_info.html",
+        title=record.name,
+        data=url_for("download_data", uuid=uuid, t="data"),
+        pdf=url_for("download_data", uuid=uuid, t="desc", display="display"),
+        pdf_down=url_for("download_data", uuid=uuid, t="desc"),
+    )
+
+@application.route("/odpac/datasets/download/<t>/<uuid>/")
+@application.route("/odpac/datasets/download/<t>/<uuid>/<display>/")
+@login_required
+def download_data(t, uuid, display=False):
+    if t not in ("data", "desc"):
+        abort(404)
+    if display == "display":
+        display = True
+    record = DataSet.query.filter_by(uuid=uuid).first()
+    dl_file = (
+        read_result_file_by_uuid(record.description_file)
+        if t == "desc"
+        else read_result_file_by_uuid(record.dataset_file)
+    )
+    return send_file(
+        dl_file,
+        mimetype="text/plain" if t == "data" else "application/pdf",
+        attachment_filename=f"{record.name}-{t}.{'csv' if t == 'data' else 'pdf'}",
+        as_attachment=not display,
+    )
+
+@application.route("/odpac/about/us/")
+def about_us():
+    return (
+        render_template(
+            "odpac_blurb.html", text="PLACEHOLDER: About us", title="Placeholder"
+        ),
+        501,
+    )
+
+@application.route("/odpac/about/research/")
+def about_research():
+    return (
+        render_template(
+            "odpac_blurb.html",
+            text="PLACEHOLDER: About relevant research",
+            title="Placeholder",
+        ),
+        501,
+    )
+
+from utils.java_prediction import *
+from utils.prediction import *
 
 if __name__ == "__main__":
 
@@ -372,4 +600,8 @@ if __name__ == "__main__":
     application.secret_key = 'super secret key'
     application.config['SESSION_TYPE'] = 'filesystem'
     application.config['MAX_CONTENT_LENGTH'] = 1000 * 1024 * 1024
+
+
+
     application.run(debug=True)
+

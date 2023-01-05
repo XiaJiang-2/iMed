@@ -1,0 +1,26 @@
+{% extends "odpac_base.html" %}
+{% if title != None %}
+    {% block title %}{{title}} | {{ super() }}{% endblock  %}
+{% endif %}
+{% block content %}
+    <div class="container">
+
+      <!-- Page Heading -->
+
+    {% if title != None %}
+      <h1 class="my-4 text-center">
+          {{ title  }}
+      </h1>
+    {% endif %}
+      <div class="container mt-3">
+          <div class="col-12">
+              {{ text|safe }}
+          </div>
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+    {{ super()  }}
+
+{% endblock %}
