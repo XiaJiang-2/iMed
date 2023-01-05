@@ -31,6 +31,10 @@ application = Flask(__name__)
 application.config.from_object("config")
 db = SQLAlchemy(application)
 bootstrap = Bootstrap(application)
+application.static_folder = 'static'
+application.secret_key = 'super secret key'
+application.config['SESSION_TYPE'] = 'filesystem'
+application.config['MAX_CONTENT_LENGTH'] = 1000 * 1024 * 1024
 
 from functools import wraps
 """
@@ -595,13 +599,5 @@ from utils.java_prediction import *
 from utils.prediction import *
 
 if __name__ == "__main__":
-
-    application.static_folder = 'static'
-    application.secret_key = 'super secret key'
-    application.config['SESSION_TYPE'] = 'filesystem'
-    application.config['MAX_CONTENT_LENGTH'] = 1000 * 1024 * 1024
-
-
-
     application.run(debug=True)
 
