@@ -1,6 +1,5 @@
-ChatterBot==1.0.4
 SpeechRecognition==3.8.1
-Flask==2.0.0
+Flask==2.2.0
 keras==2.4.3
 numpy==1.19.5
 sklearn
