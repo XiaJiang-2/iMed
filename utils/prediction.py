@@ -228,7 +228,7 @@ def model_train(model):
             except ValueError:
                 return (
                     render_template(
-                        "blurb.html",
+                        "odpac_blurb.html",
                         text="Bad input: try changing the target class index or cleaning up your data.",
                         title="Bad Input",
                     ),
@@ -275,7 +275,7 @@ def learn_prediction_model_result(model, uuid, plot):
 def learn_prediction_model_info(model):
     check_valid_model(model)
     return render_template(
-        "proceed-box.html",
+        "odpac_proceed-box.html",
         title=f"About Learn Predictions Models Using {MODEL_LIST[model]}",
         url=url_for("model_train", model=model),
     )

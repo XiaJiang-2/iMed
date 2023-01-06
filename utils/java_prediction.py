@@ -54,10 +54,10 @@ minimum_number_of_edges=2
     # run jar in the temporary directory
     os.chdir(input_dir.name)
     return_code = subprocess.run(
-        ["java", "-jar", os.path.join(app.root_path, "java", "MBS.jar"), "MBS.ini"]
+        ["java", "-jar", os.path.join(application.root_path, "java", "MBS.jar"), "MBS.ini"]
     ).returncode
     # cd back to root
-    os.chdir(app.root_path)
+    os.chdir(application.root_path)
     if return_code != 0:
         raise RuntimeError("Error Running Java")
 
@@ -105,10 +105,10 @@ def learn_mbs():
             return view_data(form)
         elif form.help_btn.data:
             text = "PLACEHOLDER: help display"
-            return render_template("blurb.html", text=text, title="Placeholder"), 501
+            return render_template("odpac_blurb.html", text=text, title="Placeholder"), 501
         else:
             text = "Bad Request"
-            return render_template("blurb.html", text=text, title="400"), 400
+            return render_template("odpac_blurb.html", text=text, title="400"), 400
 
     return render_template("odpac_form.html", heading="MBS.java", form=form)
 
@@ -150,11 +150,11 @@ skipString=""
         [
             "java",
             "-jar",
-            os.path.join(app.root_path, "java", "TestWeb2.jar"),
+            os.path.join(application.root_path, "java", "TestWeb2.jar"),
             "TestWeb2.ini",
         ]
     ).returncode
-    os.chdir(app.root_path)
+    os.chdir(application.root_path)
     if return_code != 0:
         raise RuntimeError("Error Running Java")
 
@@ -181,7 +181,7 @@ def learn_interactive_parents():
                 prefix="parents_result_tgz_", delete=False
             )
             # for testing
-            out_dir.name = os.path.join(app.root_path, "static", "test-output")
+            out_dir.name = os.path.join(application.root_path, "static", "test-output")
             with tarfile.open(out_file_tgz.name, "w:gz") as tar:
                 tar.add(out_dir.name, arcname=os.path.basename(out_dir.name))
             uuid = upload_filepath(out_file_tgz.name)
@@ -197,7 +197,7 @@ def learn_interactive_parents():
             return render_template("odpac_blurb.html", text=text, title="400"), 400
 
     return render_template(
-        "form.html", heading="Interactive Parents, testweb2.java", form=form
+        "odpac_form.html", heading="Interactive Parents, testweb2.java", form=form
     )
 
 
@@ -256,14 +256,14 @@ MRIs_60_surgery="{form.MRIs_60_surgery.data}"
         [
             "java",
             "-jar",
-            os.path.join(app.root_path, "java", "TestWeb3.jar"),
+            os.path.join(application.root_path, "java", "TestWeb3.jar"),
             "TestWeb3.ini",
         ],
         capture_output=True,
     )
 
     return_code = java.returncode
-    os.chdir(app.root_path)
+    os.chdir(application.root_path)
     if return_code != 0:
         raise RuntimeError("Error Running Java")
 
@@ -340,11 +340,11 @@ option={option}
         [
             "java",
             "-jar",
-            os.path.join(app.root_path, "java", "TestWeb1.jar"),
+            os.path.join(application.root_path, "java", "TestWeb1.jar"),
             "TestWeb1.ini",
         ]
     ).returncode
-    os.chdir(app.root_path)
+    os.chdir(application.root_path)
     if return_code != 0:
         raise RuntimeError("Error Running Java")
 
