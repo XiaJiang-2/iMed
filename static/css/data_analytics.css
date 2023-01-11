@@ -28,6 +28,7 @@
   color: rgb(250, 250, 250);
   font-family: lobsterregular;
   font-size: 2.5rem;
+  margin-left:100px;
 }
 
 .navbar-brand:hover {
@@ -35,6 +36,9 @@
   font-family: lobsterregular;
 }
 
+#navbarSupportedContent{
+margin-right:50px;
+}
 .site-header-logo h1 {
   color: rgb(47, 143, 157);
   font-family: lobsterregular;
@@ -79,6 +83,7 @@ tfoot td {
 .dropdown {
   position: relative;
   display: inline-block;
+  text-align: center;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -148,3 +153,4 @@ border:none;}
     padding-top:10px;
     margin-left:200px;
 }
+

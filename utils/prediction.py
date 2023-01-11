@@ -52,7 +52,7 @@ def check_valid_model(model):
         abort(404)
 
 
-def get_train_score(clf, X, y, show_folds=True):
+def get_train_score(clf, X, y, model_name,show_folds=True):
     """ inspired by https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html"""
 
     fig = Figure()
@@ -66,10 +66,17 @@ def get_train_score(clf, X, y, show_folds=True):
     for k, X_y_split in enumerate(cv.split(X, y)):
         train, test = X_y_split
         clf.fit(X.iloc[train], y.iloc[train])
-        probas_ = clf.predict_proba(X.iloc[test])
-        fpr, tpr, thresholds = roc_curve(y.iloc[test], probas_[:, 1])
-        entire_test = pd.concat([entire_test, pd.DataFrame(y.iloc[test])])
-        entire_proba = pd.concat([entire_proba, pd.DataFrame(probas_[:, 1])])
+
+        if model_name =='lasso':
+            probas_ = clf.predict(X.iloc[test])
+            fpr, tpr, thresholds = roc_curve(y.iloc[test], probas_)
+            entire_test = pd.concat([entire_test, pd.DataFrame(y.iloc[test])])
+            entire_proba = pd.concat([entire_proba, pd.DataFrame(probas_)])
+        else:
+            probas_ = clf.predict_proba(X.iloc[test])
+            fpr, tpr, thresholds = roc_curve(y.iloc[test], probas_[:, 1])
+            entire_test = pd.concat([entire_test, pd.DataFrame(y.iloc[test])])
+            entire_proba = pd.concat([entire_proba, pd.DataFrame(probas_[:, 1])])
         roc_auc = auc(fpr, tpr)
         aucs.append(roc_auc)
         if show_folds:
@@ -100,7 +107,7 @@ def download_plot(uuid):
     return send_file(
         read_result_file_by_uuid(uuid),
         mimetype="image/png",
-        attachment_filename="plot.png",
+        download_name="plot.png",
         as_attachment=False,
     )
 
@@ -179,7 +186,7 @@ def model_train(model):
                 min_weight_fraction_leaf=1
                 if form.min_weight_fraction_leaf.data == 1.0
                 else form.min_weight_fraction_leaf.data,
-                min_impurity_split=form.min_impurity_split.data,
+                #min_impurity_split=form.min_impurity_split.data,
             ),
             "random_forest": lambda: RandomForestClassifier(
                 criterion=form.criterion.data,
@@ -192,7 +199,7 @@ def model_train(model):
                 min_weight_fraction_leaf=1
                 if form.min_weight_fraction_leaf.data == 1.0
                 else form.min_weight_fraction_leaf.data,
-                min_impurity_split=form.min_impurity_split.data,
+                #min_impurity_split=form.min_impurity_split.data,
             ),
             "adaboost": lambda: AdaBoostClassifier(
                 learning_rate=form.learning_rate.data
@@ -223,7 +230,7 @@ def model_train(model):
             try:
                 # this also trains model
                 score, plot_id, clf = get_train_score(
-                    clf, X, y, show_folds=form.show_folds.data
+                    clf, X, y, model_name=model, show_folds=form.show_folds.data
                 )
             except ValueError:
                 return (
@@ -362,6 +369,6 @@ def predict_file_result_download(uuid):
     return send_file(
         read_result_file_by_uuid(uuid),
         mimetype="text/plain",
-        attachment_filename="result.csv",
+        download_name ='reuslt.csv', #used to name attachment_filename
         as_attachment=True,
     )

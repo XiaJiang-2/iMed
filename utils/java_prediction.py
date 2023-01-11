@@ -6,6 +6,7 @@ import pandas as pd
 import subprocess
 import tarfile
 import sys
+from utils.retrieve_columns import read_file
 sys.path.append("../")
 
 from utils.forms import (
@@ -52,7 +53,7 @@ minimum_number_of_edges=2
     with open(os.path.join(input_dir.name, "input.txt"), "wb") as f:
         f.write(input_data)
     # run jar in the temporary directory
-    os.chdir(input_dir.name)
+    os.chdir(input_dir.name) #change to a new path
     return_code = subprocess.run(
         ["java", "-jar", os.path.join(application.root_path, "java", "MBS.jar"), "MBS.ini"]
     ).returncode
@@ -74,17 +75,17 @@ def learn_mbs():
         if form.run.data:
             out_dir = run_mbs(
                 input_data.read(),
-                sep=form.sep.data,
+                #sep=form.sep.data,
                 idx=form.target_index.data,
                 alpha=form.alpha.data,
             )
             out_file_tgz = NamedTemporaryFile(prefix="mbs_result_tgz_", delete=False)
             with tarfile.open(out_file_tgz.name, "w:gz") as tar:
                 tar.add(out_dir.name, arcname=os.path.basename(out_dir.name))
-            df = pd.read_csv(
-                os.path.join(out_dir.name, "input_MBSTopModels.csv"), header=None
+            df = read_file(
+                os.path.join(out_dir.name, "input_MBSTopModels.csv")
             )
-
+            print(df.head())
             # Fix output for web
             for i in range(1, len(df.columns)):
                 # move score to the right
@@ -117,7 +118,7 @@ def learn_mbs():
 def learn_mbs_result(uuid):
     """result view"""
     table = result_text_by_uuid(uuid)
-    text = f"""{table}<div class="text-center my-3"><a href="{url_for('download', uuid=uuid)}" class="btn btn-primary btn-lg mx-auto">Click to Download Results</a></div>"""
+    text = f"""{table}<div class="text-center my-3"><a href="{url_for('odpac_download', uuid=uuid)}" class="btn btn-primary btn-lg mx-auto">Click to Download Results</a></div>"""
     return render_template("odpac_blurb.html", text=text, title="MBS Results")
 
 
@@ -184,6 +185,7 @@ def learn_interactive_parents():
             out_dir.name = os.path.join(application.root_path, "static", "test-output")
             with tarfile.open(out_file_tgz.name, "w:gz") as tar:
                 tar.add(out_dir.name, arcname=os.path.basename(out_dir.name))
+            print('out_file_tgz.name',out_file_tgz.name)
             uuid = upload_filepath(out_file_tgz.name)
             return redirect(url_for("learn_interactive_parents_result", uuid=uuid))
 
@@ -205,7 +207,7 @@ def learn_interactive_parents():
 def learn_interactive_parents_result(uuid):
     """result view"""
     table = result_text_by_uuid(uuid)
-    text = f"""{table}<div class="text-center my-3"><a href="{url_for('download', uuid=uuid)}" class="btn btn-primary btn-lg mx-auto">Click to Download Results</a></div>"""
+    text = f"""{table}<div class="text-center my-3"><a href="{url_for('odpac_download', uuid=uuid)}" class="btn btn-primary btn-lg mx-auto">Click to Download Results</a></div>"""
     return render_template("odpac_blurb.html", text=text, title="Interactive Parents Results")
 
 
@@ -368,7 +370,7 @@ def treatment_download(uuid):
     return send_file(
         read_result_file_by_uuid(uuid),
         mimetype="text/plain",
-        attachment_filename="result.txt",
+        download_name="result.txt",
         as_attachment=True,
     )
 

@@ -2,6 +2,7 @@ import pandas as pd
 import io
 from flask_wtf import FlaskForm
 from wtforms import ValidationError
+
 from wtforms.fields import (
     StringField,
     FloatField,
@@ -14,23 +15,23 @@ from wtforms.fields import (
 )
 from wtforms.validators import NumberRange, Length, Optional, InputRequired
 from wtforms.widgets import TextArea
-from flask_wtf.file import FileAllowed
-
-
+from flask_wtf.file import FileAllowed, FileRequired
+from wtforms import validators
+import wtforms
 class RunFormHead(FlaskForm):
     input_file = FileField(
-        'Input Data&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'input file',
+        validators=[FileRequired()],
     )
-    sep = SelectField(
-        'Data Column Separator&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        choices=[("\\t", "Tab"), (" ", "Space"), (",", "Comma")],
-        default="\\t",
-       # validators=[Required()],
-    )
+    # sep = SelectField(
+    #     'Data Column Separator&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+    #     choices=[("\\t", "Tab"), (" ", "Space"), (",", "Comma")],
+    #     default="\\t",
+    #    # validators=[Required()],
+    # )
     target_index = IntegerField(
-        'Target Class Index&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-       # validators=[Required()],
+        'Target Class Index',
+        validators=[InputRequired()],
         default=-1,
     )
 
@@ -55,7 +56,8 @@ class RunForm(RunFormHead, RunFormTail):
 
 class MBSForm(RunForm):
     alpha = FloatField(
-        'Alpha&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        #'Alpha&nbsp;<span class="w3-tooltip">🛈<span class="w3-text">Tooltip text</span></span>',
+        'Alpha',
         validators=[NumberRange(min=0),], #Required()],
         default=9,
     )
@@ -63,31 +65,31 @@ class MBSForm(RunForm):
 
 class LearnParentsForm(FlaskForm):
     input_file = FileField(
-        'Input Data&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Input Data',
+        validators=[FileRequired()],
     )
     sep = SelectField(
-        'Data Column Separator&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Data Column Separator',
         choices=[("\\t", "Tab"), (" ", "Space"), (",", "Comma")],
         default="\\t",
        # validators=[Required()],
     )
     target_name = StringField(
-        'Target Class Name &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Target Class Name',
+        validators=[InputRequired()],
     )
     alpha_1 = FloatField(
-        'Alpha 1 &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Alpha 1',
         validators=[NumberRange(min=1, max=1000)], #Required()],
         default=1,
     )
     alpha_2 = FloatField(
-        'Alpha 2 &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Alpha 2',
         validators=[NumberRange(min=1, max=1000)], #Required()],
         default=1,
     )
     is_thresh = FloatField(
-        'IS Threshold &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'IS Threshold',
         validators=[NumberRange(min=0, max=1)], #Required()],
         default=1,
     )
@@ -100,24 +102,24 @@ class LearnParentsForm(FlaskForm):
 
 class TestPredictionForm(FlaskForm):
     race = SelectField(
-        'race &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'race',
         choices=[
             (0, "WHITE"),
             (1, "BLACK"),
             (2, "ASIAN"),
             (3, "American Indian or Alaskan Native"),
         ],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     ethnicity = SelectField(
-        'ethnicity &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'ethnicity',
         choices=[(0, "Not Hispanic"), (1, "Hispanic")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     smoking = SelectField(
-        'smoking &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'smoking',
         choices=[
             (0, "NON SMOKER"),
             (1, "EX SMOKER"),
@@ -125,22 +127,22 @@ class TestPredictionForm(FlaskForm):
             (3, "CHEWING TOBACCO"),
             (4, "CIGAR"),
         ],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     alcohol_useage = SelectField(
-        'alcohol_useage &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'alcohol_useage',
         choices=[
             (0, '"ALCOHOL USE, NOS"'),
             (1, "MODERATE ALCOHOL USE"),
             (2, "NO ALCOHOL USE"),
             (3, "FORMER ALCOHOL USE"),
         ],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     family_history = SelectField(
-        'family_history &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'family_history',
         choices=[
             (0, "FAMILY HISTORY OF THIS & OTHER CANCER"),
             (1, '"FAMILY HISTORY OF CANCER , NOS"'),
@@ -148,71 +150,71 @@ class TestPredictionForm(FlaskForm):
             (3, "NO FAMILY HISTORY OF CANCER"),
             (4, "FAMILY HISTORY OF THIS CANCER"),
         ],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     age_at_diagnosis = SelectField(
-        'age_at_diagnosis &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'age_at_diagnosis',
         choices=[(0, "3"), (1, "2"), (2, "1")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     menopause_status = SelectField(
-        'menopause_status &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'menopause_status',
         choices=[(0, "post"), (1, "pre")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     side = SelectField(
-        'side &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'side',
         choices=[(0, "left"), (1, "right")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     TNEG = SelectField(
-        'TNEG &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'TNEG',
         choices=[(0, "NO"), (1, "YES")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     ER = SelectField(
-        'ER &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'ER',
         choices=[(0, "POSITIVE"), (1, "NEGATIVE"), (2, "LOWPOSITIVE")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     ER_percent = SelectField(
-        'ER_percent &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'ER_percent',
         choices=[(0, "90 - 100"), (1, "0 - 20"), (2, "20 - 90")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     PR = SelectField(
-        'PR &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'PR',
         choices=[(0, "POSITIVE"), (1, "NEGATIVE"), (2, "LOWPOSITIVE")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     PR_percent = SelectField(
-        'PR_percent &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'PR_percent',
         choices=[(0, "20 - 90"), (1, "0 - 20"), (2, "90 - 100")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     P53 = SelectField(
-        'P53 &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'P53',
         choices=[(0, "NEGATIVE"), (1, "POSITIVE"), (2, "LOWPOSITIVE")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     HER2 = SelectField(
-        'HER2 &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'HER2',
         choices=[(0, "NEGATIVE"), (1, "POSITIVE")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     t_tnm_stage = SelectField(
-        't_tnm_stage &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        't_tnm_stage',
         choices=[
             (0, "1"),
             (1, "3"),
@@ -223,82 +225,82 @@ class TestPredictionForm(FlaskForm):
             (6, "0"),
             (7, "1mic"),
         ],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     n_tnm_stage = SelectField(
-        'n_tnm_stage &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'n_tnm_stage',
         choices=[(0, "0"), (1, "2"), (2, "1"), (3, "X"), (4, "3")],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     stage = SelectField(
-        'stage &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'stage',
         choices=[(0, "1"), (1, "3"), (2, "2"), (3, "0")],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     lymph_node_removed = SelectField(
-        'lymph_node_removed &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'lymph_node_removed',
         choices=[(0, "1"), (1, "3"), (2, "2")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     lymph_node_positive = SelectField(
-        'lymph_node_positive &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'lymph_node_positive',
         choices=[(0, "0"), (1, "2"), (2, "1")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     lymph_node_status = SelectField(
-        'lymph_node_status &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'lymph_node_status',
         choices=[(0, "NEGATIVE"), (1, "POSITIVE")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     Histology = SelectField(
-        'Histology &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Histology',
         choices=[(0, "LOBULAR"), (1, "DUCT"), (2, "MIXED DUCT AND LOBULAR")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     size = SelectField(
-        'size &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'size',
         choices=[(0, "2"), (1, "1"), (2, "3")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     grade = SelectField(
-        'grade &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'grade',
         choices=[(0, "1"), (1, "2"), (2, "3")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     invasive = SelectField(
-        'invasive &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'invasive',
         choices=[(0, "YES"), (1, "NO")],
-     #   validators=[Required()],
+        validators=[InputRequired()],
     )
 
     histology2 = SelectField(
-        'histology2 &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'histology2',
         choices=[(0, "ILO"), (1, "IDC"), (2, "DCIS"), (3, "NC")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     invasive_tumor_Location = SelectField(
-        'invasive_tumor_Location &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'invasive_tumor_Location',
         choices=[
             (0, "LOBULAR"),
             (1, "DUCT"),
             (2, "MIXED DUCT AND LOBULAR"),
             (3, "NONE"),
         ],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     DCIS_level = SelectField(
-        'DCIS_level &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'DCIS_level',
         choices=[
             (0, "SOLID"),
             (1, "NOT PRESENT"),
@@ -310,17 +312,17 @@ class TestPredictionForm(FlaskForm):
             (7, "MICROPAPILLALRY"),
             (8, "MICROPAPILLARY"),
         ],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     re_excision = SelectField(
-        're_excision &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        're_excision',
         choices=[(0, "0"), (1, "1")],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     surgical_margins = SelectField(
-        'surgical_margins &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'surgical_margins',
         choices=[
             (0, "NO RESIDUAL TUMOR"),
             (1, "NO PRIMARY SITE SURGERY"),
@@ -328,13 +330,13 @@ class TestPredictionForm(FlaskForm):
             (3, '"RESIDUAL TUMOR, NOS"'),
             (4, "MARGINS NOT EVALUABLE"),
         ],
-       # validators=[Required()],
+        validators=[InputRequired()],
     )
 
     MRIs_60_surgery = SelectField(
-        'MRIs_60_surgery &nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'MRIs_60_surgery',
         choices=[(0, "0"), (1, "1")],
-      #  validators=[Required()],
+        validators=[InputRequired()],
     )
 
     show_folds = BooleanField("Show Individual Folds", default=True)
@@ -344,42 +346,42 @@ class TestPredictionForm(FlaskForm):
 
 class LogRegForm(RunForm):
     solver = SelectField(
-        label='Solver&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        label='Solver',
+        validators=[InputRequired()],
         choices=[(s, s) for s in ["newton-cg", "lbfgs", "liblinear", "sag", "saga"]],
         default="liblinear",
     )
     max_iter = IntegerField(
-        'Max Number of Iterations&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        validators=[ NumberRange(min=1)], #Required(),
+        'Max Number of Iterations',
+        validators=[NumberRange(min=1),InputRequired()], #Required(),
         default=100,
     )
     C = FloatField(
-        'Inverse of Regularization Strength&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Inverse of Regularization Strength',
+        validators=[InputRequired()],
         default=1.0,
     )
     intercept_scaling = FloatField(
-        'Alpha&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Alpha',
+        validators=[InputRequired()],
         default=1.0,
     )
 
 
 class LassoForm(RunForm):
     alpha = FloatField(
-        'Alpha&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Alpha',
+        validators=[InputRequired()],
         default=1.0,
     )
     tol = FloatField(
-        'Tolerance for Optimization&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Tolerance for Optimization',
+        validators=[InputRequired()],
         default=0.0001,
     )
 
     max_iter = IntegerField(
-        'Max Number of Iterations&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Max Number of Iterations',
         validators=[NumberRange(min=1)], #Required(),
         default=1000,
     )
@@ -387,28 +389,28 @@ class LassoForm(RunForm):
 
 class SVMForm(RunForm):
     C = FloatField(
-        'Alpha&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-       # validators=[Required()],
+        'Alpha',
+        validators=[InputRequired()],
         default=1.0,
     )
     kernel = SelectField(
-        label='kernel&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-       # validators=[Required()],
+        label='kernel',
+        validators=[InputRequired()],
         choices=[(k, k) for k in ["linear", "poly", "rbf", "sigmoid"]],
         default="rbf",
     )
     gamma = StringField(
-        'Gamma (Number value or "auto")&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-       # validators=[Required()],
+        'Gamma (Number value or "auto")',
+        validators=[InputRequired()],
         default="auto",
     )
     tol = FloatField(
-        'Tolerance for Stopping Criterion&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-      #  validators=[Required()],
+        'Tolerance for Stopping Criterion',
+        validators=[InputRequired()],
         default=0.001,
     )
     max_iter = IntegerField(
-        'Max Number of Iterations (or -1 For No Limit)&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Max Number of Iterations (or -1 For No Limit)',
         validators=[NumberRange(min=-1)], #Required(),
         default=-1,
     )
@@ -434,7 +436,7 @@ class NBForm(RunForm):
     )
 
     alpha = FloatField(
-        'Alpha&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Alpha',
        # validators=[Required()],
         default=1.0,
     )
@@ -442,7 +444,7 @@ class NBForm(RunForm):
 
 class KNNForm(RunForm):
     n_neighbors = IntegerField(
-        'Number of Neighbors&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Number of Neighbors',
         validators=[ NumberRange(min=1)], #Required(),
         default=3,
     )
@@ -453,14 +455,20 @@ class DTForm(RunForm):
         "Splitter",
         choices=[("best", "best"), ("random", "random")],
         default="best",
-       # validators=[Required()],
+        validators=[InputRequired()],
+    )
+    criterion = SelectField(
+        "Criterion",
+        choices=["gini", "entropy", "log_loss"],
+        default='gini',
+        validators=[InputRequired()]
     )
     min_samples_split = FloatField(
         "Min Samples Split", validators=[InputRequired()], default=2
     )
     min_samples_leaf = FloatField(
         "Min Samples Leaf",
-        #validators=[Required()],
+        validators=[InputRequired()],
         default=1
     )
     min_weight_fraction_leaf = FloatField(
@@ -468,45 +476,45 @@ class DTForm(RunForm):
         validators=[InputRequired()],
         default=0
     )
-    min_impurity_split = FloatField(
-        'Min Impurity Split&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        validators=[InputRequired()],
-        default=1e-7,
-    )
+    # min_impurity_split = FloatField(
+    #     'Min Impurity Split',
+    #     validators=[InputRequired()],
+    #     default=1e-7,
+    # )
 
 
 class RFForm(RunForm):
     criterion = SelectField(
-        'Criterion&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Criterion',
         choices=[("gini", "gini"), ("entropy", "entropy")],
         default="gini",
-        #validators=[Required()],
+        validators=[InputRequired()],
     )
     min_samples_split = FloatField(
-        'Min Samples Split&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Min Samples Split',
         validators=[InputRequired()],
         default=2,
     )
     min_samples_leaf = FloatField(
-        'Min Samples Leaf&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        #validators=[Required()],
+        'Min Samples Leaf',
+        validators=[InputRequired()],
         default=1,
     )
     min_weight_fraction_leaf = FloatField(
-        'Min Weight Fraction Leaf&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Min Weight Fraction Leaf',
         validators=[InputRequired()],
         default=0,
     )
-    min_impurity_split = FloatField(
-        'Min Impurity Split&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
-        validators=[InputRequired()],
-        default=1e-7,
-    )
+    # min_impurity_split = FloatField(
+    #     'Min Impurity Split',
+    #     validators=[InputRequired()],
+    #     default=1e-7,
+    # )
 
 
 class ABForm(RunForm):
     learning_rate = FloatField(
-        'Learning Rate&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>',
+        'Learning Rate',
         validators=[InputRequired()],
         default=1.0,
     )
@@ -533,7 +541,7 @@ class PredictFileForm(FlaskForm):
         self.length = length
 
     input_data = FileField("Upload Dataset",
-                           #validators=[Required()]
+                           validators=[InputRequired()]
                            )
     get_auc = BooleanField(
         'Get ROC AUC&nbsp;<span class="w3tooltip">🛈<span class="w3tooltiptext">Tooltip text</span></span>'
@@ -590,37 +598,37 @@ class Option_1:
     )
     grade = SelectField(
         label="Grade",
-        #validators=[Required()],
+        validators=[InputRequired()],
         choices=[(1, "One"), (2, "Two"), (3, "Three")],
         default=1,
     )
     p53 = SelectField(
         label="P53",
-        #validators=[Required()],
+        validators=[InputRequired()],
         choices=[("pos", "Positive"), ("neg", "Negative")],
         default="neg",
     )
     er = SelectField(
         label="ER",
-        #validators=[Required()],
+        validators=[InputRequired()],
         choices=[("pos", "Positive"), ("neg", "Negative")],
         default="neg",
     )
     node_status = SelectField(
         label="node_status",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("pos", "Positive"), ("neg", "Negative")],
         default="neg",
     )
     menopause = SelectField(
         label="Menopause",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("pre", "Pre"), ("post", "Post")],
         default="pre",
     )
     her2 = SelectField(
         label="HER2",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("pos", "Positive"), ("neg", "Negative")],
         default="neg",
     )
@@ -629,37 +637,37 @@ class Option_1:
 class Option_2:
     nodal_radi = SelectField(
         label="Nodal Radi",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )
     antihormone = SelectField(
         label="Antihormone",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )
     breast_chest_radi = SelectField(
         label="Breast_chest_radi",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )
     chemo = SelectField(
         label="Chemo",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )
     her2_inhib = SelectField(
         label="Her2_inhib",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )
     neo = SelectField(
         label="Neo",
-       # validators=[Required()],
+        validators=[InputRequired()],
         choices=[("yes", "Yes"), ("no", "No")],
         default="yes",
     )

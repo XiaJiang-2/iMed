@@ -7,19 +7,23 @@ from uuid import uuid4
 from application import db
 import boto3
 import sys
+
+BUCKET_NAME = "odpac-data"
 sys.path.append("../")
 
 client = boto3.session.Session().client(
     service_name="s3",
-    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID", "dev_key"),
-    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY", "dev_key"),
+    aws_access_key_id='AKIATENOK5FRVOS55G7K',
+    aws_secret_access_key='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',
     endpoint_url=os.environ.get("AWS_ENDPOINT", None),
 )
-BUCKET = os.environ.get("S3_BUCKET", "odpac-data")
 
+BUCKET = os.environ.get("S3_BUCKET", BUCKET_NAME)
 
 def upload_filepath(file_path, uuid=None, text="", score=""):
     """Uploads a file, and returns UUID for later retrieval"""
+    print(file_path,'file_path')
+    print(uuid,'uuid')
     if uuid is None:
         uuid = uuid4().hex
     if isinstance(file_path, io.BytesIO):

@@ -32,26 +32,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-              <li class="nav-item {% if "learn" in request.url %} active {% endif %}">
+              <li class="nav-item {% if 'learn' in request.url %} active {% endif %}">
                 <a class="nav-link" href="{{ url_for('learn') }}">Learn
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item {% if "test" in request.url %} active {% endif %}">
+            <li class="nav-item {% if 'test' in request.url %} active {% endif %}">
                 <a class="nav-link" href="{{url_for('test_prediction')}}">Test Prediction</a>
             </li>
-            <li class="nav-item {% if "treatment" in request.url %} active {% endif %}">
+            <li class="nav-item {% if 'treatment' in request.url %} active {% endif %}">
                 <a class="nav-link" href="{{url_for('treatment_interaction')}}">Treatment Interaction</a>
             </li>
 
-            <li class="nav-item dropdown {% if "dataset" in request.url %} active {% endif %}">
+            <li class="nav-item dropdown {% if 'dataset' in request.url %} active {% endif %}">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Datasets</a>
                <div class="dropdown-menu">
                    <a class="dropdown-item" href="{{ url_for('datasets_avail') }}">Available Datasets</a>
                    <a class="dropdown-item" href="{{ url_for('datasets_share') }}">Share Your Datasets</a>
                </div>
             </li>
-            <li class="nav-item dropdown {% if "about" in request.url %} active {% endif %}">
+            <li class="nav-item dropdown {% if 'about' in request.url %} active {% endif %}">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">About</a>
                <div class="dropdown-menu">
                    <a class="dropdown-item" href="{{ url_for('about_us') }}">Who We Are</a>

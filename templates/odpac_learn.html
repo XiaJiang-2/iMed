@@ -11,7 +11,7 @@
           <div class="card h-100">
             <img class="card-img-top" src="{{url_for('static', filename='images/ColleenCollieTop3.png')}}" alt="ColleenCollie">
             <div class="card-header">
-                <a href="{{ url_for("learn_interaction") }}"><button class="LinkButton" >Learn Epistasis</button></a>
+                <a href="{{ url_for('learn_interaction') }}"><button class="LinkButton" >Learn Epistasis/Interactions(MBS)</button></a>
             </div>
             <div class="card-body">
               <p class="card-text" >Epistasis is the interaction between two or more genes to affect phenotype. Due to the often non-linearity of the interaction, it is difficult to detect statistical patterns of epistasis. Combinatorial methods for detecting epistasis investigate a subset of combinations of genes without employing a search strategy. Therefore, they do not scale to handling the high-dimensional data found in genome-wide association studies (GWAS). We develop MBS, an efficient search algorithm to learn from data a high scoring rule that may contain two or more interacting genes. Clicking the “Learn Epistasis” button above to use MBS.  </p>
@@ -24,7 +24,7 @@
           <div class="card h-100">
             <img class="card-img-top" src="{{url_for('static', filename='images/BinarySearchTop.png')}}" alt="">
             <div class="card-header">
-              <a href="{{url_for("learn_interactive_parents")}}"><button class="LinkButton" >Learn Interaction</button></a>
+              <a href="{{url_for("learn_interactive_parents")}}"><button class="LinkButton" >Learn Interactive Parents</button></a>
             </div>
             <div class="card-body">
               <p class="card-text">Interaction is the phenomenon where the predictive effect of one variable is dependent on the presence of one or more other variables. One example of an interaction is genetic epistasis, which describes the situation where genetic mutations have different (typically non-linear) effects in combination than they do individually. Interactions also exist in other contexts such as among risk factors for Metastatic Breast Cancer. Clicking the “Learn Interaction” button above will lead you to a page where you can find more information about interaction and use the IGain package that we developed to learn interactions from data.  </p>
@@ -32,6 +32,7 @@
             <img class="card-img-bottom" src="{{url_for('static', filename='images/BinarySearchBottom.png')}}" alt="">
           </div>
         </div>
+        <!--
         <div class="col-lg-6 portfolio-item">
           <div class="card h-100">
             <img class="card-img-top" src="{{url_for('static', filename='images/sortingTop.png')}}" alt="">
@@ -43,12 +44,13 @@
             </div>
             <img class="card-img-bottom" src="{{url_for('static', filename='images/sortingBottom.png')}}" alt="">
           </div>
+          -->
         </div>
         <div class="col-lg-6 portfolio-item">
           <div class="card h-100">
             <img class="card-img-top" src="{{url_for('static', filename='images/fibTop.png')}}" alt="">
             <div class="card-header">
-              <a href="{{url_for("learn_prediction_model")}}"><button class="LinkButton" >Learn Prediction Models</button></a>
+              <a href="{{url_for('learn_prediction_model')}}"><button class="LinkButton" >Learn Prediction Models</button></a>
             </div>
             <div class="card-body">
               <p class="card-text">Classification and prediction are key components in biomedical domain such as clinical care. Even modest improvements in classification and predictive performance have the potential to significantly improve patient outcomes and reduce healthcare costs. Many existing prediction algorithms are made freely available through organizations such as scikit-learn and bit-bucket, but they often require certain level of coding skills to be deployed in practice.  Building on top of existing ML (machine learning) packages, we developed use-friendly interfaces to assist laypeople in coding to learn prediction models using their own dataset. </p>

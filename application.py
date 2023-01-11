@@ -492,7 +492,7 @@ def odpac_download(uuid):
     return send_file(
         read_result_file_by_uuid(uuid),
         mimetype="application/octet-stream",
-        attachment_filename="result.tar.gz",
+        download_name="result.tar.gz",
         as_attachment=True,
     )
 
@@ -520,7 +520,7 @@ def datasets_share():
         form.input_description.data.save(desc_path)
         dataset_uuid = upload_filepath(data_path)
         desc_uuid = upload_filepath(desc_path)
-        database.session.add(
+        db.session.add(
             DataSet(
                 uuid=uuid4().hex,
                 name=form.name.data,
@@ -535,7 +535,7 @@ def datasets_share():
                 features=get_features(read_result_file_by_uuid(dataset_uuid)),
             )
         )
-        database.session.commit()
+        db.session.commit()
         return render_template(
             "odpac_blurb.html", text="Successfully uploaded dataset", title="Success"
         )
@@ -547,7 +547,7 @@ def datasets_share():
 def dataset_info(uuid):
     record = DataSet.query.filter_by(uuid=uuid).first()
     return render_template(
-        "data_info.html",
+        "odpac_data_info.html",
         title=record.name,
         data=url_for("download_data", uuid=uuid, t="data"),
         pdf=url_for("download_data", uuid=uuid, t="desc", display="display"),
@@ -571,7 +571,7 @@ def download_data(t, uuid, display=False):
     return send_file(
         dl_file,
         mimetype="text/plain" if t == "data" else "application/pdf",
-        attachment_filename=f"{record.name}-{t}.{'csv' if t == 'data' else 'pdf'}",
+        download_name=f"{record.name}-{t}.{'csv' if t == 'data' else 'pdf'}",
         as_attachment=not display,
     )
 
