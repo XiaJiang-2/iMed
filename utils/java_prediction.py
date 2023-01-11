@@ -162,7 +162,7 @@ skipString=""
     return output_dir
 
 
-@application.route("/odpac/learn/interactive-parents/", methods=("GET", "POST"))
+@application.route("/odpac/learn/interactive-parents/", methods=["GET", "POST"])
 def learn_interactive_parents():
     form = LearnParentsForm()
     if form.validate_on_submit():
