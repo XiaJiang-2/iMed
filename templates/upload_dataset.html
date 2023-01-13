@@ -21,12 +21,12 @@
                     <br>
                     <select id="upload_server_dataset" name = "dataset_name" onclick="makelocalDisable();">
                         <option value ="000">--Select from existing datasets --</option>
-                        {% if files %}
-                        {% for file in files %}
-                        <option value="{{file}}">{{file}}</option>
+                        {% if records %}
+                        {% for record in records %}
+                        <option value="{{record.uuid}}">{{record.name}}</option>
                         {% endfor %}
                         {% endif %}
-                        <option value="15_year_smote_balancedataset.csv">15_year_smote_balancedataset.csv<option>
+
                     </select><br>
                     <input id= "submit1" type="submit" class="btn btn-primary mt-1 submit_button"
                            value="Submit" οnclick="submitbtn();">

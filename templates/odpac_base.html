@@ -26,22 +26,35 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       
       <div class="container">
-        <a class="navbar-brand" href="#"><img class="card-img-bottom" src="http://placehold.it/135x40" alt=""></a>
+        <a class="navbar-brand" href="#"><img class="card-img-bottom" src="http://placehold.it/135x40" alt="">ODPAC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-              <li class="nav-item {% if 'learn' in request.url %} active {% endif %}">
-                <a class="nav-link" href="{{ url_for('learn') }}">Learn
-                <span class="sr-only">(current)</span>
-              </a>
+              <li class="nav-item dropdown {% if 'learn' in request.url %} active {% endif %}">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown">Learn</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ url_for('learn') }}">Learn Instruction</a>
+                    <hr class="dropdown-divider">
+                   <a class="dropdown-item" href="{{ url_for('learn_mbs') }}">Learn Epistasis</a>
+                   <a class="dropdown-item" href="{{ url_for('learn_interactive_parents') }}">Learn interactive parents</a>
+                   <a class="dropdown-item" href="{{ url_for('learn_prediction_model') }}">Learn prediction models</a>
+               </div>
+
+
             </li>
             <li class="nav-item {% if 'test' in request.url %} active {% endif %}">
                 <a class="nav-link" href="{{url_for('test_prediction')}}">Test Prediction</a>
             </li>
-            <li class="nav-item {% if 'treatment' in request.url %} active {% endif %}">
-                <a class="nav-link" href="{{url_for('treatment_interaction')}}">Treatment Interaction</a>
+            <li class="nav-item dropdown {% if 'treatment' in request.url %} active {% endif %}">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{url_for('treatment_interaction')}}">Treatment Interaction</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ url_for('treatment_interaction') }}">Instructions</a>
+                    <hr class="dropdown-divider">
+                   <a class="dropdown-item" href="{{ url_for('treatment_recommendation') }}">System Recommendation</a>
+                   <a class="dropdown-item" href="{{ url_for('treatment_user_intervention') }}">User Interaction</a>
+               </div>
             </li>
 
             <li class="nav-item dropdown {% if 'dataset' in request.url %} active {% endif %}">
@@ -49,6 +62,13 @@
                <div class="dropdown-menu">
                    <a class="dropdown-item" href="{{ url_for('datasets_avail') }}">Available Datasets</a>
                    <a class="dropdown-item" href="{{ url_for('datasets_share') }}">Share Your Datasets</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown {% if 'model' in request.url %} active {% endif %}">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Models</a>
+               <div class="dropdown-menu">
+                   <a class="dropdown-item" href="#">Available Models</a>
+                   <a class="dropdown-item" href="#">Share Your Models</a>
                </div>
             </li>
             <li class="nav-item dropdown {% if 'about' in request.url %} active {% endif %}">

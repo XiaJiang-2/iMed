@@ -567,9 +567,9 @@ class PredictFileForm(FlaskForm):
 
 
 class DataForm(FlaskForm):
-    name = StringField("Dataset Name", validators=[Length(min=3, max=255)]) #Required(),
-    provider = StringField("Provider", validators=[ Length(min=3, max=255)]) #Required(),
-    curator = StringField("Curator", validators=[Length(min=3, max=255)]) #Required(),
+    name = StringField("Dataset Name", validators=[Length(min=3, max=255),InputRequired()]),
+    provider = StringField("Provider", validators=[ Length(min=3, max=255),InputRequired()]),
+    curator = StringField("Curator", validators=[Length(min=3, max=255),InputRequired()]),
     original_publication = StringField(
         "Original Publication", validators=[Optional(), Length(min=3, max=255)]
     )
@@ -580,13 +580,31 @@ class DataForm(FlaskForm):
         default="No",
     )
     restriction = StringField("Restriction", widget=TextArea())
-    input_data = FileField("Upload Dataset", )#validators=[Required()])
+    input_data = FileField("Upload Dataset", validators=[InputRequired()])
     input_description = FileField(
         "Upload Description Document",
-        validators=[FileAllowed(["pdf"], message="Must be a pdf")], #Required()
+        validators=[FileAllowed(["pdf"], message="Must be a pdf"), InputRequired()]
     )
     submit = SubmitField("Upload")
 
+#model form
+class ModelForm(FlaskForm):
+    name = StringField("Model Name", validators=[Length(min=3, max=255),InputRequired()]),
+    provider = StringField("Provider", validators=[ Length(min=3, max=255),InputRequired()]),
+    curator = StringField("Curator", validators=[Length(min=3, max=255),InputRequired()]),
+    model_restrict = RadioField(
+        label="Model Use Restriction",
+        validators=[InputRequired()],
+        choices=[("Yes", "Yes"), ("No", "No")],
+        default="No",
+    )
+    restriction = StringField("Restriction", widget=TextArea())
+    input_data = FileField("Upload the model", validators=[InputRequired()])
+    input_description = FileField(
+        "Upload Description Document",
+        validators=[FileAllowed(["pdf"], message="Must be a pdf"), InputRequired()]
+    )
+    submit = SubmitField("Upload")
 
 # Treatment Interaction Forms
 class Option_1:

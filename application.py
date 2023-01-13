@@ -7,7 +7,7 @@ from flask import Flask,render_template, request, url_for, redirect, send_file, 
 from flask_mail import Mail
 from flask_security import Security, login_required
 from uuid import uuid4
-from utils.forms import DataForm
+from utils.forms import DataForm, ModelForm
 from io import BytesIO
 import json
 import datetime
@@ -149,14 +149,17 @@ def upload_dataset(flag):
     file_dir = "dataset/"
     files = os.listdir(file_dir)
     data, data_path, head = None, None, None
+
+    records = DataSet.query.all()
+
     if request.method == "POST":
         if request.files:
             f = request.files['dataset']
             if str(secure_filename(f.filename)) != "":
                 data_path = 'dataset/' + secure_filename(f.filename)
                 f.save(data_path)
+
                 print('file uploaded successfully')
-                dataset_name= f.filename
                 data = read_file(data_path)
             if not data_path:
                 flash("please upload a dataset in suitable format('.csv .xlsx .txt')")
@@ -167,23 +170,30 @@ def upload_dataset(flag):
                     flash(f"the maximum file size limit is 500M! Your file is {file_size/1024/1024}M! Please upload another dataset")
                     return render_template('upload_dataset.html',flag=0,data=None, files=files)
         else:
-            print('existing dataset')
-            dataset_name = request.form.get("dataset_name", None)
-            data_path = 'dataset/' + str(dataset_name)
+            # print('existing dataset')
+            # dataset_name = request.form.get("dataset_name", None)
+            # data_path = 'dataset/' + str(dataset_name)
+            uuid = request.form.get('dataset_name', None)  #actually is userid
+            record= DataSet.query.filter_by(uuid=uuid).first()
 
+            dataset_name = record.name
+            print(dataset_name)
+            data = read_result_file_by_uuid(record.dataset_file)
+            print('data::::::')
+            print(data.head())
             if not dataset_name:
                 flash("the dataset you chose is not in a suitable format('.csv .xlsx .txt')")
-                return render_template('upload_dataset.html',flag=0,data=None, files=files)
+                return render_template('upload_dataset.html',flag=0,data=None, records=records)
             else:
                 data = read_file(data_path)
                 file_size = os.path.getsize(data_path)
                 if file_size >= 300000000:
                     flash(
                         f"the maximum file size limit is 500M! Your file is {file_size / 1000000}M! Please upload another dataset")
-                    return render_template('upload_dataset.html', flag=0,data=None, files=files)
+                    return render_template('upload_dataset.html', flag=0,data=None, records=records)
         if int(flag) == 1: #retrieve subsets
             print(data.columns,'dddddddd')
-            return render_template('retrieve_subsets.html',data_path=data_path,data=data.head(10),heads=data.columns)
+            return render_template('retrieve_subsets.html',uuid = uuid,data=data.head(10),heads=data.columns)
         elif int(flag) == 2: #plot trend
             return redirect(url_for('plot_trend',data_path=data_path))
         elif int(flag)==3: #plot roc curve
@@ -192,10 +202,10 @@ def upload_dataset(flag):
             return redirect(url_for('plot_box',data_path=data_path))
         return render_template('upload_dataset.html',flag=0, data=data.head(10), heads=data.columns, data_path = data_path, files = files)
 
-    return render_template('upload_dataset.html', flag=flag,data=None, files=files)
+    return render_template('upload_dataset.html', flag=flag,data=None, files=files, records=records)
 
-@application.route('/data_analytics/retrieve_subsets/<path:data_path>',methods=['POST','GET'])
-def retrieve_subsets(data_path):
+@application.route('/data_analytics/retrieve_subsets/<uuid>',methods=['POST','GET'])
+def retrieve_subsets(uuid):
     """
     this function returns to  themain retireve subsets page
     """
@@ -481,6 +491,8 @@ def learn():
     """Renders the front page."""
     return render_template("odpac_learn.html")
 
+
+
 @application.route("/odpac/learn/interaction/")
 def learn_interaction():
     return render_template("odpac_learn-interaction.html")
@@ -541,6 +553,38 @@ def datasets_share():
         )
 
     return render_template("odpac_form.html", heading="Upload Dataset", form=form)
+
+@application.route("/odpac/models/share/", methods=("GET", "POST"))
+def models_share():
+    form = ModelForm()
+    if form.validate_on_submit():
+        data_path = BytesIO()
+        form.input_data.data.save(data_path)
+        desc_path = BytesIO()
+        form.input_description.data.save(desc_path)
+        dataset_uuid = upload_filepath(data_path)
+        desc_uuid = upload_filepath(desc_path)
+        db.session.add(
+            DataSet(
+                uuid=uuid4().hex,
+                name=form.name.data,
+                provider=form.provider.data,
+                curator=form.curator.data,
+
+                dataset_file=dataset_uuid,
+                description_file=desc_uuid,
+                data_restriction=True if form.data_restrict.data == "Yes" else False,
+                restriction_text=form.restriction.data,
+                records=get_records(read_result_file_by_uuid(dataset_uuid)),
+                features=get_features(read_result_file_by_uuid(dataset_uuid)),
+            )
+        )
+        db.session.commit()
+        return render_template(
+            "odpac_blurb.html", text="Successfully uploaded dataset", title="Success"
+        )
+
+    return render_template("odpac_form.html", heading="Upload the Model", form=form)
 
 @application.route("/odpac/datasets/info/<uuid>/")
 @login_required

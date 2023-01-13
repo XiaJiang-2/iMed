@@ -7,11 +7,11 @@
       <!-- <h1 class="my-4 text-center">Learn</h1> -->
       <br/>
       <div class="row">
-        <div class="col-lg-6 portfolio-item">
+        <div class="col-lg-4 portfolio-item">
           <div class="card h-100">
-            <img class="card-img-top" src="{{url_for('static', filename='images/ColleenCollieTop3.png')}}" alt="ColleenCollie">
+            <!--<img class="card-img-top" src="{{url_for('static', filename='images/ColleenCollieTop3.png')}}" alt="ColleenCollie">-->
             <div class="card-header">
-                <a href="{{ url_for('learn_interaction') }}"><button class="LinkButton" >Learn Epistasis/Interactions(MBS)</button></a>
+                <a href="{{ url_for('learn_mbs') }}"><button class="LinkButton" >Learn Epistasis/Interactions(MBS)</button></a>
             </div>
             <div class="card-body">
               <p class="card-text" >Epistasis is the interaction between two or more genes to affect phenotype. Due to the often non-linearity of the interaction, it is difficult to detect statistical patterns of epistasis. Combinatorial methods for detecting epistasis investigate a subset of combinations of genes without employing a search strategy. Therefore, they do not scale to handling the high-dimensional data found in genome-wide association studies (GWAS). We develop MBS, an efficient search algorithm to learn from data a high scoring rule that may contain two or more interacting genes. Clicking the “Learn Epistasis” button above to use MBS.  </p>
@@ -20,9 +20,9 @@
           </div><!-- /.card-->
         </div>
         <!-- /.col-->
-        <div class="col-lg-6 portfolio-item">
+        <div class="col-lg-4 portfolio-item">
           <div class="card h-100">
-            <img class="card-img-top" src="{{url_for('static', filename='images/BinarySearchTop.png')}}" alt="">
+            <!--<img class="card-img-top" src="{{url_for('static', filename='images/BinarySearchTop.png')}}" alt="">-->
             <div class="card-header">
               <a href="{{url_for("learn_interactive_parents")}}"><button class="LinkButton" >Learn Interactive Parents</button></a>
             </div>
@@ -32,23 +32,10 @@
             <img class="card-img-bottom" src="{{url_for('static', filename='images/BinarySearchBottom.png')}}" alt="">
           </div>
         </div>
-        <!--
-        <div class="col-lg-6 portfolio-item">
+
+        <div class="col-lg-4 portfolio-item">
           <div class="card h-100">
-            <img class="card-img-top" src="{{url_for('static', filename='images/sortingTop.png')}}" alt="">
-            <div class="card-header">
-              <a href="#"><button class="LinkButton" >Learn Direct Parents</button></a>
-            </div>
-            <div class="card-body">
-              <p class="card-text">We are often interested in identifying covariates that are having a direct influence on a target variable such as one that represents the status of a disease. We call these covariates the direct parents of the target variable. For example, in genome wide association studies (GWAS) we try to identify single nucleotide polymorphisms (SNPs) that are directly influencing a particular disease, and these SNPs are called direct parents of the disease. You can click the “Learn Direct Parents” button above to proceed to a page where you can learn more about the DCL (Direct Causal Learner) that we developed and use it to learn direct parents from data. </p>
-            </div>
-            <img class="card-img-bottom" src="{{url_for('static', filename='images/sortingBottom.png')}}" alt="">
-          </div>
-          -->
-        </div>
-        <div class="col-lg-6 portfolio-item">
-          <div class="card h-100">
-            <img class="card-img-top" src="{{url_for('static', filename='images/fibTop.png')}}" alt="">
+            <!--<img class="card-img-top" src="{{url_for('static', filename='images/fibTop.png')}}" alt="">-->
             <div class="card-header">
               <a href="{{url_for('learn_prediction_model')}}"><button class="LinkButton" >Learn Prediction Models</button></a>
             </div>
@@ -58,6 +45,7 @@
             <img class="card-img-bottom" src="{{url_for('static', filename='images/fibBottom.png')}}" alt="">
           </div>
         </div>
+      </div>
       </div>
       <!-- /.row -->
 

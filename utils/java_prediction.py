@@ -86,12 +86,15 @@ def learn_mbs():
                 os.path.join(out_dir.name, "input_MBSTopModels.csv")
             )
             print(df.head())
+            print('************')
             # Fix output for web
-            for i in range(1, len(df.columns)):
-                # move score to the right
-                df.loc[df[i].isna(), i] = df[i - 1]
-                # delete score on the left (if it was moved)
-                df.loc[df[i] == df[i - 1], i - 1] = " "
+            #print(df.columns,'columns')
+            # for i in range(1, len(df.columns)):
+            #     # move score to the right
+            #     print(df[i])
+            #     df.loc[df[i].isna(), i] = df[i - 1]
+            #     # delete score on the left (if it was moved)
+            #     df.loc[df[i] == df[i - 1], i - 1] = " "
 
             df.index.name = "Model Ranking"
             new_col_names = []
